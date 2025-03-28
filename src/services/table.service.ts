@@ -6,8 +6,6 @@ import { FormField } from "@/interfaces/form.interface";
 class TableService {
   getTableData = async () => {
     const url = "/api/lead/read/leads-without-actions";
-    //   return responseObject;
-    console.log("await callApi(url,API.POST)2", callApi(url, API.POST));
     return await callApi(url, API.POST);
   };
 
@@ -18,7 +16,6 @@ class TableService {
 
   getFullDetails = async (userId: string) => {
     const url = `/api/lead/read/get-lead-by?Id=${userId}`;
-    //   return rowDetail;
     return await callApi(url, API.GET);
   };
 
@@ -30,7 +27,6 @@ class TableService {
   getFormFields = async (): Promise<FormField[]> => {
     const url = "/api/lead_field/read/get-all-fields";
     return await callApi(url, API.GET);
-    //   return fields;
   };
 }
 

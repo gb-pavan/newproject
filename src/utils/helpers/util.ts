@@ -4,12 +4,25 @@ import { TimeRangeType } from "../constants/timeRanges";
 import { IStage } from '@/interfaces/root.interface';
 import { IAssignee, IStatus } from '@/interfaces/tableFilterTypes';
 
+// export const getToken = () => {
+//   // const role = localStorage.getItem(StorageKey.ROLE) || Role.STUDENT;
+//   // const token = localStorage.getItem(`${role}${StorageKey.TOKEN}`);
+//   const token = localStorage.getItem(`${StorageKey.TOKEN}`);
+//   return token;
+// };
+
 export const getToken = () => {
-  // const role = localStorage.getItem(StorageKey.ROLE) || Role.STUDENT;
-  // const token = localStorage.getItem(`${role}${StorageKey.TOKEN}`);
-  const token = localStorage.getItem(`${StorageKey.TOKEN}`);
-  return token;
+  const authData = localStorage.getItem("authData");
+  if (!authData) return { token: null }; // Default role if no data exists
+
+  try {
+    return JSON.parse(authData);
+  } catch (error) {
+    console.error("Error parsing authData:", error);
+    return { token: null };
+  }
 };
+
 
 export function formatToLocalTime(isoDate: string): string {
   // Ensure `isoDate` is provided and valid

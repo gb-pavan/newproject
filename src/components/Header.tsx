@@ -1,9 +1,11 @@
+'use client';
 import React, { useState } from 'react';
 import { IoMenu } from "react-icons/io5";
 import Image from 'next/image';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { BsAlarm } from "react-icons/bs";
 import { IoIosNotificationsOutline } from "react-icons/io";
+import { useRouter } from "next/navigation"; // ✅ Correct for App Router
 
 export interface IProfileHeaderProps {
   toggleSidebar: () => void;
@@ -13,6 +15,7 @@ export interface IProfileHeaderProps {
 function Header({ toggleSidebar, incentive }: IProfileHeaderProps) {
   const [isMenuVisible, setMenuVisible] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const router = useRouter();
 
   const handleMobileMenuClick = () => {
     setIsMobileSidebarOpen(!isMobileSidebarOpen);
@@ -22,6 +25,11 @@ function Header({ toggleSidebar, incentive }: IProfileHeaderProps) {
   const handleProfileClick = () => {
     setMenuVisible(!isMenuVisible);
   };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    router.push('/login');
+  }
 
   return (
     <div className="flex items-center border-b border-gray-300 dark:invert h-[60px]">
@@ -48,7 +56,7 @@ function Header({ toggleSidebar, incentive }: IProfileHeaderProps) {
               <div className="p-2 cursor-pointer text-gray-800 hover:bg-gray-100" >
                 Profile
               </div>
-              <div className="p-2 cursor-pointer text-gray-800 hover:bg-gray-100" >
+              <div className="p-2 cursor-pointer text-gray-800 hover:bg-gray-100" onClick={handleLogout} >
                 Logout
               </div>
             </div>

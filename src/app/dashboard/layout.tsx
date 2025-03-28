@@ -27,10 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black dark:bg-black transition-colors`}
-      >
+    
         <ErrorBoundaryProvider>
           <ThemesProvider>
             <LayoutWrapper>
@@ -38,7 +35,5 @@ export default function RootLayout({
             </LayoutWrapper>
           </ThemesProvider>
         </ErrorBoundaryProvider>
-      </body>
-    </html>
   );
 }

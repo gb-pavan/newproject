@@ -50,6 +50,11 @@ function Sidebar({ isOpen, toggleSidebar, isMobile }: SidebarProps) {
     if (isMobile) toggleSidebar();
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    router.push('/login');
+  }
+
 
   return (
     <div
@@ -117,7 +122,7 @@ function Sidebar({ isOpen, toggleSidebar, isMobile }: SidebarProps) {
         </ul>
        
         <div
-          onClick={() => handleItem("/dashboard/home")}
+          onClick={handleLogout}
           className={`flex justify-start items-start space-x-4 min-h-[60px] px-4 cursor-pointer transition-colors duration-300
             ${clickedItem === "/dashboard/logout"
               ? "bg-[#FBE8FF] text-[#D029D8] font-semibold"

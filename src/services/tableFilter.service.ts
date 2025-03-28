@@ -4,12 +4,7 @@ import { QueryState } from '@/interfaces/tableFilterTypes';
 
 class FilterService{
     getFilterResponse = async (payload: QueryState) => {
-      // const payload2 = {
-      //   ...payload,
-      //   "page" : payload.pagination.page,
-      //   "limit" : payload.pagination.limit
-        
-      // }
+      
       const { pagination, ...restPayload } = payload;
       const payload2 = {
         ...restPayload,

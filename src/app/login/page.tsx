@@ -6,6 +6,7 @@ import { AxiosError } from 'axios';
 import { LoginInstance } from "@/services/login.service";
 import { handleError } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
+import Image from 'next/image';
 
 export default function LoginPage() {
   const [inputs, setInputs] = useState({ email: '', password: '' });
@@ -18,9 +19,9 @@ export default function LoginPage() {
       return;
     }
     try {
-      await LoginInstance.getLoginResponse(inputs)
-      // const { token } = response.data;
-      // localStorage.setItem("token", token);
+      const loginResponse = await LoginInstance.getLoginResponse(inputs);
+      const { token, user: { role } } = loginResponse;
+      localStorage.setItem("authData", JSON.stringify({ token, role }));
       router.push("/dashboard/home");
     } catch (error) {
       handleError(error as AxiosError,true);
@@ -48,9 +49,12 @@ export default function LoginPage() {
         }}
       ></div>
       {/* Login Container */}
-      <div className="absolute top-1/2 left-[15%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center p-8 w-full max-w-sm rounded-lg shadow-lg backdrop-blur-md bg-white/10 z-20">
+      <div className="absolute top-1/2 right-[5%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center p-8 w-full max-w-sm rounded-lg shadow-lg backdrop-blur-md bg-white/10 z-20">
 
-        <h2 className="text-white text-2xl font-bold mb-6">IntelliClick</h2>
+        {/* <h2 className="text-white text-2xl font-bold mb-6">IntelliClick</h2> */}
+        <div className="hidden md:flex justify-center h-full items-center">
+          <Image src="/logox.svg" alt="logo" priority width={250} height={60} className="h-full" />
+        </div>
         <form onSubmit={handleLogin} className="w-full">
           <div className="mb-4">
             <label className="text-white block text-sm mb-1">Email</label>
