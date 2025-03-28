@@ -8,7 +8,7 @@ export const callApi = async (url: string, method: API, data?: object | null, sh
   // const uri = `${baseUrl}/${url}`;
   const uri = `${baseUrl?.replace(/\/$/, '')}/${url.replace(/^\//, '')}`;
 
-  console.log("uri",uri);
+  console.log("urieeeeeeeeeeeeeeeeeeee1",uri);
  
   const DEFAULT_HEADER = {
     headers: {
