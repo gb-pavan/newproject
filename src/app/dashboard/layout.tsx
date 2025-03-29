@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+// import { Geist, Geist_Mono } from "next/font/google";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import { ThemesProvider } from "@/providers/ThemeProvider";
 import ErrorBoundaryProvider from "@/providers/ErrorBoundaryProvider";
