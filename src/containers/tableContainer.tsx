@@ -40,7 +40,7 @@ const TableContainer: React.FC = () => {
       limit: rowsPerPage
     }
   });
-  const [assignee, setGetAssignee] = useState<IAssignee[]>([]);
+  const [assignee, setGetAssignee] = useState([]);
   const [statusInfo, setGetStatus] = useState<IStatus[]>([]);
   const totalPages = (totalRows/rowsPerPage);
 
@@ -48,7 +48,8 @@ const TableContainer: React.FC = () => {
      const fetchAssignees = async () => {
     try {
       const response = await DropdownInstance.getAssignee(); // Await the API response
-      setGetAssignee(response);
+      console.log("response assignee",response);
+      setGetAssignee(response?.users);
     } catch (error) {
       handleError(error as AxiosError,false);
     }

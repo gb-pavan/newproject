@@ -4,7 +4,7 @@ import Axios, { AxiosError } from 'axios';
 
 export const callApi = async (url: string, method: API, data?: object | null, shouldThrowError?: boolean) => {
 
-  const { token, role } = getToken();
+  const { token } = getToken();
   console.log("token check",token);
 
   Axios.defaults.headers.common.Authorization = token;

@@ -1,20 +1,20 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { TextField, Button, Switch, FormControlLabel, MenuItem, Select, InputLabel, FormControl, Box, Container } from "@mui/material";
+import { TextField, Button, MenuItem, Select, InputLabel, FormControl, Box, Container } from "@mui/material";
 import { IEmployee } from "@/interfaces";
 
-interface FormData {
-  name: string;
-  initial: string;
-  email: string;
-  password: string;
-  role: string;
-  phone: string;
-  region: string[];
-  ivrActive: boolean;
-  reporting: string;
-  department: string;
-}
+// interface FormData {
+//   name: string;
+//   initial: string;
+//   email: string;
+//   password: string;
+//   role: string;
+//   phone: string;
+//   region: string[];
+//   ivrActive: boolean;
+//   reporting: string;
+//   department: string;
+// }
 
 interface StaticFormProps {
   onFormSubmit: (data: IEmployee) => void;

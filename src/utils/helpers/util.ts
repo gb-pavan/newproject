@@ -1,4 +1,4 @@
-import { StorageKey } from '@/utils/enum';
+// import { StorageKey } from '@/utils/enum';
 
 import { TimeRangeType } from "../constants/timeRanges";
 import { IStage } from '@/interfaces/root.interface';
@@ -159,7 +159,8 @@ export const mapAssigneeToDropdownOptions = (
   assignee:IAssignee[],
   options?: { addDeco?: boolean; showCheckbox?: boolean }
 ) => {
-  return assignee?.map(({name,email}) => ({
+  console.log("assignee",assignee);
+  return assignee.map(({name,email}) => ({
     label:name,
     value:email,
     ...options

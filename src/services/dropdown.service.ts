@@ -4,7 +4,7 @@ import { IAssignee, IStatus} from '@/interfaces/tableFilterTypes';
 
 class DropdownService{
     getAssignee = async (): Promise<IAssignee[]> => {
-      const url = '/api/admin/read/get-all-managers';
+      const url = '/api/admin/read/team-users';
     //   return assignee1;
       return await callApi(url,API.GET);
     }
