@@ -5,6 +5,7 @@ import { IoSearchOutline } from 'react-icons/io5';
 import { HiOutlinePlus } from 'react-icons/hi';
 import { FaChevronDown, FaUserTie, FaHeadset, FaUserShield, FaBullhorn, FaCheck, FaLock } from 'react-icons/fa';
 import MyDropdown from '@/components/MyDropdown';
+import CustomDropdown2 from '@/components/MyDropdown2';
 
 const TeamFilters = () => {
   // State for selected values
@@ -53,6 +54,10 @@ const TeamFilters = () => {
     console.log('Permission template changed:', value);
   };
 
+  const handleOptionChange = (value: string[]) => {
+    console.log("value",value);
+  };
+
   return (
     <div className="bg-white border-b">
       <div className="p-4">
@@ -67,11 +72,10 @@ const TeamFilters = () => {
               Export
             </button>
             <div className="relative">
-              <button className="bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm flex items-center gap-1">
-                <HiOutlinePlus className="text-white" />
-                <span>Add team</span>
-                <FaChevronDown className="h-2 w-2 ml-1" />
-              </button>
+              <CustomDropdown2 options={[
+                { label: "Add User", value: "add_user", icon: "user-plus" },
+                { label: "Add Team from Excel", value: "add_team_excel", icon: "file-spreadsheet" },
+              ]} defaultValue="+Add Team" onChange={handleOptionChange} />
             </div>
           </div>
         </div>

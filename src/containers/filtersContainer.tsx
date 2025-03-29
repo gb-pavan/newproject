@@ -72,7 +72,6 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, rowsCount,setQuery,ass
     }));   
   };
 
-
   return (
     <div className="flex items-center justify-between dark:invert mb-2">
       <h2 className="font-semibold text-[20px] font-[300]">
