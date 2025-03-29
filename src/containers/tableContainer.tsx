@@ -40,7 +40,7 @@ const TableContainer: React.FC = () => {
       limit: rowsPerPage
     }
   });
-  const [assignee, setGetAssignee] = useState([]);
+  const [assignee, setGetAssignee] = useState<IAssignee[]>([]);
   const [statusInfo, setGetStatus] = useState<IStatus[]>([]);
   const totalPages = (totalRows/rowsPerPage);
 
