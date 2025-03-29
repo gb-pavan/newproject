@@ -2,10 +2,9 @@
 // File: src/containers/TeamFilter/components/TeamHeader.tsx
 import React, { useState } from 'react';
 import { IoSearchOutline } from 'react-icons/io5';
-import { HiOutlinePlus } from 'react-icons/hi';
-import { FaChevronDown, FaUserTie, FaHeadset, FaUserShield, FaBullhorn, FaCheck, FaLock } from 'react-icons/fa';
+import { FaUserTie, FaHeadset, FaUserShield, FaBullhorn, FaCheck, FaLock } from 'react-icons/fa';
 import MyDropdown from '@/components/MyDropdown';
-import CustomDropdown2 from '@/components/MyDropdown2';
+
 
 const TeamFilters = () => {
   // State for selected values
@@ -54,31 +53,12 @@ const TeamFilters = () => {
     console.log('Permission template changed:', value);
   };
 
-  const handleOptionChange = (value: string[]) => {
-    console.log("value",value);
-  };
+ 
 
   return (
     <div className="bg-white border-b">
       <div className="p-4">
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-medium">Team</h1>
-            <span className="text-gray-500 text-sm">17 members (15 active)</span>
-          </div>
-          <div className="flex gap-2">
-            <button className="text-blue-600 text-sm flex items-center gap-1">
-              <IoSearchOutline className="h-4 w-4" />
-              Export
-            </button>
-            <div className="relative">
-              <CustomDropdown2 options={[
-                { label: "Add User", value: "add_user", icon: "user-plus" },
-                { label: "Add Team from Excel", value: "add_team_excel", icon: "file-spreadsheet" },
-              ]} defaultValue="+Add Team" onChange={handleOptionChange} />
-            </div>
-          </div>
-        </div>
+        
         <div className="flex items-center gap-2">
           <div className="relative grow">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
