@@ -35,6 +35,7 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // Ref for dropdown
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  console.log("options",options);
 
   useEffect(() => {
     const handleResize = () => {
@@ -162,7 +163,10 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
                 {option.addDeco &&<div className="w-8 h-8 rounded-full bg-purple-200 flex items-center justify-center text-purple-800 font-medium">
                    {option.label.split(" ").map((n) => n[0].toUpperCase()).join("")}
                 </div>}
-                <span>{option.label}</span>
+                <div >
+                  <span>{option.label}</span>
+                  {defaultValue === "Assignee" && <span className="text-sm">{option.value}</span>}
+                </div>
               </li>
             );
           })}
