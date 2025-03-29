@@ -1,6 +1,6 @@
 import { API } from '@/utils/enum';
 import { callApi } from './http.service';
-import { IAssignee, IStatus} from '@/interfaces/tableFilterTypes';
+import { IStatus} from '@/interfaces/tableFilterTypes';
 
 class DropdownService{
     // getAssignee = async (): Promise<IAssignee[]> => {
