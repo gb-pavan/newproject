@@ -1,32 +1,33 @@
 'use client';
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DynamicTable3 from "@/components/DragDropTable";
-// import { RootInstance } from "@/services/root.service";
-// import { handleError } from "@/utils/helpers";
-// import { AxiosError } from "axios";
-import { columns } from "@/utils/constants";
+import { TeamColumns } from "@/utils/constants";
 import TeamFilters from "./teamFilters";
+import { TeamInstance } from "@/services/team.service";
+import { handleError } from "@/utils/helpers";
+import { AxiosError } from "axios";
 
 const TeamContainer: React.FC = () => {
 
-    // const [team,setTeam] = useState([]);
+  const [team,setTeam] = useState([]);
 
-  //   const fetchTeam = async () => {
-  //   try {
-  //     const teamResponse = await RootInstance.getTeamMembers(); // Await the response
-  //     setTeam(teamResponse.leads);
-  //   } catch (error) {
-  //     handleError(error as AxiosError,false);
-  //   }
-  // };
+  const fetchTeam = async () => {
+    try {
+      const teamResponse = await TeamInstance.getTeamMembers(); // Await the response
+      setTeam(teamResponse.users);
+    } catch (error) {
+      handleError(error as AxiosError,false);
+    }
+  };
 
-  // useEffect(() => {   
-  //   fetchTeam();
-  // }, []);
+  useEffect(() => {   
+    fetchTeam();
+  }, []);
+
   return (
     <div>
       <TeamFilters />
-      <DynamicTable3 data={[]} columns={columns} />
+      <DynamicTable3 data={team} columns={TeamColumns} />
     </div>
   );
 };
