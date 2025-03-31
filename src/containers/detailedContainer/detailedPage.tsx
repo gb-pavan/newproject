@@ -13,6 +13,8 @@ import { handleError } from "@/utils/helpers";
 import { AxiosError } from "axios";
 import { TableInstance } from "@/services/table.service";
 import { IRowDetail } from "@/interfaces";
+import { IStatus } from "@/interfaces/tableFilterTypes";
+import { DropdownInstance } from "@/services/dropdown.service";
 
 const leadData = {
   "Lead Source": "Webinar",
@@ -68,6 +70,7 @@ const timelineData = [
 const DetailedPage: React.FC = () => {
   const [btnClicked, setBtnClicked] = useState<string>("");
   const [detailedRow, setDetailedRow] = useState<IRowDetail | null>(null);
+  const [statusInfo, setGetStatus] = useState<IStatus[]>([]);
   const params = useParams(); // Use useParams instead of router.query
   const id = params.id;
 
@@ -79,6 +82,18 @@ const DetailedPage: React.FC = () => {
   const handleCancelTask = () => {
     setBtnClicked("");
   };
+
+  useEffect(() => {
+  const fetchStatusInfo = async () => {
+    try {
+      const response = await DropdownInstance.getStatus();
+      setGetStatus(response);
+    } catch (error) {
+      handleError(error as AxiosError,false);
+    }
+  }
+    fetchStatusInfo();
+  }, []);
 
   useEffect(() => {
     if (!id) return; // Wait until id is available
@@ -115,6 +130,7 @@ const DetailedPage: React.FC = () => {
             location={detailedRow?.region?.name ?? ""}
             // rating={Number(detailedRow?.fields?.percentage) ?? ""}
             rating={isNaN(Number(detailedRow?.fields?.percentage)) ? 0 : Number(detailedRow?.fields?.percentage)}
+            statusInfo={statusInfo}
           />
           <LeadDetails details={leadData} />
         </div>
