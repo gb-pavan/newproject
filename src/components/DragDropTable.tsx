@@ -269,13 +269,13 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo }) => {
                               style={{ cursor: "pointer", color: "#0D2167", textDecoration: "underline" }}>{row[col]?.name || "-"}</span> */}
                               <div className="relative group">
                               <span
-                                className="text-[14px] cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px] inline-block"
+                                className="text-[14px] flex justify-center cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px] inline-block"
                                 onClick={() => handleNameClick(row._id as string)}
-                                style={{
-                                  cursor: "pointer",
-                                  color: "#0D2167",
-                                  textDecoration: "underline",
-                                }}
+                                // style={{
+                                //   cursor: "pointer",
+                                //   // color: "#0D2167",
+                                //   // textDecoration: "underline",
+                                // }}
                               >
                                 {/* {capitalizeFirstLetterOfEachWord(row[col]?.name) || "-"} */}
                                 {capitalizeFirstLetterOfEachWord(getColumnValue(row, col)) || "-"}
