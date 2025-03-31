@@ -88,13 +88,15 @@ const DetailedPage: React.FC = () => {
       try {
         const response = await TableInstance.getFullDetails(id as string);
         console.log("lead full",response);
-        setDetailedRow(response);
+        await setDetailedRow(response);
         } catch (error) {
         handleError(error as AxiosError, false);
       }
     }    
     fetchLeadData();
-  }, [id]);
+  }, []);
+
+  console.log("checking card",detailedRow?.name,detailedRow?.phone,detailedRow?.fields?.email,detailedRow?.region)
 
   return (
     <div className="container mx-auto p-8">
@@ -110,8 +112,9 @@ const DetailedPage: React.FC = () => {
             status="Enroll"
             phone={detailedRow?.phone ?? ""}
             email={detailedRow?.fields?.email ?? ""}
-            location={detailedRow?.region ?? ""}
-            rating={Number(detailedRow?.fields?.percentage) ?? ""}
+            location={detailedRow?.region?.name ?? ""}
+            // rating={Number(detailedRow?.fields?.percentage) ?? ""}
+            rating={isNaN(Number(detailedRow?.fields?.percentage)) ? 0 : Number(detailedRow?.fields?.percentage)}
           />
           <LeadDetails details={leadData} />
         </div>
