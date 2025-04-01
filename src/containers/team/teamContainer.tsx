@@ -10,12 +10,16 @@ import { IoSearchOutline } from "react-icons/io5";
 import CustomDropdown2 from "@/components/MyDropdown2";
 import SlidingPanel from "@/components/SlidePanel";
 import StaticForm from "../staticForm";
-import { IEmployee } from "@/interfaces";
+import { IEmployee, IEmployeeDetails } from "@/interfaces";
 
 const TeamContainer: React.FC = () => {
 
   const [team,setTeam] = useState([]);
   const [isSliderOpen, setIsSliderOpen] = useState(false);
+
+  function filterIvrActiveUsers(users: IEmployeeDetails[]): IEmployeeDetails[] {
+    return users.filter(user => user.ivrActive);
+  }
 
   const fetchTeam = async () => {
     try {
@@ -54,7 +58,7 @@ const TeamContainer: React.FC = () => {
       <div className="flex justify-between items-center mb-4 p-4 pb-0">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-medium">Team</h1>
-            <span className="text-gray-500 text-sm">17 members (15 active)</span>
+            <span className="text-gray-500 text-sm">{team.length} members ({filterIvrActiveUsers(team).length} active)</span>
           </div>
           <div className="flex gap-2">
             <button className="text-blue-600 text-sm flex items-center gap-1">

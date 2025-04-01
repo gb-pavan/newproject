@@ -232,13 +232,32 @@ const Home2: React.FC = () => {
                           Configure your sales pipeline
                         </p>
                         <a 
-  href="/dashboard/home/pipeline"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="rounded-full bg-purple-600 text-white text-xs py-1 px-3 mt-auto inline-block"
->
-  + Lead Stage
-</a>
+                          href="/dashboard/home/pipeline"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-full bg-purple-600 text-white text-xs py-1 px-3 mt-auto inline-block"
+                        >
+                          + Lead Stage
+                        </a>
+                      </div>
+                       <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm flex flex-col items-center text-center min-w-[200px]">
+                        <div className="bg-gray-100 p-3 rounded-full mb-3">
+                          <RiListCheck className="h-5 w-5 text-gray-600" />
+                        </div>
+                        <h3 className="text-sm font-medium text-gray-800 mb-1">
+                          Region
+                        </h3>
+                        <p className="text-xs text-gray-500 mb-3">
+                          Configure your region
+                        </p>
+                        <a 
+                          href="/dashboard/home/pipeline"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-full bg-purple-600 text-white text-xs py-1 px-3 mt-auto inline-block"
+                        >
+                          + Add Region
+                        </a>
                       </div>
                     </div>
                   </div>
