@@ -16,17 +16,17 @@ class TeamService{
         ...userDetails,
         "permission":"full"
       }
-      const payload4 = {
-  "name": "pavankumar1234",
-  "initial": "pk4123",
-  "email": "pavankumar4124@gmail.com",
-  "password": "test1123442",
-  "department":"Sales", // "Sales", "Marketing"
-  "role": "admin",
-  "permission": "full",
-  "reporting": "",
-  "phone": "1872440842"
-}
+//       const payload4 = {
+//   "name": "pavankumar1234",
+//   "initial": "pk4123",
+//   "email": "pavankumar4124@gmail.com",
+//   "password": "test1123442",
+//   "department":"Sales", // "Sales", "Marketing"
+//   "role": "admin",
+//   "permission": "full",
+//   "reporting": "",
+//   "phone": "1872440842"
+// }
       const url = "/api/user/write/create-or-update";
       return await callApi(url,API.POST,payload5,true);
     }

@@ -1,8 +1,8 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { InitialStage } from './InitialStage';
+// import { InitialStage } from './InitialStage';
 import { ActiveStage } from './ActiveStage';
-import { ClosedStage } from './ClosedStage';
+// import { ClosedStage } from './ClosedStage';
 import { RootInstance } from '@/services/root.service';
 import {  getActiveStatusesByStageId, handleError } from '@/utils/helpers';
 import { AxiosError } from 'axios';

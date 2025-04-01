@@ -17,10 +17,10 @@ interface ContactCardProps {
   statusInfo :IStatus[];
 }
 
-const ContactCard: React.FC<ContactCardProps> = ({ name, status, phone, email, location, rating,statusInfo }) => {
+const ContactCard: React.FC<ContactCardProps> = ({ name, phone, email, location, rating,statusInfo }) => {
 
   const handleStatusChange = (newValues: string[]) => {
-    console.log("status chagne");
+    console.log("status chagne",newValues);
   };
   return (
     <div className="max-w-xl mx-auto w-[524px] bg-[#F8D0FE] rounded-2xl shadow-lg overflow-hidden border border-black">

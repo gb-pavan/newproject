@@ -109,7 +109,7 @@ const DetailedPage: React.FC = () => {
       }
     }    
     fetchLeadData();
-  }, []);
+  }, [id]);
 
   console.log("checking card",detailedRow?.name,detailedRow?.phone,detailedRow?.fields?.email,detailedRow?.region)
 

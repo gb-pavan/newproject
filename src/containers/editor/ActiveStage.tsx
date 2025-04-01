@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Edit2, Trash2, ChevronDown, ChevronUp,Circle, RefreshCcw } from 'lucide-react';
 import { IEditableStatusBox, IStage } from '@/interfaces/root.interface';
 import { RootInstance } from '@/services/root.service';
+import ColorPicker from '@/components/ColorPicker';
 
 interface StageProps {
   className?: string;
@@ -20,7 +21,7 @@ interface StageProps {
 
 export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
   
-  const [stageItems, setStageItems] = useState<IEditableStatusBox[]>([]);
+  // const [stageItems, setStageItems] = useState<IEditableStatusBox[]>([]);
 
   console.log("fullObj",fullObject);
 
@@ -37,16 +38,16 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [stageName, setStageName] = useState<string>("");
 
-  const colorOptions = [
-    { name: 'Green', value: 'bg-green-100', icon: <Circle size={16} className="text-green-600" /> },
-    { name: 'Red', value: 'bg-red-100', icon: <Circle size={16} className="text-red-600" /> },
-    { name: 'Yellow', value: 'bg-yellow-100', icon: <Circle size={16} className="text-yellow-600" /> },
-    { name: 'Purple', value: 'bg-purple-100', icon: <Circle size={16} className="text-purple-600" /> },
-    { name: 'Blue', value: 'bg-blue-100', icon: <Circle size={16} className="text-blue-600" /> },
-    { name: 'Orange', value: 'bg-orange-100', icon: <Circle size={16} className="text-orange-600" /> },
-    { name: 'Pink', value: 'bg-pink-100', icon: <Circle size={16} className="text-pink-600" /> },
-    { name: 'Gray', value: 'bg-gray-100', icon: <Circle size={16} className="text-gray-600" /> }
-  ];
+  // const colorOptions = [
+  //   { name: 'Green', value: 'bg-green-100', icon: <Circle size={16} className="text-green-600" /> },
+  //   { name: 'Red', value: 'bg-red-100', icon: <Circle size={16} className="text-red-600" /> },
+  //   { name: 'Yellow', value: 'bg-yellow-100', icon: <Circle size={16} className="text-yellow-600" /> },
+  //   { name: 'Purple', value: 'bg-purple-100', icon: <Circle size={16} className="text-purple-600" /> },
+  //   { name: 'Blue', value: 'bg-blue-100', icon: <Circle size={16} className="text-blue-600" /> },
+  //   { name: 'Orange', value: 'bg-orange-100', icon: <Circle size={16} className="text-orange-600" /> },
+  //   { name: 'Pink', value: 'bg-pink-100', icon: <Circle size={16} className="text-pink-600" /> },
+  //   { name: 'Gray', value: 'bg-gray-100', icon: <Circle size={16} className="text-gray-600" /> }
+  // ];
 
   const handleEditClick = (itemId: string, color: string, title: string) => {
     console.log("id,col,tit",itemId,color,title);
@@ -104,6 +105,7 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
     if (stageName.trim() === "") {
       return; // Don't save if name is empty
     }
+    console.log("editzzzzz",editingItem,stageName,selectedColor);
 
     const response = RootInstance.editStatus({"statusid":editingItem,"label":stageName,"color":selectedColor})
     console.log("editable",response);
@@ -316,13 +318,14 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
               Select Color
             </label>
             <div className="grid grid-cols-4 gap-2 mb-6">
-              {colorOptions.map((color) => (
+              {/* {colorOptions.map((color) => (
                 <button
                   key={color.value}
                   className={`${color.value} h-8 w-8 rounded-full border-2 ${selectedColor === color.value ? 'border-blue-500' : 'border-transparent'}`}
                   onClick={() => handleColorChange(color.value)}
                 />
-              ))}
+              ))} */}
+              <ColorPicker onChange={handleColorChange} />
             </div>
             <div className="flex justify-end space-x-2">
               <button 
