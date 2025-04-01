@@ -1,12 +1,13 @@
 'use client';
 import React, { useState } from 'react';
 import { Edit2, Trash2, ChevronDown, ChevronUp,Circle, RefreshCcw } from 'lucide-react';
-import { IEditStatus, IEditableStatusBox } from '@/interfaces/root.interface';
+import { IEditableStatusBox, IStage } from '@/interfaces/root.interface';
 import { RootInstance } from '@/services/root.service';
 
 interface StageProps {
   className?: string;
-  fullObject: Record<string, string | number | boolean | IEditStatus[]>;
+  // fullObject: Record<string, string | number | boolean | IEditStatus[]>;
+  fullObject:IStage | undefined;
 }
 
 // interface StageItem {
@@ -25,13 +26,13 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
 
   // Deleted status items
   const [deletedItems, setDeletedItems] = useState<IEditableStatusBox[]>([
-    { statusid: 'd1', label: 'Not Interested', color: 'bg-gray-100',icon:''},
-    { statusid: 'd2', label: 'Lost Opportunity', color: 'bg-red-100',icon:''},
-    { statusid: 'd3', label: 'Duplicate Lead', color: 'bg-yellow-100',icon:''}
+    { statusid: 'd1', label: 'Not Interested', color: 'bg-gray-100'},
+    { statusid: 'd2', label: 'Lost Opportunity', color: 'bg-red-100'},
+    { statusid: 'd3', label: 'Duplicate Lead', color: 'bg-yellow-100'}
   ]);
   
   const [showDeletedItems, setShowDeletedItems] = useState(false);
-  const [editingItem, setEditingItem] = useState<string | null>(null);
+  const [editingItem, setEditingItem] = useState<string>("");
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [stageName, setStageName] = useState<string>("");
@@ -48,13 +49,51 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
   ];
 
   const handleEditClick = (itemId: string, color: string, title: string) => {
-    const response = RootInstance.editStatus({"statusid":itemId,"label":title,"color":color})
-    console.log("editable",response);
+    console.log("id,col,tit",itemId,color,title);
+    // const response = RootInstance.editStatus({"statusid":itemId,"label":title,"color":color})
+    // console.log("editable",response);
+    
     setEditingItem(itemId);
     setSelectedColor(color);
     setStageName(title);
     setIsAddingNew(false);
   };
+
+
+  // const handleEditClick = (itemId: string, color: string, title: string) => {
+  //   console.log("id,col,tit", itemId, color, title);
+  //   console.log("before edit", editingItem, selectedColor, stageName);
+
+  //   // Skip change detection on the first click
+  //   if (!isInitialized) {
+  //     setEditingItem(itemId);
+  //     setSelectedColor(color);
+  //     setStageName(title);
+  //     setIsInitialized(true); // Mark as initialized
+  //     setIsAddingNew(false);
+  //     return;
+  //   }
+
+  //   // Check if any value has changed before updating the state
+  //   const isChanged =
+  //     itemId !== editingItem || color !== selectedColor || title !== stageName;
+
+  //   if (isChanged) {
+  //     setEditingItem(itemId);
+  //     setSelectedColor(color);
+  //     setStageName(title);
+
+  //     // Call API only if there is a change
+  //     RootInstance.editStatus({
+  //       statusid: itemId,
+  //       label: title,
+  //       color: color,
+  //     });
+  //   }
+
+  //   setIsAddingNew(false);
+  // };
+
 
   const handleColorChange = (colorValue: string) => {
     setSelectedColor(colorValue);
@@ -65,45 +104,48 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
     if (stageName.trim() === "") {
       return; // Don't save if name is empty
     }
+
+    const response = RootInstance.editStatus({"statusid":editingItem,"label":stageName,"color":selectedColor})
+    console.log("editable",response);
     
-    if (editingItem) {
-      // Update existing item
-      const updatedItems = stageItems.map(item => {
-        if (item.statusid === editingItem) {
-          // const iconColor = selectedColor.replace('bg-', 'text-').replace('-100', '-600');
-          return {
-            ...item,
-            title: stageName,
-            color: selectedColor,
-            icon: 'Circle'
-          };
-        }
-        return item;
-      });
-      setStageItems(updatedItems);
-    } else if (isAddingNew) {
-      // Add new item
-      // const iconColor = selectedColor.replace('bg-', 'text-').replace('-100', '-600');
-      const newItem = {
-        statusid: Date.now().toString(),
-        label: stageName,
-        color: selectedColor,
-        icon:'Circle'
-      };
-      setStageItems([...stageItems, newItem]);
-    }
+    // if (editingItem) {
+    //   // Update existing item
+    //   const updatedItems = stageItems.map(item => {
+    //     if (item.statusid === editingItem) {
+    //       // const iconColor = selectedColor.replace('bg-', 'text-').replace('-100', '-600');
+    //       return {
+    //         ...item,
+    //         title: stageName,
+    //         color: selectedColor,
+    //         icon: 'Circle'
+    //       };
+    //     }
+    //     return item;
+    //   });
+    //   setStageItems(updatedItems);
+    // } else if (isAddingNew) {
+    //   // Add new item
+    //   // const iconColor = selectedColor.replace('bg-', 'text-').replace('-100', '-600');
+    //   const newItem = {
+    //     statusid: Date.now().toString(),
+    //     label: stageName,
+    //     color: selectedColor,
+    //     icon:'Circle'
+    //   };
+    //   setStageItems([...stageItems, newItem]);
+    // }
     
     closePopup();
   };
 
-  const handleDeleteItem = (stageId: string,statusId:string) => {
-    RootInstance.deleteStatus({stageId,statusId});
-    const itemToDelete = stageItems.find(item => item.statusid === stageId);
-    if (itemToDelete) {
-      // Remove from active items
-      const updatedItems = stageItems.filter(item => item.statusid !== stageId);
-      setStageItems(updatedItems);
-    }
+  const handleDeleteItem = async (stageId: string,statusId:string) => {
+    await RootInstance.deleteStatus({stageId,statusId});
+    // const itemToDelete = stageItems.find(item => item.statusid === stageId);
+    // if (itemToDelete) {
+    //   // Remove from active items
+    //   const updatedItems = stageItems.filter(item => item.statusid !== stageId);
+    //   setStageItems(updatedItems);
+    // }
   };
 
   const handleRestoreItem = (stageId:string,statusId: string) => {
@@ -121,13 +163,13 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
 
   const handleAddNew = () => {
     setIsAddingNew(true);
-    setEditingItem(null);
+    setEditingItem("");
     setSelectedColor("bg-green-100");
     setStageName("");
   };
 
   const closePopup = () => {
-    setEditingItem(null);
+    setEditingItem("");
     setIsAddingNew(false);
   };
 
@@ -249,7 +291,7 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
       </div>
 
       {/* Edit/Add popup */}
-      {(editingItem !== null || isAddingNew) && (
+      {(editingItem !== "" || isAddingNew) && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-96 shadow-lg">
             <h3 className="text-lg font-semibold mb-4">

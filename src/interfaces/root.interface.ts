@@ -21,6 +21,6 @@ export interface IEditableStatusBox {
     statusid: string;
     label: string;
     color: string;
-    icon:string;
+    // icon:string;
 }
   

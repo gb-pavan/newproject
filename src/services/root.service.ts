@@ -193,15 +193,18 @@ class RootService{
     "label":string
     }) => {
         const url='/api/lead_stage/write/create-update/stage_fresh';
+        console.log("changing status info");
         return await callApi(url,API.POST,payload,true);
     }
 
   deleteStatus = async (payload:{stageId:string,statusId:string}) => {
+    console.log("deleting");
     const url=`/api/lead_stage/delete/stage/${payload.stageId}/${payload.statusId}`;
     return await callApi(url,API.POST);
   }
 
   restoreDeletedStatus = async (payload:{stageId:string,statusId:string}) => {
+    console.log("restoring");
     const url=`/api/lead_stage/write/active/${payload.stageId}/${payload.statusId}`;
     return await callApi(url,API.POST);
   }

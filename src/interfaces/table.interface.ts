@@ -19,7 +19,8 @@ export interface IRowDetail {
         interactWith: string;
     };
     assignedAdmin: string | null;
-    region: string | null;
+    // region: string | null;
+    region:Record<string,string>;
     createdAt: string;
     updatedAt: string;
     __v: number;
