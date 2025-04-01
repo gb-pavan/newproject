@@ -12,6 +12,8 @@ import {
   RiArrowRightSLine
 } from "react-icons/ri";
 import PipelineDisplay from "@/containers/editor/editContainer";
+import { useRouter } from "next/navigation";
+
 
 const Home2: React.FC = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -20,6 +22,7 @@ const Home2: React.FC = () => {
   const [showRightScroll, setShowRightScroll] = useState(true);
     // Add state to control the visibility of the pipeline display
     const [showPipeline, setShowPipeline] = useState(false);
+      const router = useRouter();
 
     useEffect(() => {
         const checkScroll = () => {
@@ -59,6 +62,10 @@ const Home2: React.FC = () => {
           resizeObserver.disconnect();
         };
     }, []);
+
+    const handleAddRegion = () => {
+      router.push("/dashboard/region");
+    }
 
     // Explicitly defined scroll handlers
     const scrollLeft = () => {
@@ -255,6 +262,7 @@ const Home2: React.FC = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                           className="rounded-full bg-purple-600 text-white text-xs py-1 px-3 mt-auto inline-block"
+                          onClick={handleAddRegion}
                         >
                           + Add Region
                         </a>

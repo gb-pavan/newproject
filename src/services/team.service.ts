@@ -12,6 +12,10 @@ class TeamService{
 
     addTeamMember = async (userDetails:IEmployee) => {
       console.log("member",userDetails);
+      const payload5 = {
+        ...userDetails,
+        "permission":"full"
+      }
       const payload4 = {
   "name": "pavankumar1234",
   "initial": "pk4123",
@@ -24,7 +28,7 @@ class TeamService{
   "phone": "1872440842"
 }
       const url = "/api/user/write/create-or-update";
-      return await callApi(url,API.POST,payload4,true);
+      return await callApi(url,API.POST,payload5,true);
     }
 }
 

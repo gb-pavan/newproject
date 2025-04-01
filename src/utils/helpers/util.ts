@@ -1,5 +1,6 @@
 // import { StorageKey } from '@/utils/enum';
 
+import { RegionOption } from "@/interfaces/form.interface";
 import { TimeRangeType } from "../constants/timeRanges";
 import { IStage } from '@/interfaces/root.interface';
 import { IAssignee, IStatus } from '@/interfaces/tableFilterTypes';
@@ -204,6 +205,12 @@ export const getColumnValue = (row: Record<string, unknown>, col: string): strin
   return String(value ?? "-");
 };
 
+export function convertToOptions(data: RegionOption[]): DropdownOption[] {
+    return data.map(item => ({
+        label: item.name,
+        value: item._id
+    }));
+}
 
 
 
