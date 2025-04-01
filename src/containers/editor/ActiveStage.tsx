@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Edit2, Trash2, ChevronDown, ChevronUp,Circle, RefreshCcw } from 'lucide-react';
+import { Edit2, Trash2, ChevronDown, ChevronUp, RefreshCcw } from 'lucide-react';
 import { IEditableStatusBox, IStage } from '@/interfaces/root.interface';
 import { RootInstance } from '@/services/root.service';
 import ColorPicker from '@/components/ColorPicker';
