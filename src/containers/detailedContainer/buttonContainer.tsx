@@ -14,7 +14,7 @@ const ButtonContainer: React.FC<ButtonContainerProps> = ({setBtn}) => {
     <div className="flex justify-between items-center gap-4 p-4">
       <IconButton icon="MdOutlineHistory" label="Add Notable Activity" onClick={() => handleClick("Home")} />
       <IconButton icon="MdOutlineAddTask" label="Create Task" onClick={() => handleClick("CreateTask")} />
-      <IconButton icon="MdOutlineNoteAdd" label="Add Note" onClick={() => handleClick("Settings")} />
+      <IconButton icon="MdOutlineNoteAdd" label="Add Note" onClick={() => handleClick("AddNote")} />
     </div>
   );
 };

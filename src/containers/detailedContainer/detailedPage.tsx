@@ -152,6 +152,11 @@ const DetailedPage: React.FC = () => {
                 />
               </div>
             )}
+            {
+              btnClicked === 'AddNote' && (
+                <div></div>
+              )
+            }
             
             {/* All Leads section */}
             <div className="rounded-[22px] border border-black w-full">

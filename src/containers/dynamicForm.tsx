@@ -58,7 +58,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ fields }) => {
   const additionalFields: FormField[] = [
     { _id: "name", name: "name", type: "text" },
     { _id: "phone", name: "phone", type: "text" },
-    { _id: "region", name: "region", type: "DROPDOWN" },
+    // { _id: "region", name: "region", type: "DROPDOWN" },
   ];
 
   return (
