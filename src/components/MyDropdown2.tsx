@@ -9,6 +9,7 @@ interface DropdownOption {
   color?: string;
   addDeco?:boolean;
   showCheckbox?: boolean;
+  id?:string
 }
 
 interface CustomDropdownProps {
@@ -135,7 +136,9 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
             return (
               <li
                 key={option.value.toLocaleString()}
-                onClick={() => handleSelect(option.value.toLocaleString())}
+                // onClick={() => handleSelect(option.value.toLocaleString())}
+                // onClick={() => handleSelect(defaultValue === "Assignee" ? option.id : option.value)}
+                onClick={() => handleSelect(defaultValue === "Assignee" ? option.id?.toString() ?? "" : option.value?.toString() ?? "")}
                 className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100"
               >
                 {/* Optional Checkbox */}
@@ -163,7 +166,7 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
                 {option.addDeco &&<div className="w-8 h-8 rounded-full bg-purple-200 flex items-center justify-center text-purple-800 font-medium">
                    {option.label.split(" ").map((n) => n[0].toUpperCase()).join("")}
                 </div>}
-                <div >
+                <div className="flex flex-col">
                   <span>{option.label}</span>
                   {defaultValue === "Assignee" && <span className="text-sm">{option.value}</span>}
                 </div>

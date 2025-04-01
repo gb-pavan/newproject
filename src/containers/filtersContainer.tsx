@@ -50,6 +50,7 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, rowsCount,setQuery,ass
   };
 
   const handleAssigneeChange = (newValues: string[]) => {
+    console.log("assigneeeeee check",newValues);
     setQuery((prev) => ({
       ...prev,
       filters: [
@@ -71,6 +72,10 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, rowsCount,setQuery,ass
       ],
     }));   
   };
+
+  console.log("assgneTODrop",mapAssigneeToDropdownOptions(assignee,{ showCheckbox: false,addDeco:true }));
+    console.log("assgneTODrop2222",assignee);
+
 
   return (
     <div className="flex items-center justify-between dark:invert mb-2">

@@ -8,7 +8,7 @@ import { ITableFields } from "@/interfaces";
 import { FilterState,QueryState, IAssignee, IStatus } from "@/interfaces/tableFilterTypes";
 import { getAllKeys, handleError } from "@/utils/helpers";
 import { AxiosError } from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { DndProvider } from 'react-dnd';
@@ -43,6 +43,26 @@ const TableContainer: React.FC = () => {
   const [assignee, setGetAssignee] = useState<IAssignee[]>([]);
   const [statusInfo, setGetStatus] = useState<IStatus[]>([]);
   const totalPages = (totalRows/rowsPerPage);
+  const listRef = useRef<HTMLDivElement>(null); // Ref for the dropdown list container
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (listRef.current && !listRef.current.contains(event.target as Node)) {
+      setCondition(false); // Close the dropdown if the click is outside
+    }
+  };
+
+  useEffect(() => {
+    if (addCondition) {
+      // Add event listener when the list is open
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      // Remove the event listener when the list is closed
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside); // Cleanup listener on unmount
+    };
+  }, [addCondition]);
 
   useEffect(() => {
      const fetchAssignees = async () => {
@@ -111,7 +131,7 @@ const TableContainer: React.FC = () => {
           </div>
           <IoSettingsOutline size={24} color="#0D2167" />
         </div>
-        {addCondition && <div>
+        {addCondition && <div ref={listRef}>
           <ul className="m-3 mt-0 p-3 pt-0 border border-[#C6CCE0] rounded-md">
             {getAllKeys(tableData).map((key) => (
               <li
