@@ -90,6 +90,10 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
 
   if (!isOpen) return null;
 
+  const handleOptionsChange = (updatedOptions: string[]) => {
+    console.log("Updated options:", updatedOptions);
+  }
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-md">
@@ -146,6 +150,13 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
                     ))}
                   </div>
                 )}
+                {/* {fieldType === 'dropdown' && <DynamicInputList onChange={handleOptionsChange} />} */}
+                {fieldType === 'dropdown' && (
+  <div onMouseDown={(e) => e.stopPropagation()}>
+    <DynamicInputList onChange={handleOptionsChange} />
+  </div>
+)}
+
               </div>
             </div>
 
@@ -219,7 +230,7 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
               Cancel
             </button>
             <button
-            type="button" onClick={handleSubmit}
+            type="button"
               className="px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-blue-600"
             >
               Create
