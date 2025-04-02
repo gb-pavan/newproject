@@ -26,8 +26,12 @@ function Header({ toggleSidebar, incentive }: IProfileHeaderProps) {
     setMenuVisible(!isMenuVisible);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.clear();
+    await fetch("/api/logout", {
+    method: "POST",
+    credentials: "include", // Ensures cookies are handled correctly
+  });
     router.push('/login');
   }
 
