@@ -20,8 +20,23 @@ export default function LoginPage() {
     }
     try {
       const loginResponse = await LoginInstance.getLoginResponse(inputs);
-      const { token, user: { role } } = loginResponse;
-      localStorage.setItem("authData", JSON.stringify({ token, role }));
+      // const { token, user: { role } } = loginResponse;
+      // localStorage.setItem("authData", JSON.stringify({ token, role }));
+      if (typeof window !== "undefined") {
+        // Store in localStorage for client-side use
+        localStorage.setItem(
+          "authData",
+          JSON.stringify({ token: loginResponse.token, role: loginResponse.user.role })
+        );
+      }
+
+      // Store in cookies via API call for middleware use
+      await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: loginResponse.token }),
+        credentials: "include", // Ensure cookies are sent with the request
+      });
       router.push("/dashboard/home");
     } catch (error) {
       handleError(error as AxiosError,true);
