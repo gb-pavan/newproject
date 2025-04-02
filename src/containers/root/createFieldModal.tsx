@@ -15,7 +15,6 @@ import { BiWorld } from 'react-icons/bi';
 // import { FaLock } from 'react-icons/fa';
 // import { MdOutlineScreenSearchDesktop } from 'react-icons/md';
 // import { TbArrowsRightLeft } from 'react-icons/tb';
-import { RootInstance } from '@/services/root.service';
 import DynamicInputList from '@/components/DynamicDropdownOptions';
 
 interface CreateFieldModalProps {
@@ -53,11 +52,11 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
   const [fieldName, setFieldName] = useState('');
   const [fieldType, setFieldType] = useState('text');
   const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
-  const [isPropertiesOpen, setIsPropertiesOpen] = useState(true);
+  // const [isPropertiesOpen, setIsPropertiesOpen] = useState(true);
   const [selectedProperties, setSelectedProperties] = useState<string[]>([]);
-  const [minLength, setMinLength] = useState('1');
-  const [maxLength, setMaxLength] = useState('100');
-  const [dropDownOptions,setDropdownOptions] = useState<string[]>([]);
+  // const [minLength, setMinLength] = useState('1');
+  // const [maxLength, setMaxLength] = useState('100');
+  // const [dropDownOptions,setDropdownOptions] = useState<string[]>([]);
   
   // Find the selected type object
   const selectedType = fieldTypeOptions.find(option => option.value === fieldType);
@@ -76,19 +75,19 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
       // onCreateField(fieldName, fieldType, selectedProperties);
       setFieldName('');
       setFieldType('text');
-      setIsPropertiesOpen(true);
+      // setIsPropertiesOpen(true);
       setSelectedProperties([]);
       onClose();
     }
   };
 
-  const toggleProperty = (property: string) => {
-    setSelectedProperties(prev => 
-      prev.includes(property) 
-        ? prev.filter(p => p !== property) 
-        : [...prev, property]
-    );
-  };
+  // const toggleProperty = (property: string) => {
+  //   setSelectedProperties(prev => 
+  //     prev.includes(property) 
+  //       ? prev.filter(p => p !== property) 
+  //       : [...prev, property]
+  //   );
+  // };
 
   if (!isOpen) return null;
 
