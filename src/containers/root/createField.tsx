@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { IoMdSearch } from "react-icons/io";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { IoIosArrowDown } from "react-icons/io";
@@ -14,6 +14,11 @@ import CreateFieldModal from "@/containers/root/createFieldModal";
 import EditFieldModal from "@/containers/root/EditFieldModal";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import { MdDragIndicator } from "react-icons/md";
+import { RootInstance } from "@/services/root.service";
+import { CreatedLeadField } from "@/interfaces/root.interface";
+import { handleError } from "@/utils/helpers";
+import { AxiosError } from "axios";
+import { create } from "domain";
 
 interface Field {
   _id: string;
@@ -60,68 +65,84 @@ const FieldsSettingsPage = () => {
   ];
 
   // Sample data for the fields
-  const [fields, setFields] = useState<Field[]>([
-    {
-      _id: "67c056d750770385063ce1dd",
-      name: "class",
-      type: "DROPDOWN",
-      options: ["1st", "2nd"],
-      createdAt: "2025-02-27T12:13:11.865Z",
-      updatedAt: "2025-03-11T06:20:51.724Z",
-      __v: 0,
-      isHidden: false,
-    },
-    {
-      _id: "67c8316e805b8529252cdcc6",
-      name: "fatherName",
-      type: "TEXT",
-      options: ["academic", "upsc"],
-      createdAt: "2025-03-05T11:11:42.096Z",
-      updatedAt: "2025-03-05T11:11:42.096Z",
-      __v: 0,
-      isHidden: false,
-    },
-    {
-      _id: "67c831a4805b8529252cdcc9",
-      name: "board",
-      type: "DROPDOWN",
-      options: ["academic", "upsc"],
-      createdAt: "2025-03-05T11:12:36.537Z",
-      updatedAt: "2025-03-05T11:12:36.537Z",
-      __v: 0,
-      isHidden: false,
-    },
-    {
-      _id: "67c831be805b8529252cdccc",
-      name: "status",
-      type: "TEXT",
-      options: ["academic", "upsc"],
-      createdAt: "2025-03-05T11:13:02.827Z",
-      updatedAt: "2025-03-05T11:13:02.827Z",
-      __v: 0,
-      isHidden: false,
-    },
-    {
-      _id: "67c831e4805b8529252cdccf",
-      name: "assigned",
-      type: "TEXT",
-      options: ["academic", "upsc"],
-      createdAt: "2025-03-05T11:13:40.975Z",
-      updatedAt: "2025-03-05T11:13:40.975Z",
-      __v: 0,
-      isHidden: false,
-    },
-    {
-      _id: "67c831fd805b8529252cdcd2",
-      name: "leadScore",
-      type: "TEXT",
-      options: ["academic", "upsc"],
-      createdAt: "2025-03-05T11:14:05.826Z",
-      updatedAt: "2025-03-05T11:14:05.826Z",
-      __v: 0,
-      isHidden: false,
-    },
-  ]);
+  // const [fields, setFields] = useState<Field[]>([
+  //   {
+  //     _id: "67c056d750770385063ce1dd",
+  //     name: "class",
+  //     type: "DROPDOWN",
+  //     options: ["1st", "2nd"],
+  //     createdAt: "2025-02-27T12:13:11.865Z",
+  //     updatedAt: "2025-03-11T06:20:51.724Z",
+  //     __v: 0,
+  //     isHidden: false,
+  //   },
+  //   {
+  //     _id: "67c8316e805b8529252cdcc6",
+  //     name: "fatherName",
+  //     type: "TEXT",
+  //     options: ["academic", "upsc"],
+  //     createdAt: "2025-03-05T11:11:42.096Z",
+  //     updatedAt: "2025-03-05T11:11:42.096Z",
+  //     __v: 0,
+  //     isHidden: false,
+  //   },
+  //   {
+  //     _id: "67c831a4805b8529252cdcc9",
+  //     name: "board",
+  //     type: "DROPDOWN",
+  //     options: ["academic", "upsc"],
+  //     createdAt: "2025-03-05T11:12:36.537Z",
+  //     updatedAt: "2025-03-05T11:12:36.537Z",
+  //     __v: 0,
+  //     isHidden: false,
+  //   },
+  //   {
+  //     _id: "67c831be805b8529252cdccc",
+  //     name: "status",
+  //     type: "TEXT",
+  //     options: ["academic", "upsc"],
+  //     createdAt: "2025-03-05T11:13:02.827Z",
+  //     updatedAt: "2025-03-05T11:13:02.827Z",
+  //     __v: 0,
+  //     isHidden: false,
+  //   },
+  //   {
+  //     _id: "67c831e4805b8529252cdccf",
+  //     name: "assigned",
+  //     type: "TEXT",
+  //     options: ["academic", "upsc"],
+  //     createdAt: "2025-03-05T11:13:40.975Z",
+  //     updatedAt: "2025-03-05T11:13:40.975Z",
+  //     __v: 0,
+  //     isHidden: false,
+  //   },
+  //   {
+  //     _id: "67c831fd805b8529252cdcd2",
+  //     name: "leadScore",
+  //     type: "TEXT",
+  //     options: ["academic", "upsc"],
+  //     createdAt: "2025-03-05T11:14:05.826Z",
+  //     updatedAt: "2025-03-05T11:14:05.826Z",
+  //     __v: 0,
+  //     isHidden: false,
+  //   },
+  // ]);
+  const [createdFields,setCreatedFields] = useState<CreatedLeadField[]>([]);
+
+  useEffect(() => {
+     const fetchCreatedLeadFields = async () => {
+    try {
+      const response = await RootInstance.getCreatedLeadFields(); // Await the API response
+      console.log("response lead fields",response);
+      setCreatedFields(response);
+    } catch (error) {
+      handleError(error as AxiosError,false);
+    }
+  };
+
+  
+    fetchCreatedLeadFields();
+  }, []);
 
   // Function to handle drag end event
   const handleDragEnd = (result:DropResult) => {
@@ -137,7 +158,7 @@ const FieldsSettingsPage = () => {
     }
 
     // Create a copy of fields array
-    const updatedFields = Array.from(fields);
+    const updatedFields = Array.from(createdFields);
 
     // Remove the dragged item from the array
     const [movedField] = updatedFields.splice(source.index, 1);
@@ -146,23 +167,26 @@ const FieldsSettingsPage = () => {
     updatedFields.splice(destination.index, 0, movedField);
 
     // Update the state with the new order
-    setFields(updatedFields);
+    setCreatedFields(updatedFields);
   };
 
   // Function to handle creating a new field
-  const handleCreateField = useCallback((name: string, type: string) => {
-    const newField: Field = {
-      _id: `new-field-${Date.now()}`,
-      name: name,
-      type: type.toUpperCase(),
-      options: type === "dropdown" ? ["Option 1", "Option 2"] : ["value1"],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      __v: 0,
-      isHidden: false,
-    };
+  const handleCreateField = useCallback(async (name: string, type: string, options:string[]) => {
+    const payload :{name:string,type:string,options:string[]}= {name:name,type:type,options}
+    const respooo = await RootInstance.createLeadField(payload);
+    console.log("create field",respooo);
+    // const newField: Field = {
+    //   _id: `new-field-${Date.now()}`,
+    //   name: name,
+    //   type: type.toUpperCase(),
+    //   options: type === "dropdown" ? ["Option 1", "Option 2"] : ["value1"],
+    //   createdAt: new Date().toISOString(),
+    //   updatedAt: new Date().toISOString(),
+    //   __v: 0,
+    //   isHidden: false,
+    // };
 
-    setFields((prev) => [...prev, newField]);
+    // setFields((prev) => [...prev, newField]);
     setIsCreateModalOpen(false);
   }, []);
 
@@ -171,7 +195,7 @@ const FieldsSettingsPage = () => {
     (name: string, type: string, options: string[]) => {
       if (!editingField) return;
 
-      setFields((prev) =>
+      setCreatedFields((prev) =>
         prev.map((field) =>
           field._id === editingField._id
             ? {
@@ -193,7 +217,7 @@ const FieldsSettingsPage = () => {
 
   // Function to toggle field visibility
   const handleToggleVisibility = useCallback((fieldName: string) => {
-    setFields((prev) =>
+    setCreatedFields((prev) =>
       prev.map((field) =>
         field.name === fieldName
           ? { ...field, isHidden: !field.isHidden }
@@ -205,13 +229,13 @@ const FieldsSettingsPage = () => {
   // Function to handle edit button click
   const handleEditClick = useCallback(
     (fieldName: string) => {
-      const field = fields.find((f) => f.name === fieldName);
+      const field = createdFields.find((f) => f.name === fieldName);
       if (field) {
         setEditingField(field);
         setIsEditModalOpen(true);
       }
     },
-    [fields]
+    [createdFields]
   );
 
   // Function to toggle between Active Fields and Hidden Fields views
@@ -268,9 +292,10 @@ const FieldsSettingsPage = () => {
       return <HiOutlineUser className="text-gray-500" />;
     }
   };
+  console.log("createddddd fields",createdFields);
   
   // Filter fields based on search term, type, and active/hidden filter
-  const filteredFields = fields.filter((field) => {
+  const filteredFields = createdFields?.filter((field) => {
     const matchesSearch = field.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
@@ -284,7 +309,8 @@ const FieldsSettingsPage = () => {
     return matchesSearch && matchesVisibility && matchesType;
   });
 
-  const searchResults = filteredFields.length;
+  const searchResults = filteredFields?.length;
+  console.log("filteredFields",filteredFields);
 
   return (
     <div className="bg-gray-100 min-h-screen p-4">
@@ -496,7 +522,7 @@ const FieldsSettingsPage = () => {
                   {...provided.droppableProps}
                   className="space-y-2"
                 >
-                  {filteredFields.map((field, index) => (
+                  {filteredFields?.map((field, index) => (
                     <Draggable 
                       key={field._id} 
                       draggableId={field._id} 

@@ -10,11 +10,11 @@ import { AiOutlineNumber } from 'react-icons/ai';
 import { BsTag } from 'react-icons/bs';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { BiWorld } from 'react-icons/bi';
-import { AiOutlineImport } from 'react-icons/ai';
-import { BsEyeFill } from 'react-icons/bs';
-import { FaLock } from 'react-icons/fa';
-import { MdOutlineScreenSearchDesktop } from 'react-icons/md';
-import { TbArrowsRightLeft } from 'react-icons/tb';
+// import { AiOutlineImport } from 'react-icons/ai';
+// import { BsEyeFill } from 'react-icons/bs';
+// import { FaLock } from 'react-icons/fa';
+// import { MdOutlineScreenSearchDesktop } from 'react-icons/md';
+// import { TbArrowsRightLeft } from 'react-icons/tb';
 import { RootInstance } from '@/services/root.service';
 import DynamicInputList from '@/components/DynamicDropdownOptions';
 
@@ -63,15 +63,17 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
   const selectedType = fieldTypeOptions.find(option => option.value === fieldType);
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("checking submit");
     e.preventDefault();
-    console.log("form fields",fieldName,fieldType);
-    const payload :{name:string,type:string}= {name:fieldName,type:fieldType}
-    await RootInstance.createLeadField(payload);
+    // console.log("form fields",fieldName,fieldType);
+    // const payload :{name:string,type:string}= {name:fieldName,type:fieldType}
+    // await RootInstance.createLeadField(payload);
     // if (fieldType === "dropdown") {
     //   payload.options = selectedProperties; // Assuming selectedProperties holds dropdown options
     // }
+    onCreateField(fieldName, fieldType, selectedProperties);
     if (fieldName.trim()) {
-      onCreateField(fieldName, fieldType, selectedProperties);
+      // onCreateField(fieldName, fieldType, selectedProperties);
       setFieldName('');
       setFieldType('text');
       setIsPropertiesOpen(true);
@@ -92,6 +94,7 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
 
   const handleOptionsChange = (updatedOptions: string[]) => {
     console.log("Updated options:", updatedOptions);
+    setSelectedProperties(updatedOptions);
   }
 
   return (
@@ -104,7 +107,7 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
           </button>
         </div>
         
-        <form >
+        <form onSubmit={handleSubmit}>
           <div className="p-4">
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
@@ -230,8 +233,9 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
               Cancel
             </button>
             <button
-            type="button"
+            type="submit"
               className="px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-blue-600"
+              onClick={handleSubmit}
             >
               Create
             </button>

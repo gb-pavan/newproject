@@ -23,4 +23,15 @@ export interface IEditableStatusBox {
     color: string;
     // icon:string;
 }
+
+export interface CreatedLeadField {
+  _id: string;
+  name: string;
+  type: string;
+  options: string[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  isHidden?: boolean;
+}
   

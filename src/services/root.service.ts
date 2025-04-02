@@ -1,5 +1,6 @@
 import { API } from '@/utils/enum';
 import { callApi } from './http.service';
+import { CreatedLeadField } from '@/interfaces/root.interface';
 
 const responseObject = {
     "total": 19,
@@ -209,16 +210,22 @@ class RootService{
     return await callApi(url,API.POST);
   }
 
-  createLeadField = async (payload:{name:string,type:string}) => {
+  createLeadField = async (payload:{name:string,type:string,options:string[]}) => {
     const url=`/api/lead_field/write/create-or-update`;
     const payload2 = {
         'name':payload.name,
-        'type':payload.type.toLocaleUpperCase()
+        'type':payload.type.toLocaleUpperCase(),
+        'options':payload.options
     }
     console.log("lead field write");
     console.log("payload2222",payload2);
     return await callApi(url,API.POST,payload2,true);
   }
+
+  getCreatedLeadFields = async (): Promise<CreatedLeadField[]> => {
+    const url = "/api/lead_field/read/get-all-fields";
+    return await callApi(url, API.GET);
+  };
 }
 
 export const RootInstance = new RootService();
