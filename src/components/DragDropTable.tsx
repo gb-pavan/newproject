@@ -242,7 +242,7 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo }) => {
                 {columnOrder?.map((col, colIndex) => {
                   if (!displayColumns.includes(col)) return null;
                   return (
-                    <th key={colIndex} className={`${col.includes('name') ? 'sticky left-9 bg-gray-200': ''} ${col.includes('phone') ? 'sticky left-[185px] bg-gray-200': ''} p-3 border-r text-[12px] font-[800] border-gray-800 min-w-[150px]`}>
+                    <th key={colIndex} className={`${col.includes('name') ? 'sticky left-9 bg-gray-200': ''} ${col.includes('phone') ? 'sticky left-[185px] bg-gradient-to-r from-gray-200 to-transparent': ''} p-3 border-r text-[12px] font-[800] border-gray-800 min-w-[150px]`}>
                       {col.includes('Name') || col.includes('Phone') ? (
                         <div className="flex items-center">                        
                             <span className="text-[14px]">{formatCamelCase(col)}</span>
@@ -268,7 +268,7 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo }) => {
                   {columnOrder?.map((col, colIndex) => {
                     if (!displayColumns.includes(col)) return null;
                     return (
-                      <td key={colIndex} className={`${col.includes('name') ? 'sticky left-9 bg-white': ''} ${col.includes('phone') ? 'sticky left-[185px] bg-white': ''} p-3 border-r border-gray-800`}>
+                      <td key={colIndex} className={`${col.includes('name') ? 'sticky left-9 bg-white': ''} ${col.includes('phone') ? 'sticky left-[185px] bg-gradient-to-r from-white via-white/90 to-transparent': ''} p-3 border-r border-gray-800`}>
                         {col.toLocaleLowerCase() === 'name' ? (
                           <div className="flex items-center text-[14px] font-[400] gap-2 inline-block whitespace-nowrap">                       
                             <div onClick={(e) => {
@@ -316,7 +316,7 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo }) => {
                             </div>  
                           </div>
                         ):col.toLowerCase() === "phone" ? (
-                          <span className="flex gap-3 text-[12px] font-[400] ">
+                          <span className="flex gap-3 text-[12px] font-[400]">
                             <span className="text-[14px]">{getColumnValue(row, col)}</span>
                             <span style={{cursor:'pointer'}}><BsFillTelephoneOutboundFill color='#4287f5' /></span>
                           </span>
