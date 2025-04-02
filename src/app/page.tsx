@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from "react";
 import CustomDropdown2 from "@/components/MyDropdown2";
+import DynamicInputList from "@/components/DynamicDropdownOptions";
 
 const DropdownExample: React.FC = () => {
   // State management for different dropdown instances
@@ -36,6 +37,10 @@ const DropdownExample: React.FC = () => {
   ];
   console.log("selectsingle",selectedSingle);
 
+  const handleOptionsChange = (updatedOptions: string[]) => {
+    console.log("Updated options:", updatedOptions);
+  }
+
   return (
     <div className="space-y-4">
       <h2>Single Select</h2>
@@ -52,6 +57,7 @@ const DropdownExample: React.FC = () => {
 
       <h2>With Colors</h2>
       <CustomDropdown2 options={optionsWithColor} selectedValues={selectedWithColor} onChange={setSelectedWithColor} />
+      <DynamicInputList onChange={handleOptionsChange} />
     </div>
   );
 };

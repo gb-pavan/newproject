@@ -268,7 +268,7 @@ const FieldsSettingsPage = () => {
       return <HiOutlineUser className="text-gray-500" />;
     }
   };
-
+  
   // Filter fields based on search term, type, and active/hidden filter
   const filteredFields = fields.filter((field) => {
     const matchesSearch = field.name

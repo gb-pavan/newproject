@@ -211,7 +211,13 @@ class RootService{
 
   createLeadField = async (payload:{name:string,type:string}) => {
     const url=`/api/lead_field/write/create-or-update`;
-    return await callApi(url,API.POST,payload,true);
+    const payload2 = {
+        'name':payload.name,
+        'type':payload.type.toLocaleUpperCase()
+    }
+    console.log("lead field write");
+    console.log("payload2222",payload2);
+    return await callApi(url,API.POST,payload2,true);
   }
 }
 

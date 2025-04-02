@@ -64,8 +64,10 @@ const columnStyles: Record<string, string> = {
   board:"bg-[#FBE8FF] text-[#8E198F]"
 };
 
+const COLUMN_STORAGE_KEY = "displayColumns";
+
 const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo }) => {
-  const [displayColumns, setDisplayColumns] = useState<string[]>([]);
+  // const [displayColumns, setDisplayColumns] = useState<string[]>([]);
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [checkedRows, setCheckedRows] = useState<boolean[]>([]);
@@ -73,11 +75,24 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo }) => {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [favoriteRows, setFavoriteRows] = useState<Record<string, boolean>>({});
   const tableRef = useRef<HTMLDivElement | null>(null);
-
+  const [displayColumns, setDisplayColumns] = useState<string[]>(() => {
+    if (typeof window !== "undefined") {
+      const savedColumns = localStorage.getItem(COLUMN_STORAGE_KEY);
+      return savedColumns ? JSON.parse(savedColumns) : columns;
+    }
+    return columns;
+  });
 
   useEffect(() => {
-    setDisplayColumns(columns);
-  }, [columns]);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(COLUMN_STORAGE_KEY, JSON.stringify(displayColumns));
+    }
+  }, [displayColumns]);
+
+
+  // useEffect(() => {
+  //   setDisplayColumns(columns);
+  // }, [columns]);
 
   useEffect(() => {
     const initialFavorites: Record<string, boolean> = {};
@@ -183,6 +198,8 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo }) => {
     // Open the details page in a new tab
     window.open(detailsUrl, '_blank');
   };
+
+  console.log("column order",columnOrder);
 
 
   return (

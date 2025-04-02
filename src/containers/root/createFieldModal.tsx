@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
+import { IoIosArrowDown } from 'react-icons/io';
 import { BsCheckSquare } from 'react-icons/bs';
 import { BsCalendarDate } from 'react-icons/bs';
 import { MdOutlineEmail } from 'react-icons/md';
@@ -14,9 +14,9 @@ import { AiOutlineImport } from 'react-icons/ai';
 import { BsEyeFill } from 'react-icons/bs';
 import { FaLock } from 'react-icons/fa';
 import { MdOutlineScreenSearchDesktop } from 'react-icons/md';
-import { BsInfoCircle } from 'react-icons/bs';
 import { TbArrowsRightLeft } from 'react-icons/tb';
 import { RootInstance } from '@/services/root.service';
+import DynamicInputList from '@/components/DynamicDropdownOptions';
 
 interface CreateFieldModalProps {
   isOpen: boolean;
@@ -41,13 +41,13 @@ const fieldTypeOptions = [
 ];
 
 // Field property options
-const fieldPropertyOptions = [
-  { value: 'import', label: 'Show in import', icon: <AiOutlineImport /> },
-  { value: 'quickAdd', label: 'Show in quick add', icon: <BsEyeFill /> },
-  { value: 'lockAfterCreate', label: 'Lock after create', icon: <FaLock /> },
-  { value: 'canUseVariable', label: 'Can use variable', icon: <TbArrowsRightLeft /> },
-  { value: 'searchable', label: 'Searchable', icon: <MdOutlineScreenSearchDesktop /> },
-];
+// const fieldPropertyOptions = [
+//   { value: 'import', label: 'Show in import', icon: <AiOutlineImport /> },
+//   { value: 'quickAdd', label: 'Show in quick add', icon: <BsEyeFill /> },
+//   { value: 'lockAfterCreate', label: 'Lock after create', icon: <FaLock /> },
+//   { value: 'canUseVariable', label: 'Can use variable', icon: <TbArrowsRightLeft /> },
+//   { value: 'searchable', label: 'Searchable', icon: <MdOutlineScreenSearchDesktop /> },
+// ];
 
 const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, onCreateField }) => {
   const [fieldName, setFieldName] = useState('');
@@ -57,6 +57,7 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
   const [selectedProperties, setSelectedProperties] = useState<string[]>([]);
   const [minLength, setMinLength] = useState('1');
   const [maxLength, setMaxLength] = useState('100');
+  const [dropDownOptions,setDropdownOptions] = useState<string[]>([]);
   
   // Find the selected type object
   const selectedType = fieldTypeOptions.find(option => option.value === fieldType);
@@ -148,7 +149,7 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
               </div>
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <button
                 type="button"
                 className="flex items-center text-sm text-gray-600 hover:text-purple-500"
@@ -206,7 +207,7 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
                   )}
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
 
           <div className="flex justify-end p-4 border-t bg-gray-50">
