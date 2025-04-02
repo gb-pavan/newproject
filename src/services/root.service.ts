@@ -1,6 +1,6 @@
 import { API } from '@/utils/enum';
 import { callApi } from './http.service';
-import { CreatedLeadField } from '@/interfaces/root.interface';
+import { CreatedLeadField, IEditStatus } from '@/interfaces/root.interface';
 
 const responseObject = {
     "total": 19,
@@ -180,6 +180,17 @@ class RootService{
     // const url='api/region/read/regions';
     // return await callApi(url,API.GET);
     return responseObject;
+  }
+
+  createStatus = async (statusCreated:IEditStatus) => {
+    const payload = {
+        'statusid':statusCreated.statusid,
+        'color':statusCreated.color,
+        'label':statusCreated.label
+    }
+    const url='api/lead_stage/write/create-update/stage_fresh';
+    return await callApi(url,API.POST,payload,true);
+    // return stages;
   }
 
   getStages = async () => {

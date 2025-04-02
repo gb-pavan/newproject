@@ -29,6 +29,7 @@ const PipelineDisplay: React.FC<PipelineDisplayProps> = ({ className }) => {
   useEffect(()=>{
     fetchStages();
   },[]);
+  console.log("stages alllllll",stages);
 
   return (
     <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 ${className}`}>

@@ -2,7 +2,7 @@ export interface IEditStatus {
     statusid: number;
     label: string;
     color: string;
-    _id: string;
+    _id?: string;
 }
 
 export interface IStage {

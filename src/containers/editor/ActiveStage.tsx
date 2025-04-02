@@ -100,6 +100,19 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
     setSelectedColor(colorValue);
   };
 
+  const handleCreateStatus = () => {
+    console.log("creating status");
+    const id = Number(fullObject?.activeStatuses?.length) + 1;
+    const statusCreated = {
+      statusid:id,
+      color:selectedColor,
+      label:stageName
+    }
+    const response = RootInstance.createStatus(statusCreated);
+    console.log("respooo status created",response);
+    closePopup();
+  }
+
   const handleSaveChanges = () => {
     
     if (stageName.trim() === "") {
@@ -336,7 +349,7 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
               </button>
               <button 
                 className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                onClick={handleSaveChanges}
+                onClick={handleCreateStatus}
                 disabled={stageName.trim() === ""}
               >
                 Save
