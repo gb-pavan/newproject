@@ -274,10 +274,20 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo }) => {
                             <div onClick={(e) => {
                                 e.stopPropagation();
                                 // handleFavoriteToggle(row._id, row.name.favorite);
-                                if (typeof row.name === "boolean" && typeof row._id === 'string') {
-                                  handleFavoriteToggle(row._id, row.name);
+                                console.log("row",row);
+                                // if (typeof row.name.favorite === "boolean" && typeof row._id === 'string') {
+                                //   console.log("favvv checkk checkkkkk in if");
+                                //   handleFavoriteToggle(row._id, row.name.favorite);
+                                // }
+                                if (
+                                  typeof row.name === "object" && // Ensure row.name is an object
+                                  row.name !== null &&            // Ensure it's not null
+                                  "favorite" in row.name &&       // Ensure favorite exists in the object
+                                  typeof row.name.favorite === "boolean" &&
+                                  typeof row._id === "string"
+                                ) {
+                                  handleFavoriteToggle(row._id, row.name.favorite);
                                 }
-
                               }}
                               style={{ cursor: "pointer" }}>
                               {favoriteRows[row._id as string] ? <FaStar color="#fcba03" /> : <FaRegStar color="black" />}

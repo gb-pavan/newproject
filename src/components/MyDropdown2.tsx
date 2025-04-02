@@ -112,8 +112,6 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
     ? options.find((opt) => opt.value === selectedValues[0])?.label
     : options.find((opt) => opt.value === selectedValues)?.label;
 
-
-
   return (
     <div ref={dropdownRef} className="relative inline-block">
       {/* Dropdown Button */}
@@ -128,14 +126,14 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
 
       {/* Dropdown List */}
       {isOpen && (
-        <ul className="absolute z-10 right-0 w-fit mt-2 bg-white border rounded-md shadow-lg">
+        <ul className={`absolute z-10 right-0 mt-2 border ${defaultValue === 'Status' ? '' : 'w-fit'} rounded-md shadow-lg bg-white`} style={{ width: defaultValue === 'Status' ? '10.5rem' : undefined }}>
           {options.map((option) => {
             const IconComponent = option.icon ? Icons[option.icon] : null;
             const isSelected = selectedValues?.includes(option.value.toLocaleString());
 
             return (
               <li
-                key={option.value.toLocaleString()}
+                key={option.label.toLocaleString() + option.color + option.id}
                 // onClick={() => handleSelect(option.value.toLocaleString())}
                 // onClick={() => handleSelect(defaultValue === "Assignee" ? option.id : option.value)}
                 onClick={() => handleSelect(defaultValue === "Assignee" ? option.id?.toString() ?? "" : option.value?.toString() ?? "")}

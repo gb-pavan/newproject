@@ -1,5 +1,5 @@
 'use client';
-import SearchBox from "@/components/SearchBox";
+// import SearchBox from "@/components/SearchBox";
 import { Filter, FilterState, IAssignee, IStatus, QueryState } from "@/interfaces/tableFilterTypes";
 import DateFilter from "@/components/DateFilter";
 import { TIME_RANGE } from "@/utils/constants/timeRanges";
@@ -84,9 +84,9 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, rowsCount,setQuery,ass
       </h2>
       <div className="flex items-center">
         <div className="flex space-x-4">
-          <SearchBox placeholder="Type and Press Enter" setFilter={setQuery} iconSize={24} responsive
+          {/* <SearchBox placeholder="Type and Press Enter" setFilter={setQuery} iconSize={24} responsive
               iconColor="#0D2167"
-          />
+          /> */}
           <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: false,addDeco:true })} defaultValue="Assignee" onChange={handleAssigneeChange} />
           <DateFilter options={[...TIME_RANGE]} setDate={setQuery} />
         

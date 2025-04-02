@@ -160,7 +160,6 @@ export const mapAssigneeToDropdownOptions = (
   assignee:IAssignee[],
   options?: { addDeco?: boolean; showCheckbox?: boolean }
 ) => {
-  console.log("assignee",assignee);
   return assignee?.map(({name,email,_id}) => ({
     label:name,
     value:email,
