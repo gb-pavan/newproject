@@ -113,45 +113,45 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
     closePopup();
   }
 
-  const handleSaveChanges = () => {
+  // const handleSaveChanges = () => {
     
-    if (stageName.trim() === "") {
-      return; // Don't save if name is empty
-    }
-    console.log("editzzzzz",editingItem,stageName,selectedColor);
+  //   if (stageName.trim() === "") {
+  //     return; // Don't save if name is empty
+  //   }
+  //   console.log("editzzzzz",editingItem,stageName,selectedColor);
 
-    const response = RootInstance.editStatus({"statusid":editingItem,"label":stageName,"color":selectedColor})
-    console.log("editable",response);
+  //   const response = RootInstance.editStatus({"statusid":editingItem,"label":stageName,"color":selectedColor})
+  //   console.log("editable",response);
     
-    // if (editingItem) {
-    //   // Update existing item
-    //   const updatedItems = stageItems.map(item => {
-    //     if (item.statusid === editingItem) {
-    //       // const iconColor = selectedColor.replace('bg-', 'text-').replace('-100', '-600');
-    //       return {
-    //         ...item,
-    //         title: stageName,
-    //         color: selectedColor,
-    //         icon: 'Circle'
-    //       };
-    //     }
-    //     return item;
-    //   });
-    //   setStageItems(updatedItems);
-    // } else if (isAddingNew) {
-    //   // Add new item
-    //   // const iconColor = selectedColor.replace('bg-', 'text-').replace('-100', '-600');
-    //   const newItem = {
-    //     statusid: Date.now().toString(),
-    //     label: stageName,
-    //     color: selectedColor,
-    //     icon:'Circle'
-    //   };
-    //   setStageItems([...stageItems, newItem]);
-    // }
+  //   // if (editingItem) {
+  //   //   // Update existing item
+  //   //   const updatedItems = stageItems.map(item => {
+  //   //     if (item.statusid === editingItem) {
+  //   //       // const iconColor = selectedColor.replace('bg-', 'text-').replace('-100', '-600');
+  //   //       return {
+  //   //         ...item,
+  //   //         title: stageName,
+  //   //         color: selectedColor,
+  //   //         icon: 'Circle'
+  //   //       };
+  //   //     }
+  //   //     return item;
+  //   //   });
+  //   //   setStageItems(updatedItems);
+  //   // } else if (isAddingNew) {
+  //   //   // Add new item
+  //   //   // const iconColor = selectedColor.replace('bg-', 'text-').replace('-100', '-600');
+  //   //   const newItem = {
+  //   //     statusid: Date.now().toString(),
+  //   //     label: stageName,
+  //   //     color: selectedColor,
+  //   //     icon:'Circle'
+  //   //   };
+  //   //   setStageItems([...stageItems, newItem]);
+  //   // }
     
-    closePopup();
-  };
+  //   closePopup();
+  // };
 
   const handleDeleteItem = async (stageId: string,statusId:string) => {
     await RootInstance.deleteStatus({stageId,statusId});
