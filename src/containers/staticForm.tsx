@@ -75,17 +75,41 @@ const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
 
   const onSubmit = (data: IEmployee) => {
     console.log("Form Data Submitted:", data);
+    // const teamDetails = {
+    //   ...(() => {
+    //     const { reportees, ...rest } = data; // remove `reporting` from `data`
+    //     return rest;
+    //   })(),
+    //   "permission": "full",
+    //   reporteeChanges: {
+    //     "remove": [...removedReportees],
+    //     "add": data.reportees || [], // add from `reporting` or empty array
+    //   },
+    // };
+    // const teamDetails = {
+    //   ...(() => {
+    //     const { reportees, ...rest } = data;
+    //     return rest;
+    //   })(),
+    //   permission: "full",
+    //   reporteeChanges: {
+    //     remove: [...removedReportees],
+    //     // add: data.reportees || [],
+    //     add: reportees || [], // ✅ uses destructured value, no lint error
+    //   },
+    // };
+    const { reportees, ...rest } = data;
+
     const teamDetails = {
-      ...(() => {
-        const { reportees, ...rest } = data; // remove `reporting` from `data`
-        return rest;
-      })(),
-      "permission": "full",
+      ...rest,
+      permission: "full",
       reporteeChanges: {
-        "remove": [...removedReportees],
-        "add": data.reportees || [], // add from `reporting` or empty array
+        remove: [...removedReportees],
+        add: reportees || [],
       },
     };
+
+
 
     onFormSubmit(teamDetails);
   };
@@ -138,7 +162,7 @@ const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
             control={control}
             render={({ field }) => (
               <Select {...field} label="Reporting">
-                {reportingOptions?.map((option: any) => (
+                {reportingOptions?.map((option: Reports) => (
                   <MenuItem key={option._id} value={option._id}>
                     {option.name}
                   </MenuItem>
