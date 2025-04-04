@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
@@ -44,9 +45,26 @@ const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
   const [reportingOptions, setReportingOptions] = useState<Reports[]>([]);
   const [reporteesOptions, setReporteesOptions] = useState<Reports[]>([]);
   const [removedReportees, setRemovedReportees] = useState<string[]>([]); // ← store unchecked
+  const [userRole, setUserRole] = useState<string | null>(null);
 
 
   const selectedDepartment = watch("department");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedData = localStorage.getItem("authData");
+      if (storedData) {
+        try {
+          const parsed = JSON.parse(storedData);
+          setUserRole(parsed?.role ?? null);
+        } catch (error) {
+          console.error("Error parsing auth data:", error);
+        }
+      }
+    }
+  }, []);
+
+  console.log("roleeee",userRole);
 
   useEffect(() => {
   if (!selectedDepartment) return;
@@ -154,7 +172,7 @@ const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
             )}
           />
         </FormControl>
-
+        {userRole !== "admin" && (        
         <FormControl fullWidth>
           <InputLabel>Reporting</InputLabel>
           <Controller
@@ -170,7 +188,7 @@ const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
               </Select>
             )}
           />
-        </FormControl>
+        </FormControl>)}
 
         {/* <FormControl fullWidth>
           <InputLabel>Reportees</InputLabel>
@@ -260,48 +278,51 @@ const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
             }}
           />
         </FormControl> */}
+        {userRole !== "caller" && (
+          <FormControl fullWidth>
+          <InputLabel>Reportees</InputLabel>
         <Controller
-  name="reportees"
-  control={control}
-  defaultValue={[]}
-  render={({ field }) => {
-    const selectedValue = Array.isArray(field.value) ? field.value : [];
+          name="reportees"
+          control={control}
+          defaultValue={[]}
+          render={({ field }) => {
+            const selectedValue = Array.isArray(field.value) ? field.value : [];
 
-    return (
-      <Select
-        {...field}
-        labelId="reportees-label"
-        label="Reportees"
-        multiple
-        value={selectedValue}
-        onChange={(event) => {
-          const newValue = typeof event.target.value === 'string'
-            ? event.target.value.split(',')
-            : event.target.value;
+            return (
+              <Select
+                {...field}
+                labelId="reportees-label"
+                label="Reportees"
+                multiple
+                value={selectedValue}
+                onChange={(event) => {
+                  const newValue = typeof event.target.value === 'string'
+                    ? event.target.value.split(',')
+                    : event.target.value;
 
-          // 🔍 find removed ones
-          const removed = selectedValue.filter((id) => !newValue.includes(id));
-          setRemovedReportees(removed); // ✅ update state
+                  // 🔍 find removed ones
+                  const removed = selectedValue.filter((id) => !newValue.includes(id));
+                  setRemovedReportees(removed); // ✅ update state
 
-          field.onChange(newValue); // update RHF value
-        }}
-        renderValue={(selected) =>
-          reporteesOptions
-            ?.filter((option) => selected.includes(option._id))
-            .map((option) => option.name)
-            .join(', ') || 'Select reportees'
-        }
-      >
-        {reporteesOptions?.map((option) => (
-          <MenuItem key={option._id} value={option._id}>
-            <Checkbox checked={selectedValue.includes(option._id)} />
-            <ListItemText primary={option.name} />
-          </MenuItem>
-        ))}
-      </Select>
-    );
-  }}
-/>
+                  field.onChange(newValue); // update RHF value
+                }}
+                renderValue={(selected) =>
+                  reporteesOptions
+                    ?.filter((option) => selected.includes(option._id))
+                    .map((option) => option.name)
+                    .join(', ') || 'Select reportees'
+                }
+              >
+                {reporteesOptions?.map((option) => (
+                  <MenuItem key={option._id} value={option._id}>
+                    <Checkbox checked={selectedValue.includes(option._id)} />
+                    <ListItemText primary={option.name} />
+                  </MenuItem>
+                ))}
+              </Select>
+            );
+          }}
+        /></FormControl>)}
 
         {/* <Controller
   name="reportees"

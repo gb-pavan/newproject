@@ -24,6 +24,24 @@ export const getToken = () => {
   }
 };
 
+export function getUserRole(): string | null {
+  if (typeof window === "undefined") {
+    return null; // Prevents execution on the server
+  }
+
+  const authData = localStorage.getItem("authData");
+  if (!authData) return null;
+
+  try {
+    const parsed = JSON.parse(authData);
+    return parsed?.role || null;
+  } catch (error) {
+    console.error("Failed to parse authData from localStorage:", error);
+    return null;
+  }
+}
+
+
 
 export function formatToLocalTime(isoDate: string): string {
   // Ensure `isoDate` is provided and valid
