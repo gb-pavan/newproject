@@ -5,8 +5,19 @@ import { IoSearchOutline } from 'react-icons/io5';
 import { FaUserTie, FaHeadset, FaUserShield, FaBullhorn, FaCheck, FaLock } from 'react-icons/fa';
 import MyDropdown from '@/components/MyDropdown';
 
+export interface UserMeta {
+  role?: string;
+  department?: string;
+  isDeleted?: boolean;
+}
 
-const TeamFilters = () => {
+export interface TeamFiltersProps {
+  userMeta: UserMeta
+  setUserMeta: (meta: UserMeta) => void; // ✅ this is totally fine
+}
+
+
+const TeamFilters:React.FC<TeamFiltersProps> = ({userMeta,setUserMeta}) => {
   // State for selected values
   const [selectedStatus, setSelectedStatus] = useState<string>('Active');
   const [selectedRole, setSelectedRole] = useState<string>('');
@@ -46,6 +57,7 @@ const TeamFilters = () => {
   const handleRoleChange = (value: string) => {
     setSelectedRole(value);
     console.log('Role changed:', value);
+    setUserMeta({ ...userMeta, role: value });
   };
 
   const handlePermissionChange = (value: string) => {

@@ -35,11 +35,10 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ fields }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const { name, phone, region, ...rest } = formData;
+    const { name, phone, ...rest } = formData;
     const payload = {
       name,
       phone,
-      region,
       fields: { ...rest },
     };
     console.log('payload',payload);    

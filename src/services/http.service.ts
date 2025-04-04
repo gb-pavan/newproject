@@ -23,6 +23,8 @@ export const callApi = async (url: string, method: API, data?: object | null, sh
     ? await Axios.post(uri, data, DEFAULT_HEADER)
     : method === API.PATCH
     ? await Axios.patch(uri, data, DEFAULT_HEADER)
+    : method === API.DELETE
+    ? await Axios.delete(uri, DEFAULT_HEADER)
     : await Axios.get(uri, DEFAULT_HEADER);
 
 return response.data;

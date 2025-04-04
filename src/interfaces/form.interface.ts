@@ -13,6 +13,6 @@ export interface RegionOption {
 export interface FormSubmitPayload {
   name: string;
   phone: string;
-  region: string;
+  region?: string;
   fields: Record<string, string>; // Allows dynamic string keys with string values
 }

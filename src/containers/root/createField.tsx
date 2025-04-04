@@ -18,6 +18,8 @@ import { RootInstance } from "@/services/root.service";
 import { CreatedLeadField } from "@/interfaces/root.interface";
 import { handleError } from "@/utils/helpers";
 import { AxiosError } from "axios";
+import { Trash2 } from 'lucide-react';
+
 // import { create } from "domain";
 
 interface Field {
@@ -191,29 +193,61 @@ const FieldsSettingsPage = () => {
   }, []);
 
   // Function to handle editing a field
+  // const handleEditField = useCallback(
+  //   (name: string, type: string, options: string[],_id:string) => {
+  //     if (!editingField) return;
+  //     RootInstance.EditLeadFields(name,type,options,_id);
+
+  //     setCreatedFields((prev) =>
+  //       prev.map((field) =>
+  //         field._id === editingField._id
+  //           ? {
+  //               ...field,
+  //               name,
+  //               type: type.toUpperCase(),
+  //               options,
+  //               updatedAt: new Date().toISOString(),
+  //             }
+  //           : field
+  //       )
+  //     );
+
+  //     setIsEditModalOpen(false);
+  //     setEditingField(null);
+  //   },
+  //   [editingField]
+  // );
+
+  const handleDeleteField = async (fieldId:string) => {
+    await RootInstance.DeleteLeadFields(fieldId)
+  }
+
   const handleEditField = useCallback(
-    (name: string, type: string, options: string[]) => {
-      if (!editingField) return;
+  async (name: string, type: string, options: string[], _id: string) => {
+    if (!editingField) return;
 
-      setCreatedFields((prev) =>
-        prev.map((field) =>
-          field._id === editingField._id
-            ? {
-                ...field,
-                name,
-                type: type.toUpperCase(),
-                options,
-                updatedAt: new Date().toISOString(),
-              }
-            : field
-        )
-      );
+    await RootInstance.EditLeadFields(name, type, options, _id);
 
-      setIsEditModalOpen(false);
-      setEditingField(null);
-    },
-    [editingField]
-  );
+    setCreatedFields((prev) =>
+      prev.map((field) =>
+        field._id === editingField._id
+          ? {
+              ...field,
+              name,
+              type: type.toUpperCase(),
+              options,
+              updatedAt: new Date().toISOString(),
+            }
+          : field
+      )
+    );
+
+    setIsEditModalOpen(false);
+    setEditingField(null);
+  },
+  [editingField]
+);
+
 
   // Function to toggle field visibility
   const handleToggleVisibility = useCallback((fieldName: string) => {
@@ -544,7 +578,13 @@ const FieldsSettingsPage = () => {
                               {getFieldIcon(field.name, field.type)}
                               <span className="ml-2 font-medium">{field.name}</span>
                             </div>
-                            <div className="flex items-center">
+                            <div className="flex items-center gap-2">
+                                <button 
+                                  className="text-gray-500 hover:text-red-600"
+                                  onClick={() => handleDeleteField(field._id)}
+                                >
+                                  <Trash2 size={16} />
+                                </button>
                               <button
                                 className="text-gray-400 hover:text-blue-500 mr-2"
                                 onClick={() => handleEditClick(field.name)}

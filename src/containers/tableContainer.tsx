@@ -88,9 +88,11 @@ const TableContainer: React.FC = () => {
   }, []); // Empty dependency array ensures this runs only once on mount
 
   useEffect(() => {
+    console.log("pages",rowsPerPage);
      const filterData = async () => {
     try {
       const filterResponse = await FilterInstance.getFilterResponse(query); // Await the response
+      console.log("filter resssssppppp check",filterResponse);
       setTableData(filterResponse?.leads);
       setTotalRows(filterResponse?.total);
     } catch (error) {

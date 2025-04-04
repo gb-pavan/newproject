@@ -238,6 +238,22 @@ class RootService{
     const url = "/api/lead_field/read/get-all-fields";
     return await callApi(url, API.GET);
   };
+
+  EditLeadFields = async (name:string,type:string,options:string[],_id:string) => {
+    const payload = {
+      "name":name,
+      "type":type,
+      "options":options
+    }
+    const url = `/api/lead_field/write/create-or-update/${_id}`;
+    return await callApi(url, API.POST,payload,true);
+  };
+
+  DeleteLeadFields = async (id:string) => {
+    console.log("edelete",id);
+    const url = `/api/leadField/delete/${id}`;
+    return await callApi(url, API.DELETE);
+  };
 }
 
 export const RootInstance = new RootService();

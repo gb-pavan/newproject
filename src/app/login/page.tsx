@@ -26,7 +26,7 @@ export default function LoginPage() {
         // Store in localStorage for client-side use
         localStorage.setItem(
           "authData",
-          JSON.stringify({ token: loginResponse.token, role: loginResponse.user.role })
+          JSON.stringify({ token: loginResponse.token, role: loginResponse.user.role, department:loginResponse.user.department, isDeleted:loginResponse.user.isDeleted })
         );
       }
 

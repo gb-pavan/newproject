@@ -11,11 +11,65 @@ import CustomDropdown2 from "@/components/MyDropdown2";
 import SlidingPanel from "@/components/SlidePanel";
 import StaticForm from "../staticForm";
 import { IEmployee, IEmployeeDetails } from "@/interfaces";
+import { QueryState } from "@/interfaces/tableFilterTypes";
+import Pagination from "@/components/Pagination";
+
+type AuthData = {
+  token?: string;
+  role?: string;
+  department?: string;
+  isDeleted?: boolean;
+};
+
+type UserMeta = {
+  role?: string;
+  department?: string;
+  isDeleted?: boolean;
+};
 
 const TeamContainer: React.FC = () => {
 
   const [team,setTeam] = useState([]);
   const [isSliderOpen, setIsSliderOpen] = useState(false);
+  const [authData, setAuthData] = useState<AuthData>({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const totalPages = (totalRows/rowsPerPage);
+  const [query, setQuery] = useState<QueryState>({
+    filters:[],
+    logic: "AND",
+    pagination: {
+      page: currentPage,
+      limit: rowsPerPage
+    }
+  });
+
+  const [userMeta, setUserMeta] = useState<UserMeta>({
+    role: undefined,
+    department: undefined,
+    isDeleted: undefined,
+  });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedData = localStorage.getItem("authData");
+      if (storedData) {
+        try {
+          const parsed = JSON.parse(storedData);
+          setAuthData({
+            token: parsed?.token,
+            role: parsed?.role,
+            department: parsed?.department,
+            isDeleted: parsed?.isDeleted,
+          });
+        } catch (error) {
+          console.error("Error parsing auth data:", error);
+        }
+      }
+    }
+  }, []);
+
 
   function filterIvrActiveUsers(users: IEmployeeDetails[]): IEmployeeDetails[] {
     return users.filter(user => user.ivrActive);
@@ -24,12 +78,17 @@ const TeamContainer: React.FC = () => {
   const fetchTeam = async () => {
     try {
       // const teamResponse = await TeamInstance.getTeamMembers(); // Await the response
-      const teamResponse = await TeamInstance.getTeamMembers({
-        role: 'admin',
-        department: 'Sales',
-        isDeleted: false,
-        page: 1,
-        limit: 10,
+      // const teamResponse = await TeamInstance.getTeamMembers({
+      //   role: authData.role,
+      //   department: authData.department,
+      //   isDeleted: authData.isDeleted,
+      //   page: 1,
+      //   limit: 10,
+      // });
+
+       const teamResponse = await TeamInstance.getTeamMembers({
+        page: currentPage,
+        limit: rowsPerPage,
       });
       console.log("team response",teamResponse);
 
@@ -85,8 +144,27 @@ const TeamContainer: React.FC = () => {
             </div>
           </div>
         </div>
-      <TeamFilters />
+      <TeamFilters userMeta={userMeta} setUserMeta={setUserMeta} />
       <DynamicTable3 data={team} columns={TeamColumns} />
+      <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          rowsPerPage={rowsPerPage}
+          onPageChange={(page:number) => {
+            setQuery(prevQuery => ({
+              ...prevQuery,
+              pagination: {
+                ...prevQuery.pagination,
+                page: page
+              }
+            }));
+            setCurrentPage(page);
+          }}
+          onRowsPerPageChange={(rows:number) => {
+            setRowsPerPage(rows);
+            setCurrentPage(1);
+          }}
+        />
     </div>
   );
 };
