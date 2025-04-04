@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Edit2, Trash2, ChevronDown, ChevronUp, RefreshCcw } from 'lucide-react';
-import { IEditableStatusBox, IStage } from '@/interfaces/root.interface';
+import { IEditStatus, IEditableStatusBox, IStage } from '@/interfaces/root.interface';
 import { RootInstance } from '@/services/root.service';
 import ColorPicker from '@/components/ColorPicker';
 
@@ -9,6 +9,7 @@ interface StageProps {
   className?: string;
   // fullObject: Record<string, string | number | boolean | IEditStatus[]>;
   fullObject:IStage | undefined;
+  setChange: (value: boolean | ((prev: boolean) => boolean)) => void;
 }
 
 // interface StageItem {
@@ -19,18 +20,14 @@ interface StageProps {
 //   deleted?: boolean;
 // }
 
-export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
+export const ActiveStage: React.FC<StageProps> = ({ className,fullObject,setChange }) => {
   
   // const [stageItems, setStageItems] = useState<IEditableStatusBox[]>([]);
 
-  console.log("fullObj",fullObject);
+  // console.log("fullObj",fullObject);
 
   // Deleted status items
-  const [deletedItems, setDeletedItems] = useState<IEditableStatusBox[]>([
-    { statusid: 'd1', label: 'Not Interested', color: 'bg-gray-100'},
-    { statusid: 'd2', label: 'Lost Opportunity', color: 'bg-red-100'},
-    { statusid: 'd3', label: 'Duplicate Lead', color: 'bg-yellow-100'}
-  ]);
+  const [deletedItems, setDeletedItems] = useState<IEditStatus[]>([]);
   
   const [showDeletedItems, setShowDeletedItems] = useState(false);
   const [editingItem, setEditingItem] = useState<string>("");
@@ -49,7 +46,7 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
   //   { name: 'Gray', value: 'bg-gray-100', icon: <Circle size={16} className="text-gray-600" /> }
   // ];
 
-  const handleEditClick = (itemId: string, color: string, title: string) => {
+  const handleEditClick = async (itemId: string, color: string, title: string) => {
     console.log("id,col,tit",itemId,color,title);
     // const response = RootInstance.editStatus({"statusid":itemId,"label":title,"color":color})
     // console.log("editable",response);
@@ -100,16 +97,16 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
     setSelectedColor(colorValue);
   };
 
-  const handleCreateStatus = () => {
-    console.log("creating status");
-    const id = Number(fullObject?.activeStatuses?.length) + 1;
+  const handleCreateStatus = async () => {
+
+    const id = isAddingNew ? Number(fullObject?.activeStatuses?.length) + 1 : editingItem;
     const statusCreated = {
-      statusid:id,
+      statusid:Number(id),
       color:selectedColor,
       label:stageName
     }
-    const response = RootInstance.createStatus(statusCreated);
-    console.log("respooo status created",response);
+    await RootInstance.createStatus(statusCreated);
+    setChange(prev=>!prev);
     closePopup();
   }
 
@@ -155,6 +152,7 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
 
   const handleDeleteItem = async (stageId: string,statusId:string) => {
     await RootInstance.deleteStatus({stageId,statusId});
+    setChange(prev => !prev);
     // const itemToDelete = stageItems.find(item => item.statusid === stageId);
     // if (itemToDelete) {
     //   // Remove from active items
@@ -165,15 +163,17 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject }) => {
 
   const handleRestoreItem = (stageId:string,statusId: string) => {
     RootInstance.restoreDeletedStatus({stageId,statusId});
-    const itemToRestore = deletedItems.find(item => item.statusid === statusId);
-    if (itemToRestore) {
-      // Remove from deleted items
-      const updatedDeletedItems = deletedItems.filter(item => item.statusid !== statusId);
-      setDeletedItems(updatedDeletedItems);
+    setChange(prev => !prev);
+    // const itemToRestore = deletedItems.find(item => item.statusid === Number(statusId));
+    // if (itemToRestore) {
+    //   // Remove from deleted items
+    //   const updatedDeletedItems = deletedItems.filter(item => item.statusid !== Number(statusId));
+    //   setDeletedItems(updatedDeletedItems);
+    //   setChange(prev => !prev);
       
-      // Add to active items
-      // setStageItems([...stageItems, {...itemToRestore, deleted: false}]);
-    }
+    //   // Add to active items
+    //   // setStageItems([...stageItems, {...itemToRestore, deleted: false}]);
+    // }
   };
 
   const handleAddNew = () => {

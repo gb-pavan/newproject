@@ -15,7 +15,7 @@ interface PipelineDisplayProps {
 const PipelineDisplay: React.FC<PipelineDisplayProps> = ({ className }) => {
 
   const [stages, setStages] = useState<IStage[]>([]);
-  console.log("stages",stages);
+  const [change, setChange] = useState<boolean>(false);
 
   const fetchStages = async () => {
     try {
@@ -28,14 +28,12 @@ const PipelineDisplay: React.FC<PipelineDisplayProps> = ({ className }) => {
   
   useEffect(()=>{
     fetchStages();
-  },[]);
-  console.log("stages alllllll",stages);
+  },[change]);
 
   return (
     <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 ${className}`}>
-      hello
       {/* <InitialStage initial={getActiveStatusesByStageId(stages,'stage_fresh')} /> */}
-      <ActiveStage fullObject={getActiveStatusesByStageId(stages,'stage_active')} />
+      <ActiveStage fullObject={getActiveStatusesByStageId(stages,'stage_active')} setChange={setChange}/>
       {/* <ClosedStage won={getActiveStatusesByStageId(stages,'stage_won')} lost={getActiveStatusesByStageId(stages,'stage_lost')} /> */}
     </div>
   );

@@ -6,10 +6,43 @@ type Department = "Sales" | "Marketing" | "Support";
 
 class TeamService{
     
-    getTeamMembers = async () => {
-      const url = "/api/admin/read/team-users";
-      return await callApi(url,API.GET);
-    }
+    // getTeamMembers = async () => {
+    //   const url = `api/admin/read/users?role=admin&department=Sales&isDeleted=false&page=1&limit=10`;
+    //   return await callApi(url,API.GET);
+    // }
+
+    // Accept optional filters as params
+    getTeamMembers = async ({
+      role,
+      department,
+      isDeleted,
+      page = 1,
+      limit = 10,
+    }: {
+      role?: string;
+      department?: string;
+      isDeleted?: boolean;
+      page?: number;
+      limit?: number;
+    }) => {
+      const params = new URLSearchParams();
+
+      // Always include page and limit
+      params.append('page', page.toString());
+      params.append('limit', limit.toString());
+
+      // Conditionally add optional params
+      if (role) params.append('role', role);
+      if (department) params.append('department', department);
+      if (typeof isDeleted === 'boolean') {
+        params.append('isDeleted', isDeleted.toString());
+      }
+
+      const url = `/api/admin/read/users?${params.toString()}`;
+      console.log("url",url);
+      return await callApi(url, API.GET);
+    };
+
 
     getReporteesByDepartment = async (department: Department) => {
       const url = `/api/admin/read/reportees?department=${department}`;

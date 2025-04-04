@@ -23,7 +23,16 @@ const TeamContainer: React.FC = () => {
 
   const fetchTeam = async () => {
     try {
-      const teamResponse = await TeamInstance.getTeamMembers(); // Await the response
+      // const teamResponse = await TeamInstance.getTeamMembers(); // Await the response
+      const teamResponse = await TeamInstance.getTeamMembers({
+        role: 'admin',
+        department: 'Sales',
+        isDeleted: false,
+        page: 1,
+        limit: 10,
+      });
+      console.log("team response",teamResponse);
+
       setTeam(teamResponse.users);
     } catch (error) {
       handleError(error as AxiosError,false);

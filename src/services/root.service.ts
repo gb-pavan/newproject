@@ -188,7 +188,7 @@ class RootService{
         'color':statusCreated.color,
         'label':statusCreated.label
     }
-    const url='api/lead_stage/write/create-update/stage_fresh';
+    const url='/api/lead_stage/write/create-update/stage_active';
     return await callApi(url,API.POST,payload,true);
     // return stages;
   }
@@ -204,7 +204,7 @@ class RootService{
     "color":string,
     "label":string
     }) => {
-        const url='/api/lead_stage/write/create-update/stage_fresh';
+        const url='/api/lead_stage/write/create-update/stage_active';
         console.log("changing status info");
         return await callApi(url,API.POST,payload,true);
     }
@@ -212,6 +212,7 @@ class RootService{
   deleteStatus = async (payload:{stageId:string,statusId:string}) => {
     console.log("deleting");
     const url=`/api/lead_stage/delete/stage/${payload.stageId}/${payload.statusId}`;
+    console.log("status delete",url);
     return await callApi(url,API.POST);
   }
 
