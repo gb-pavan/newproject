@@ -2,11 +2,22 @@ import { API } from '@/utils/enum';
 import { callApi } from './http.service';
 import { IEmployee } from '@/interfaces';
 
+type Department = "Sales" | "Marketing" | "Support";
 
 class TeamService{
     
     getTeamMembers = async () => {
-      const url = "/api/admin/read/users";
+      const url = "/api/admin/read/team-users";
+      return await callApi(url,API.GET);
+    }
+
+    getReporteesByDepartment = async (department: Department) => {
+      const url = `/api/admin/read/reportees?department=${department}`;
+      return await callApi(url,API.GET);
+    }
+
+    getReportingByDepartment = async (department: Department) => {
+      const url = `/api/admin/read/reporting-to?department=${department}`;
       return await callApi(url,API.GET);
     }
 

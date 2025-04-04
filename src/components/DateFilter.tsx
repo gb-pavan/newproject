@@ -70,11 +70,13 @@ const DateFilter = ({ options, setDate }: DateFilterProps) => {
   }, [isOpen]);
 
   const handleOptionChange = (option: string) => {
+    console.log("option date",option);
     setSelectedOption(option);
     setIsOpen(option === "Custom Date");
   };
 
   const handleDateChange = (update: Value) => {
+    console.log('update date',update);
     if (Array.isArray(update) && update.length === 2) {
       setDateRange(update as [Date | null, Date | null]);
       if (update[0] && update[1]) {
