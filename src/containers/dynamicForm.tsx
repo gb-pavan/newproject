@@ -25,6 +25,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ fields }) => {
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [regionOptions, setRegionOptions] = useState<RegionOption[]>([]);
   console.log("reg Op",regionOptions);
+  console.log("form",fields);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
@@ -41,7 +42,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ fields }) => {
       phone,
       fields: { ...rest },
     };
-    console.log('payload',payload);    
+    console.log('payload formmmmmm',payload);    
     FormInstance.submitForm(payload)
   };
 

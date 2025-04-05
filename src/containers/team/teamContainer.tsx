@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import DynamicTable3 from "@/components/DragDropTable";
 import { TeamColumns } from "@/utils/constants";
 import TeamFilters from "./teamFilters";
@@ -14,12 +14,12 @@ import { IEmployee, IEmployeeDetails } from "@/interfaces";
 import { QueryState } from "@/interfaces/tableFilterTypes";
 import Pagination from "@/components/Pagination";
 
-type AuthData = {
-  token?: string;
-  role?: string;
-  department?: string;
-  isDeleted?: boolean;
-};
+// type AuthData = {
+//   token?: string;
+//   role?: string;
+//   department?: string;
+//   isDeleted?: boolean;
+// };
 
 type UserMeta = {
   role?: string;
@@ -31,7 +31,7 @@ const TeamContainer: React.FC = () => {
 
   const [team,setTeam] = useState([]);
   const [isSliderOpen, setIsSliderOpen] = useState(false);
-  const [authData, setAuthData] = useState<AuthData>({});
+  // const [authData, setAuthData] = useState<AuthData>({});
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [totalRows, setTotalRows] = useState<number>(0);
@@ -51,56 +51,77 @@ const TeamContainer: React.FC = () => {
     isDeleted: undefined,
   });
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedData = localStorage.getItem("authData");
-      if (storedData) {
-        try {
-          const parsed = JSON.parse(storedData);
-          setAuthData({
-            token: parsed?.token,
-            role: parsed?.role,
-            department: parsed?.department,
-            isDeleted: parsed?.isDeleted,
-          });
-        } catch (error) {
-          console.error("Error parsing auth data:", error);
-        }
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const storedData = localStorage.getItem("authData");
+  //     if (storedData) {
+  //       try {
+  //         const parsed = JSON.parse(storedData);
+  //         setAuthData({
+  //           token: parsed?.token,
+  //           role: parsed?.role,
+  //           department: parsed?.department,
+  //           isDeleted: parsed?.isDeleted,
+  //         });
+  //       } catch (error) {
+  //         console.error("Error parsing auth data:", error);
+  //       }
+  //     }
+  //   }
+  // }, []);
 
 
   function filterIvrActiveUsers(users: IEmployeeDetails[]): IEmployeeDetails[] {
     return users.filter(user => user.ivrActive);
   }
 
-  const fetchTeam = async () => {
-    try {
-      // const teamResponse = await TeamInstance.getTeamMembers(); // Await the response
-      // const teamResponse = await TeamInstance.getTeamMembers({
-      //   role: authData.role,
-      //   department: authData.department,
-      //   isDeleted: authData.isDeleted,
-      //   page: 1,
-      //   limit: 10,
-      // });
+  // const fetchTeam = async () => {
+  //   try {
+  //     // const teamResponse = await TeamInstance.getTeamMembers(); // Await the response
+  //     // const teamResponse = await TeamInstance.getTeamMembers({
+  //     //   role: authData.role,
+  //     //   department: authData.department,
+  //     //   isDeleted: authData.isDeleted,
+  //     //   page: 1,
+  //     //   limit: 10,
+  //     // });
 
-       const teamResponse = await TeamInstance.getTeamMembers({
+  //      const teamResponse = await TeamInstance.getTeamMembers({
+  //       page: currentPage,
+  //       limit: rowsPerPage,
+  //     });
+  //     console.log("team response",teamResponse);
+
+  //     setTeam(teamResponse.users);
+  //     setTotalRows(teamResponse?.total);
+  //   } catch (error) {
+  //     handleError(error as AxiosError,false);
+  //   }
+  // };
+
+  // useEffect(() => {   
+  //   fetchTeam();
+  // }, [query]);
+
+  const fetchTeam = useCallback(async () => {
+    try {
+      const teamResponse = await TeamInstance.getTeamMembers({
         page: currentPage,
         limit: rowsPerPage,
       });
-      console.log("team response",teamResponse);
+      console.log("team response", teamResponse);
 
       setTeam(teamResponse.users);
+      setTotalRows(teamResponse?.total);
     } catch (error) {
-      handleError(error as AxiosError,false);
+      handleError(error as AxiosError, false);
     }
-  };
+  }, [currentPage, rowsPerPage]);
 
-  useEffect(() => {   
+  useEffect(() => {
     fetchTeam();
-  }, []);
+  }, [fetchTeam, query]);
+
 
    const handleOptionChange = (value: string[]) => {
     console.log("value",value);

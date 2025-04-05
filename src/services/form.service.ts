@@ -11,7 +11,8 @@ class FormService{
   }
 
   submitForm = async (payload:FormSubmitPayload) => {
-    const url = `/api/leader/read/get-leader-data`;
+    console.log("form payyyy",payload);
+    const url = `/api/lead/write/create-or-update`;
     return await callApi(url,API.POST,payload,true);
   }
 }

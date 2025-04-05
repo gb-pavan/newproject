@@ -245,6 +245,7 @@ class RootService{
   }
 
   getCreatedLeadFields = async (): Promise<CreatedLeadField[]> => {
+    console.log("created gettttt");
     const url = "/api/lead_field/read/get-all-fields";
     return await callApi(url, API.GET);
   };

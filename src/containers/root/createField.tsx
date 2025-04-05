@@ -144,9 +144,6 @@ const FieldsSettingsPage = () => {
       }
     };
   useEffect(() => {
-    
-
-  
     fetchCreatedLeadFields();
   }, []);
 
@@ -179,7 +176,9 @@ const FieldsSettingsPage = () => {
   // Function to handle creating a new field
   const handleCreateField = useCallback(async (name: string, type: string, options:string[]) => {
     const payload :{name:string,type:string,options:string[]}= {name:name,type:type,options}
+    console.log("lead  fieldddd");
     const respooo = await RootInstance.createLeadField(payload);
+
     fetchCreatedLeadFields();
     console.log("create field",respooo);
     // const newField: Field = {
@@ -259,9 +258,12 @@ const FieldsSettingsPage = () => {
 
   // Function to toggle field visibility
   const handleToggleVisibility = useCallback(async (SpecificField:Field) => {
+    console.log("1111111");
     // await RootInstance.LeadFieldVisibility(field._id , field.active)
     if (typeof SpecificField.active === 'boolean') {
+      console.log("2222222");
       await RootInstance.LeadFieldVisibility(SpecificField._id, SpecificField.active);
+      console.log("3333333");
     }
 
     setCreatedFields((prev) =>
@@ -348,7 +350,7 @@ const FieldsSettingsPage = () => {
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesVisibility =
-      activeFilter === "Active Fields" ? !field.active : field.active;
+      activeFilter === "Active Fields" ? field.active : !field.active;
     const matchesType =
       selectedType === "Select type" || selectedType === "All"
         ? true
