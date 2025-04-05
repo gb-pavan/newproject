@@ -193,6 +193,17 @@ class RootService{
     // return stages;
   }
 
+  createInitialStatus = async (statusCreated:IEditStatus) => {
+    const payload = {
+        'statusid':statusCreated.statusid,
+        'color':statusCreated.color,
+        'label':statusCreated.label
+    }
+    const url='/api/lead_stage/write/create-update/stage_active';
+    return await callApi(url,API.POST,payload,true);
+    // return stages;
+  }
+
   getStages = async () => {
     const url='api/lead_stage/read/all-stages';
     return await callApi(url,API.GET);
@@ -219,6 +230,16 @@ class RootService{
         return await callApi(url,API.POST,payload,true);
   }
 
+  editCloseStatus = async (payload:{
+    "statusid":string,
+    "color":string,
+    "label":string
+    },statusId:string) => {
+        const url=`/api/lead_stage/write/create-update/${statusId}`;
+        console.log("changing status info Initial",url,payload);
+        return await callApi(url,API.POST,payload,true);
+  }
+
   deleteStatus = async (payload:{stageId:string,statusId:string}) => {
     console.log("deleting");
     const url=`/api/lead_stage/delete/stage/${payload.stageId}/${payload.statusId}`;
@@ -226,7 +247,20 @@ class RootService{
     return await callApi(url,API.POST);
   }
 
+  deleteInitialStatus = async (payload:{stageId:string,statusId:string}) => {
+    console.log("deleting");
+    const url=`/api/lead_stage/delete/stage/${payload.stageId}/${payload.statusId}`;
+    console.log("status delete",url);
+    return await callApi(url,API.POST);
+  }
+
   restoreDeletedStatus = async (payload:{stageId:string,statusId:string}) => {
+    console.log("restoring");
+    const url=`/api/lead_stage/write/active/${payload.stageId}/${payload.statusId}`;
+    return await callApi(url,API.POST);
+  }
+
+  restoreDeletedInitialStatus = async (payload:{stageId:string,statusId:string}) => {
     console.log("restoring");
     const url=`/api/lead_stage/write/active/${payload.stageId}/${payload.statusId}`;
     return await callApi(url,API.POST);
