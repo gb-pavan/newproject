@@ -209,6 +209,16 @@ class RootService{
         return await callApi(url,API.POST,payload,true);
     }
 
+  editInitialStatus = async (payload:{
+    "statusid":string,
+    "color":string,
+    "label":string
+    }) => {
+        const url='/api/lead_stage/write/create-update/stage_fresh';
+        console.log("changing status info Initial");
+        return await callApi(url,API.POST,payload,true);
+  }
+
   deleteStatus = async (payload:{stageId:string,statusId:string}) => {
     console.log("deleting");
     const url=`/api/lead_stage/delete/stage/${payload.stageId}/${payload.statusId}`;

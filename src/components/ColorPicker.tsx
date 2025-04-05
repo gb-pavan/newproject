@@ -50,9 +50,9 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ onChange }) => {
   return (
     <div>
       <ChromePicker color={color} onChangeComplete={handleColorChange} />
-      <div style={{ marginTop: '10px' }}>
+      {/* <div style={{ marginTop: '10px' }}>
         <strong>Selected Color:</strong> {color}
-      </div>
+      </div> */}
     </div>
   );
 };
