@@ -13,6 +13,7 @@ import StaticForm from "../staticForm";
 import { IEmployee, IEmployeeDetails } from "@/interfaces";
 import { QueryState } from "@/interfaces/tableFilterTypes";
 import Pagination from "@/components/Pagination";
+import { metadata } from "@/app/layout";
 
 // type AuthData = {
 //   token?: string;
@@ -25,6 +26,7 @@ type UserMeta = {
   role?: string;
   department?: string;
   isDeleted?: boolean;
+  search?:string;
 };
 
 const TeamContainer: React.FC = () => {
@@ -49,78 +51,38 @@ const TeamContainer: React.FC = () => {
     role: undefined,
     department: undefined,
     isDeleted: undefined,
+    search:undefined
   });
-
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     const storedData = localStorage.getItem("authData");
-  //     if (storedData) {
-  //       try {
-  //         const parsed = JSON.parse(storedData);
-  //         setAuthData({
-  //           token: parsed?.token,
-  //           role: parsed?.role,
-  //           department: parsed?.department,
-  //           isDeleted: parsed?.isDeleted,
-  //         });
-  //       } catch (error) {
-  //         console.error("Error parsing auth data:", error);
-  //       }
-  //     }
-  //   }
-  // }, []);
 
 
   function filterIvrActiveUsers(users: IEmployeeDetails[]): IEmployeeDetails[] {
     return users.filter(user => user.ivrActive);
   }
 
-  // const fetchTeam = async () => {
-  //   try {
-  //     // const teamResponse = await TeamInstance.getTeamMembers(); // Await the response
-  //     // const teamResponse = await TeamInstance.getTeamMembers({
-  //     //   role: authData.role,
-  //     //   department: authData.department,
-  //     //   isDeleted: authData.isDeleted,
-  //     //   page: 1,
-  //     //   limit: 10,
-  //     // });
-
-  //      const teamResponse = await TeamInstance.getTeamMembers({
-  //       page: currentPage,
-  //       limit: rowsPerPage,
-  //     });
-  //     console.log("team response",teamResponse);
-
-  //     setTeam(teamResponse.users);
-  //     setTotalRows(teamResponse?.total);
-  //   } catch (error) {
-  //     handleError(error as AxiosError,false);
-  //   }
-  // };
-
-  // useEffect(() => {   
-  //   fetchTeam();
-  // }, [query]);
-
   const fetchTeam = useCallback(async () => {
-    try {
-      const teamResponse = await TeamInstance.getTeamMembers({
-        page: currentPage,
-        limit: rowsPerPage,
-      });
-      console.log("team response", teamResponse);
+  console.log("check search", userMeta.search);
+  try {
+    const teamResponse = await TeamInstance.getTeamMembers({
+      search:userMeta.search,
+      role: userMeta.role,
+      page: currentPage,
+      limit: rowsPerPage,
+    });
+    console.log("team response", teamResponse);
 
-      setTeam(teamResponse.users);
-      setTotalRows(teamResponse?.total);
-    } catch (error) {
-      handleError(error as AxiosError, false);
-    }
-  }, [currentPage, rowsPerPage]);
+    setTeam(teamResponse.users);
+    setTotalRows(teamResponse?.total);
+  } catch (error) {
+    handleError(error as AxiosError, false);
+  }
+}, [currentPage, rowsPerPage, userMeta]); // <-- Add userMeta here
 
-  useEffect(() => {
-    fetchTeam();
-  }, [fetchTeam, query]);
+useEffect(() => {
+  console.log("mikkkk");
+  fetchTeam();
+}, [fetchTeam, query, userMeta]); // 👌 still needed
+
+  console.log("sssss user metal search",userMeta.search);
 
 
    const handleOptionChange = (value: string[]) => {

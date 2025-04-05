@@ -14,6 +14,7 @@ class TeamService{
     // Accept optional filters as params
     getTeamMembers = async ({
       role,
+      search,
       department,
       isDeleted,
       page = 1,
@@ -24,8 +25,10 @@ class TeamService{
       isDeleted?: boolean;
       page?: number;
       limit?: number;
+      search?:string;
     }) => {
       const params = new URLSearchParams();
+      console.log("rolleeeee",search);
 
       // Always include page and limit
       params.append('page', page.toString());
@@ -33,6 +36,7 @@ class TeamService{
 
       // Conditionally add optional params
       if (role) params.append('role', role);
+      if (search) params.append('search',search);
       if (department) params.append('department', department);
       if (typeof isDeleted === 'boolean') {
         params.append('isDeleted', isDeleted.toString());

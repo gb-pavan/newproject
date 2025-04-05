@@ -2,7 +2,7 @@
 // File: src/containers/TeamFilter/components/TeamHeader.tsx
 import React, { useState } from 'react';
 import { IoSearchOutline } from 'react-icons/io5';
-import { FaUserTie, FaHeadset, FaUserShield, FaBullhorn, FaCheck, FaLock } from 'react-icons/fa';
+import { FaUserTie, FaHeadset, FaUserShield, FaBullhorn, FaLock } from 'react-icons/fa';
 import MyDropdown from '@/components/MyDropdown';
 
 export interface UserMeta {
@@ -13,15 +13,18 @@ export interface UserMeta {
 
 export interface TeamFiltersProps {
   userMeta: UserMeta
-  setUserMeta: (meta: UserMeta) => void; // ✅ this is totally fine
+  // setUserMeta: (meta: UserMeta) => void; // ✅ this is totally fine
+  setUserMeta: React.Dispatch<React.SetStateAction<UserMeta>>;
+
 }
 
 
 const TeamFilters:React.FC<TeamFiltersProps> = ({userMeta,setUserMeta}) => {
   // State for selected values
-  const [selectedStatus, setSelectedStatus] = useState<string>('Active');
+  // const [selectedStatus, setSelectedStatus] = useState<string>('Active');
   const [selectedRole, setSelectedRole] = useState<string>('');
   const [selectedPermission, setSelectedPermission] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
   // Active Status dropdown options with icons
   const activeStatusOptions = [
@@ -49,21 +52,28 @@ const TeamFilters:React.FC<TeamFiltersProps> = ({userMeta,setUserMeta}) => {
     { value: 'default-root', label: 'Default Root Permissions', icon: <FaLock className="h-4 w-4 mr-2" /> }
   ];
 
-  const handleActiveStatusChange = (value: string) => {
-    setSelectedStatus(value);
-    console.log('Active status changed:', value);
-  };
+  // const handleActiveStatusChange = (value: string) => {
+  //   setSelectedStatus(value);
+  //   console.log('Active status changed:', value);
+  // };
 
   const handleRoleChange = (value: string) => {
     setSelectedRole(value);
     console.log('Role changed:', value);
-    setUserMeta({ ...userMeta, role: value });
+    // setUserMeta({ ...userMeta, role: value });
+    setUserMeta(prev => ({ ...prev, role: value }));
   };
 
   const handlePermissionChange = (value: string) => {
     setSelectedPermission(value);
     console.log('Permission template changed:', value);
   };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setUserMeta(prev => ({...prev ,search:e.target.value }));
+  };
+
 
  
 
@@ -79,6 +89,9 @@ const TeamFilters:React.FC<TeamFiltersProps> = ({userMeta,setUserMeta}) => {
             <input
               type="text"
               placeholder="Search team members by name or email"
+              value={searchTerm}
+              // onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleSearchChange}
               className="border border-gray-300 rounded-md w-full pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
@@ -86,13 +99,13 @@ const TeamFilters:React.FC<TeamFiltersProps> = ({userMeta,setUserMeta}) => {
           {/* Filter controls - using the new MyDropdown component */}
           <div className="flex items-center gap-2">
             {/* Active status dropdown */}
-            <MyDropdown 
+            {/* <MyDropdown 
               options={activeStatusOptions}
               defaultValue={selectedStatus}
               placeholder="Active"
               icon={<FaCheck className="h-4 w-4 text-gray-500" />}
               onSelect={handleActiveStatusChange}
-            />
+            /> */}
             
             {/* Role dropdown */}
             <MyDropdown 
