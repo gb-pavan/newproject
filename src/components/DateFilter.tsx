@@ -26,28 +26,57 @@ const DateFilter = ({ options, setDate }: DateFilterProps) => {
   const [startDate, endDate] = dateRange;
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // useEffect(() => {
+  //   if (!selectedOption) return; // Don't execute if selectedOption is not defined
+  //   console.log("selected date",selectedOption);
+
+  //   const dateRange = getDateRange(selectedOption as TimeRangeType);
+  //   console.log("date range",dateRange);
+  //   const { startDate, endDate } = dateRange;
+
+  //   setDate((prev) => {
+  //     const updatedFilters = prev.filters.filter(f => f.field !== "createdAt"); // Remove old "createdAt" filter
+
+  //     return {
+  //       ...prev,
+  //       filters: [
+  //         ...updatedFilters, // Ensure only one "createdAt" filter exists
+  //         {
+  //           field: "createdAt",
+  //           operator: "BETWEEN",
+  //           value: startDate && endDate ? [startDate.toISOString(), endDate.toISOString()] : [],
+  //         } as Filter,
+  //       ],
+  //     };
+  //   });
+  // }, [selectedOption,setDate]);
+
   useEffect(() => {
-    if (!selectedOption) return; // Don't execute if selectedOption is not defined
+  if (!selectedOption || selectedOption === "Custom Date") return;
 
-    const dateRange = getDateRange(selectedOption as TimeRangeType);
-    const { startDate, endDate } = dateRange;
+  console.log("selected date", selectedOption);
 
-    setDate((prev) => {
-      const updatedFilters = prev.filters.filter(f => f.field !== "createdAt"); // Remove old "createdAt" filter
+  const dateRange = getDateRange(selectedOption as TimeRangeType);
+  console.log("date range", dateRange);
+  const { startDate, endDate } = dateRange;
 
-      return {
-        ...prev,
-        filters: [
-          ...updatedFilters, // Ensure only one "createdAt" filter exists
-          {
-            field: "createdAt",
-            operator: "BETWEEN",
-            value: startDate && endDate ? [startDate.toISOString(), endDate.toISOString()] : [],
-          } as Filter,
-        ],
-      };
-    });
-  }, [selectedOption,setDate]);
+  setDate((prev) => {
+    const updatedFilters = prev.filters.filter(f => f.field !== "createdAt");
+
+    return {
+      ...prev,
+      filters: [
+        ...updatedFilters,
+        {
+          field: "createdAt",
+          operator: "BETWEEN",
+          value: startDate && endDate ? [startDate.toISOString(), endDate.toISOString()] : [],
+        } as Filter,
+      ],
+    };
+  });
+}, [selectedOption, setDate]);
+
 
 
   useEffect(() => {
@@ -126,16 +155,25 @@ const DateFilter = ({ options, setDate }: DateFilterProps) => {
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 w-40 bg-white border border-gray-200 rounded-md shadow-md mt-2 z-50">
+        <div className="absolute right-20 w-40 bg-white border border-gray-200 rounded-md shadow-md mt-2 z-50">
           {selectedOption === "Custom Date" ? (
-            <div className="p-4 w-full">
-              <CustomCalendar
-                selectRange
-                value={dateRange || [null, null]}
-                onChange={handleDateChange}
-                className="w-full border rounded-md p-2"
-              />
-            </div>
+            // <div className="p-4 w-full">
+            //   <CustomCalendar
+            //     selectRange
+            //     value={dateRange || [null, null]}
+            //     onChange={handleDateChange}
+            //     className="w-full border rounded-md p-2"
+            //   />
+            // </div>
+            <div className="p-4 w-[400px]"> {/* Adjust width here */}
+  <CustomCalendar
+    selectRange
+    value={dateRange || [null, null]}
+    onChange={handleDateChange}
+    className="w-full border rounded-md p-2"
+  />
+</div>
+
           ) : (
             <ul className="py-2">
               {options.map((option, index) => (
