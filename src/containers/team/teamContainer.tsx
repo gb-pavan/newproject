@@ -166,7 +166,7 @@ const TeamContainer: React.FC = () => {
           </div>
         </div>
       <TeamFilters userMeta={userMeta} setUserMeta={setUserMeta} />
-      <DynamicTable3 data={team} columns={TeamColumns} />
+      <DynamicTable3 data={team} columns={TeamColumns} tableType="team"/>
       <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

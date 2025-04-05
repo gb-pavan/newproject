@@ -179,7 +179,7 @@ const TableContainer: React.FC = () => {
         </div>
         <TableFilters rowsCount={tableData?.length} setFilter={setFilterState} query={query} setQuery={setQuery} filterState={filterState} assignee={assignee} statusInfo={statusInfo} />
         <DndProvider backend={HTML5Backend}>
-        <DynamicTable3 data={tableData} columns={columns} statusInfo={statusInfo} /></DndProvider>
+        <DynamicTable3 data={tableData} columns={columns} statusInfo={statusInfo} tableType="lead" /></DndProvider>
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

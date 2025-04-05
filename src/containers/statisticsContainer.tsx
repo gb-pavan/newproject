@@ -39,7 +39,7 @@ const StatisticsContainer: React.FC<StatisticsContainerProps> = ({ data,title })
             {/* Table wrapper to prevent overflow */}
             <div className="overflow-auto flex-grow">
               {/* <DynamicTable3 columns={columns} data={data} /> */}
-              <DynamicTable3 data={data} columns={columns} />
+              <DynamicTable3 data={data} columns={columns} tableType="" />
             </div>
           </>
         ) : (

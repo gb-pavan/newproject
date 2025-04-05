@@ -10,11 +10,13 @@ import { capitalizeFirstLetterOfEachWord, formatCamelCase, formatDate, getColumn
 import { IStatus } from "@/interfaces/tableFilterTypes";
 import { AxiosError } from "axios";
 import { TableInstance } from "@/services/table.service";
+import { EXCLUDED_COLUMNS, EXCLUDED_COLUMNS_TEAM } from "@/utils/enum";
 
 interface TableProps {
   data: ITableFields[];
   columns: string[];
-  statusInfo?:IStatus[]
+  statusInfo?:IStatus[];
+  tableType:string;
 }
 
 const ItemType = "COLUMN";
@@ -66,7 +68,7 @@ const columnStyles: Record<string, string> = {
 
 const COLUMN_STORAGE_KEY = "displayColumns";
 
-const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo }) => {
+const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableType }) => {
   // const [displayColumns, setDisplayColumns] = useState<string[]>([]);
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -82,6 +84,8 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo }) => {
     }
     return columns;
   });
+
+  const excludedCols = tableType === 'lead' ? EXCLUDED_COLUMNS : EXCLUDED_COLUMNS_TEAM;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -213,7 +217,8 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo }) => {
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-800 rounded-lg shadow-lg z-40 p-2">
                   <ul className="text-sm text-gray-700">
-                    {columnOrder?.map((key, index) => (
+                    {/* {columnOrder?.map((key, index) => ( */}
+                    {columnOrder?.filter(key => !excludedCols.includes(key)).map((key, index) => (
                       <DraggableItem
                         key={key}
                         id={key}

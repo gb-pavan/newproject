@@ -135,8 +135,8 @@ export const formatCamelCase = (text: string): string => {
 };
 
 export const getActiveStatusesByStageId = (stages: IStage[], stageId: string) => {
-    const stage = stages?.find(stage => stage.stageid === stageId);
-    return stage;
+  const stage = stages?.find(stage => stage.stageid === stageId);
+  return stage;
 };
 
 export const formatDate = (isoString: string): string => {
