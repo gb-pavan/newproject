@@ -11,6 +11,7 @@ import { IStatus } from "@/interfaces/tableFilterTypes";
 import { AxiosError } from "axios";
 import { TableInstance } from "@/services/table.service";
 import { EXCLUDED_COLUMNS, EXCLUDED_COLUMNS_TEAM } from "@/utils/enum";
+import { table } from "console";
 
 interface TableProps {
   data: ITableFields[];
@@ -86,6 +87,8 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
   });
 
   const excludedCols = tableType === 'lead' ? EXCLUDED_COLUMNS : EXCLUDED_COLUMNS_TEAM;
+  console.log("excluddeeee type",excludedCols);
+  console.log("tabletype",tableType);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -218,7 +221,7 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
                 <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-800 rounded-lg shadow-lg z-40 p-2">
                   <ul className="text-sm text-gray-700">
                     {/* {columnOrder?.map((key, index) => ( */}
-                    {columnOrder?.filter(key => !excludedCols.includes(key)).map((key, index) => (
+                    {columnOrder?.filter(key => !excludedCols.includes(key)).map((key, index) => (                   
                       <DraggableItem
                         key={key}
                         id={key}
@@ -244,7 +247,8 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
                     onChange={handleHeaderCheckboxChange}
                   />
                 </th>
-                {columnOrder?.map((col, colIndex) => {
+                {/* {columnOrder?.map((col, colIndex) => { */}
+                {columnOrder?.filter(key => !excludedCols.includes(key)).map((col, colIndex) => {
                   if (!displayColumns.includes(col)) return null;
                   return (
                     <th key={colIndex} className={`${col.includes('name') ? 'sticky left-9 bg-gray-200': ''} ${col.includes('phone') ? 'sticky left-[185px] bg-gradient-to-r from-gray-200 to-transparent': ''} p-3 border-r text-[12px] font-[800] border-gray-800 min-w-[150px]`}>
@@ -270,7 +274,7 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
                       onChange={() => handleRowCheckboxChange(rowIndex)}
                     />
                   </td>
-                  {columnOrder?.map((col, colIndex) => {
+                  {columnOrder?.filter(key => !excludedCols.includes(key)).map((col, colIndex) => {
                     if (!displayColumns.includes(col)) return null;
                     return (
                       <td key={colIndex} className={`${col.includes('name') ? 'sticky left-9 bg-white': ''} ${col.includes('phone') ? 'sticky left-[185px] bg-gradient-to-r from-white via-white/90 to-transparent': ''} p-3 border-r border-gray-800`}>
