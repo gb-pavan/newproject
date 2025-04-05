@@ -12,14 +12,14 @@ export interface UserMeta {
 }
 
 export interface TeamFiltersProps {
-  userMeta: UserMeta
+  // userMeta: UserMeta
   // setUserMeta: (meta: UserMeta) => void; // ✅ this is totally fine
   setUserMeta: React.Dispatch<React.SetStateAction<UserMeta>>;
 
 }
 
 
-const TeamFilters:React.FC<TeamFiltersProps> = ({userMeta,setUserMeta}) => {
+const TeamFilters:React.FC<TeamFiltersProps> = ({setUserMeta}) => {
   // State for selected values
   // const [selectedStatus, setSelectedStatus] = useState<string>('Active');
   const [selectedRole, setSelectedRole] = useState<string>('');
@@ -27,11 +27,11 @@ const TeamFilters:React.FC<TeamFiltersProps> = ({userMeta,setUserMeta}) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   // Active Status dropdown options with icons
-  const activeStatusOptions = [
-    { value: 'All', label: 'All', icon: <FaUserShield className="h-4 w-4 mr-2" /> },
-    { value: 'Active', label: 'Active', icon: <FaUserShield className="h-4 w-4 mr-2" /> },
-    { value: 'Inactive', label: 'Inactive', icon: <FaUserShield className="h-4 w-4 mr-2" /> },
-  ];
+  // const activeStatusOptions = [
+  //   { value: 'All', label: 'All', icon: <FaUserShield className="h-4 w-4 mr-2" /> },
+  //   { value: 'Active', label: 'Active', icon: <FaUserShield className="h-4 w-4 mr-2" /> },
+  //   { value: 'Inactive', label: 'Inactive', icon: <FaUserShield className="h-4 w-4 mr-2" /> },
+  // ];
 
   // Role dropdown options
   const roleOptions = [

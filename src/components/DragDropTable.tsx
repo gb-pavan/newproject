@@ -11,7 +11,6 @@ import { IStatus } from "@/interfaces/tableFilterTypes";
 import { AxiosError } from "axios";
 import { TableInstance } from "@/services/table.service";
 import { EXCLUDED_COLUMNS, EXCLUDED_COLUMNS_TEAM } from "@/utils/enum";
-import { table } from "console";
 
 interface TableProps {
   data: ITableFields[];

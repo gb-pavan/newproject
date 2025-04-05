@@ -13,7 +13,6 @@ import StaticForm from "../staticForm";
 import { IEmployee, IEmployeeDetails } from "@/interfaces";
 import { QueryState } from "@/interfaces/tableFilterTypes";
 import Pagination from "@/components/Pagination";
-import { metadata } from "@/app/layout";
 
 // type AuthData = {
 //   token?: string;
@@ -127,7 +126,7 @@ useEffect(() => {
             </div>
           </div>
         </div>
-      <TeamFilters userMeta={userMeta} setUserMeta={setUserMeta} />
+      <TeamFilters setUserMeta={setUserMeta} />
       <DynamicTable3 data={team} columns={TeamColumns} tableType="team"/>
       <Pagination
           currentPage={currentPage}
