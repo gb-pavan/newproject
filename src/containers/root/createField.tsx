@@ -19,6 +19,9 @@ import { CreatedLeadField } from "@/interfaces/root.interface";
 import { handleError } from "@/utils/helpers";
 import { AxiosError } from "axios";
 import { Trash2 } from 'lucide-react';
+import { FiEye } from "react-icons/fi";
+import { FaRegEyeSlash } from "react-icons/fa6";
+
 
 // import { create } from "domain";
 
@@ -29,11 +32,12 @@ interface Field {
   options: string[];
   createdAt: string;
   updatedAt: string;
-  __v: number;
-  isHidden?: boolean;
+  __v?: number;
+  active?: boolean;
 }
 
 const FieldsSettingsPage = () => {
+
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("Active Fields");
   const [selectedType, setSelectedType] = useState("Select type");
@@ -130,17 +134,17 @@ const FieldsSettingsPage = () => {
   //   },
   // ]);
   const [createdFields,setCreatedFields] = useState<CreatedLeadField[]>([]);
-
+  const fetchCreatedLeadFields = async () => {
+      try {
+        const response = await RootInstance.getCreatedLeadFields(); // Await the API response
+        console.log("response lead fields",response);
+        setCreatedFields(response);
+      } catch (error) {
+        handleError(error as AxiosError,false);
+      }
+    };
   useEffect(() => {
-     const fetchCreatedLeadFields = async () => {
-    try {
-      const response = await RootInstance.getCreatedLeadFields(); // Await the API response
-      console.log("response lead fields",response);
-      setCreatedFields(response);
-    } catch (error) {
-      handleError(error as AxiosError,false);
-    }
-  };
+    
 
   
     fetchCreatedLeadFields();
@@ -176,6 +180,7 @@ const FieldsSettingsPage = () => {
   const handleCreateField = useCallback(async (name: string, type: string, options:string[]) => {
     const payload :{name:string,type:string,options:string[]}= {name:name,type:type,options}
     const respooo = await RootInstance.createLeadField(payload);
+    fetchCreatedLeadFields();
     console.log("create field",respooo);
     // const newField: Field = {
     //   _id: `new-field-${Date.now()}`,
@@ -219,7 +224,10 @@ const FieldsSettingsPage = () => {
   // );
 
   const handleDeleteField = async (fieldId:string) => {
-    await RootInstance.DeleteLeadFields(fieldId)
+    console.log("delete check")
+    await RootInstance.DeleteLeadFields(fieldId);
+    console.log("delete check2222")
+    fetchCreatedLeadFields();
   }
 
   const handleEditField = useCallback(
@@ -250,14 +258,20 @@ const FieldsSettingsPage = () => {
 
 
   // Function to toggle field visibility
-  const handleToggleVisibility = useCallback((fieldName: string) => {
+  const handleToggleVisibility = useCallback(async (SpecificField:Field) => {
+    // await RootInstance.LeadFieldVisibility(field._id , field.active)
+    if (typeof SpecificField.active === 'boolean') {
+      await RootInstance.LeadFieldVisibility(SpecificField._id, SpecificField.active);
+    }
+
     setCreatedFields((prev) =>
       prev.map((field) =>
-        field.name === fieldName
-          ? { ...field, isHidden: !field.isHidden }
+        field.name === SpecificField.name
+          ? { ...field, active: !field.active }
           : field
       )
     );
+
   }, []);
 
   // Function to handle edit button click
@@ -334,7 +348,7 @@ const FieldsSettingsPage = () => {
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesVisibility =
-      activeFilter === "Active Fields" ? !field.isHidden : field.isHidden;
+      activeFilter === "Active Fields" ? !field.active : field.active;
     const matchesType =
       selectedType === "Select type" || selectedType === "All"
         ? true
@@ -593,12 +607,12 @@ const FieldsSettingsPage = () => {
                               </button>
                               <button
                                 className="text-gray-400 hover:text-blue-500"
-                                onClick={() => handleToggleVisibility(field.name)}
+                                onClick={() => handleToggleVisibility(field)}
                               >
-                                {field.isHidden ? (
-                                  <span className="text-gray-400">Hidden</span>
+                                {field.active ? (
+                                  <span className="text-gray-400"><FaRegEyeSlash /></span>
                                 ) : (
-                                  <span className="text-green-500">Visible</span>
+                                  <span className="text-green-500"><FiEye /></span>
                                 )}
                               </button>
                             </div>

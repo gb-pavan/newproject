@@ -32,6 +32,6 @@ export interface CreatedLeadField {
   createdAt: string;
   updatedAt: string;
   __v: number;
-  isHidden?: boolean;
+  active?: boolean;
 }
   

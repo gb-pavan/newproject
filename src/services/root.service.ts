@@ -234,6 +234,16 @@ class RootService{
     return await callApi(url,API.POST,payload2,true);
   }
 
+  LeadFieldVisibility = async (id:string,visibility:boolean) => {
+    const url=`/api/lead_field/write/create-or-update/${id}`;
+    const payload2 = {
+      'active':!visibility
+    }
+    console.log("lead field write");
+    console.log("payload2222",payload2);
+    return await callApi(url,API.POST,payload2,true);
+  }
+
   getCreatedLeadFields = async (): Promise<CreatedLeadField[]> => {
     const url = "/api/lead_field/read/get-all-fields";
     return await callApi(url, API.GET);
