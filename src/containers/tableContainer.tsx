@@ -20,6 +20,7 @@ import { columns } from "@/utils/constants";
 const TableContainer: React.FC = () => {
 
   const [tableData,setTableData] = useState<ITableFields[]>([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [filterState, setFilterState] = useState<FilterState>({
     status: [],
     searchString: '',
@@ -28,6 +29,8 @@ const TableContainer: React.FC = () => {
   });
     
   const [currentPage, setCurrentPage] = useState(1);
+  // const selectedRowIdsRef = useRef<Set<number>>(new Set());
+  const selectedRowIdsRef = useRef<Set<string>>(new Set());
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [addCondition,setCondition] = useState<boolean>(false);
   const [filters, setFilters] = useState<string[]>([]);
@@ -44,6 +47,33 @@ const TableContainer: React.FC = () => {
   const [statusInfo, setGetStatus] = useState<IStatus[]>([]);
   const totalPages = (totalRows/rowsPerPage);
   const listRef = useRef<HTMLDivElement>(null); // Ref for the dropdown list container
+
+  // const handleRowClick = (id: number) => {
+  //   if (selectedRowIdsRef.current.has(id.toLocaleString())) {
+  //     // selectedRowIdsRef.current.delete(id);
+  //     selectedRowIdsRef.current.add(String(id));
+  //   } else {
+  //     // selectedRowIdsRef.current.add(id);
+  //     selectedRowIdsRef.current.add(String(id));
+  //   }
+
+  //   // For debugging
+  //   console.log('Selected Row IDs:', Array.from(selectedRowIdsRef.current));
+  // };
+
+  const handleRowClick = (id: string) => {
+    if (selectedRowIdsRef.current.has(id)) {
+      selectedRowIdsRef.current.delete(id);
+    } else {
+      selectedRowIdsRef.current.add(id);
+    }
+    setSelectedIds(Array.from(selectedRowIdsRef.current)); // causes re-render, but ref is safe
+
+    console.log('Selected Row IDs:', Array.from(selectedRowIdsRef.current));
+  };
+
+  console.log("on renbder selected id",Array.from(selectedRowIdsRef.current));
+
 
   const handleClickOutside = (event: MouseEvent) => {
     if (listRef.current && !listRef.current.contains(event.target as Node)) {
@@ -177,9 +207,9 @@ const TableContainer: React.FC = () => {
           <span className="text-sm">Yesterday Leads</span>
         </button>
         </div>
-        <TableFilters rowsCount={tableData?.length} setFilter={setFilterState} query={query} setQuery={setQuery} filterState={filterState} assignee={assignee} statusInfo={statusInfo} />
+        <TableFilters rowsCount={tableData?.length} setFilter={setFilterState} selectedIds={selectedIds} query={query} setQuery={setQuery} filterState={filterState} assignee={assignee} statusInfo={statusInfo} />
         <DndProvider backend={HTML5Backend}>
-        <DynamicTable3 data={tableData} columns={columns} statusInfo={statusInfo} tableType="lead" /></DndProvider>
+        <DynamicTable3 data={tableData} columns={columns} statusInfo={statusInfo} tableType="lead" onRowClick={handleRowClick} /></DndProvider>
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

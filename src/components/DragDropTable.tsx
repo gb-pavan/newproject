@@ -17,6 +17,8 @@ interface TableProps {
   columns: string[];
   statusInfo?:IStatus[];
   tableType:string;
+  // onRowClick: (id: number) => void;
+    onRowClick: (id: string) => void;
 }
 
 const ItemType = "COLUMN";
@@ -68,7 +70,7 @@ const columnStyles: Record<string, string> = {
 
 const COLUMN_STORAGE_KEY = "displayColumns";
 
-const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableType }) => {
+const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableType,onRowClick }) => {
   // const [displayColumns, setDisplayColumns] = useState<string[]>([]);
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -186,11 +188,14 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
     return status ? status.label : undefined;
   }
 
-  const handleRowCheckboxChange = (index: number) => {
+  const handleRowCheckboxChange = (index: number,rowId:string) => {
+    console.log("rowId",rowId);
     const updatedCheckedRows = [...checkedRows];
     updatedCheckedRows[index] = !updatedCheckedRows[index];
     setCheckedRows(updatedCheckedRows);
     setHeaderChecked(updatedCheckedRows.every(Boolean));
+    onRowClick(String(rowId)
+);
   };
 
   // const handleNameClick = () => {
@@ -270,7 +275,7 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
                     <input
                       type="checkbox"
                       checked={checkedRows[rowIndex] || false}
-                      onChange={() => handleRowCheckboxChange(rowIndex)}
+                      onChange={() => handleRowCheckboxChange(rowIndex,String(row._id))}
                     />
                   </td>
                   {columnOrder?.filter(key => !excludedCols.includes(key)).map((col, colIndex) => {

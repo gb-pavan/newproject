@@ -14,6 +14,7 @@ interface TableFiltersProps {
   assignee: IAssignee[];
   statusInfo :IStatus[];
   rowsCount : number;
+  selectedIds: string[];
 }
 
 // interface DropdownOption {
@@ -26,7 +27,7 @@ interface TableFiltersProps {
 // }
 
 
-const TableFilters:React.FC<TableFiltersProps> = ({query, rowsCount,setQuery,assignee,statusInfo}) => { 
+const TableFilters:React.FC<TableFiltersProps> = ({query, rowsCount,setQuery,assignee,statusInfo,selectedIds}) => { 
 
   const handleStatusChange = (newValues: string[]) => {
     setQuery((prev) => ({
@@ -80,7 +81,8 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, rowsCount,setQuery,ass
   return (
     <div className="flex items-center justify-between dark:invert mb-2">
       <h2 className="font-semibold text-[20px] font-[300]">
-        Leads <span className="text-gray-500">({(Number(rowsCount ?? 0))})</span>
+        {/* Leads <span className="text-gray-500">({(  selectedIds ?? 0))})</span> */}
+        Leads <span className="text-gray-500">({selectedIds?.length ?? 0})</span>
       </h2>
       <div className="flex items-center">
         <div className="flex space-x-4">
