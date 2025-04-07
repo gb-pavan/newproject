@@ -25,7 +25,7 @@ export const callApi = async (url: string, method: API, data?: object | null, sh
     : method === API.DELETE
     ? await Axios.delete(uri, DEFAULT_HEADER)
     : method === API.PUT
-    ? await Axios.put(uri,DEFAULT_HEADER)
+    ? await Axios.put(uri,data,DEFAULT_HEADER)
     : await Axios.get(uri, DEFAULT_HEADER);
 
 return response.data;
