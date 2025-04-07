@@ -189,10 +189,12 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
     const newChecked = !headerChecked;
     data.forEach(row => {
       const rowId = String(row._id);
-      if (newChecked) {
+      if (!newChecked) {
         selectedRowIdsRef.current.add(rowId);
+        onRowClick(String(rowId));
       } else {
         selectedRowIdsRef.current.delete(rowId);
+        onRowClick(String(rowId));
       }
     });
     setHeaderChecked(newChecked);
