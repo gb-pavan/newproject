@@ -59,14 +59,12 @@ const TeamFilters:React.FC<TeamFiltersProps> = ({setUserMeta}) => {
 
   const handleRoleChange = (value: string) => {
     setSelectedRole(value);
-    console.log('Role changed:', value);
     // setUserMeta({ ...userMeta, role: value });
     setUserMeta(prev => ({ ...prev, role: value }));
   };
 
   const handlePermissionChange = (value: string) => {
     setSelectedPermission(value);
-    console.log('Permission template changed:', value);
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

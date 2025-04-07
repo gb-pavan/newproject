@@ -18,7 +18,7 @@ const SlidingPanel: React.FC<SlidingPanelProps> = ({ children, isOpen, onClose }
           exit={{ x: "100%" }}
           transition={{ type: "spring", stiffness: 100, damping: 15 }}
           className={cn(
-            "fixed top-0 right-0 h-full w-80 bg-white shadow-lg z-50 p-4",
+            "fixed top-0 right-0 h-full w-fit bg-white shadow-lg z-50 p-4",
             "dark:bg-gray-900"
           )}
         >

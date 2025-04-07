@@ -5,7 +5,6 @@ import Axios, { AxiosError } from 'axios';
 export const callApi = async (url: string, method: API, data?: object | null, shouldThrowError?: boolean) => {
 
   const { token } = getToken();
-  console.log("token check",token);
 
   Axios.defaults.headers.common.Authorization = token;
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -25,6 +24,8 @@ export const callApi = async (url: string, method: API, data?: object | null, sh
     ? await Axios.patch(uri, data, DEFAULT_HEADER)
     : method === API.DELETE
     ? await Axios.delete(uri, DEFAULT_HEADER)
+    : method === API.PUT
+    ? await Axios.put(uri,DEFAULT_HEADER)
     : await Axios.get(uri, DEFAULT_HEADER);
 
 return response.data;

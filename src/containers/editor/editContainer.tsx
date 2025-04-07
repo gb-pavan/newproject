@@ -20,7 +20,6 @@ const PipelineDisplay: React.FC<PipelineDisplayProps> = ({ className }) => {
   const fetchStages = async () => {
     try {
       const response = await RootInstance.getStages();
-      console.log("resposne all",response);
       setStages(response);
     } catch (error) {
       handleError(error as AxiosError,false);
@@ -30,8 +29,6 @@ const PipelineDisplay: React.FC<PipelineDisplayProps> = ({ className }) => {
   useEffect(()=>{
     fetchStages();
   },[change]);
-
-  console.log("stages all",stages);
 
   return (
     <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 ${className}`}>

@@ -15,7 +15,6 @@ const RegionContainer: React.FC = () => {
      const regionData = async () => {
     try {
       const regionResponse:RegionOption[] = await FormInstance.getRegions();
-      console.log("regionsssss",regionResponse);
       setRegions(regionResponse);      
     } catch (error) {
       handleError(error as AxiosError,false);

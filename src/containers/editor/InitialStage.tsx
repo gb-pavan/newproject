@@ -236,7 +236,6 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
   };
 
   const handleDelete = async (statusId: string) => {
-    console.log("del initial",initial?.stageid.toString());
     await RootInstance.deleteInitialStatus({
       stageId: initial?.stageid.toString() || '',
       statusId,

@@ -19,6 +19,9 @@ export interface Filter {
 }
 
 export interface QueryState {
+  // selectedId:"SYSTEM_FILTER_ALL_LEAD",
+  selectedId?:string,
+  search?:boolean,
   filters: Filter[];
   logic: "AND";
   pagination: {

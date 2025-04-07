@@ -216,7 +216,6 @@ class RootService{
     "label":string
     }) => {
         const url='/api/lead_stage/write/create-update/stage_active';
-        console.log("changing status info");
         return await callApi(url,API.POST,payload,true);
     }
 
@@ -226,7 +225,6 @@ class RootService{
     "label":string
     }) => {
         const url='/api/lead_stage/write/create-update/stage_fresh';
-        console.log("changing status info Initial");
         return await callApi(url,API.POST,payload,true);
   }
 
@@ -236,32 +234,25 @@ class RootService{
     "label":string
     },statusId:string) => {
         const url=`/api/lead_stage/write/create-update/${statusId}`;
-        console.log("changing status info Initial",url,payload);
         return await callApi(url,API.POST,payload,true);
   }
 
   deleteStatus = async (payload:{stageId:string,statusId:string}) => {
-    console.log("deleting");
     const url=`/api/lead_stage/delete/stage/${payload.stageId}/${payload.statusId}`;
-    console.log("status delete",url);
     return await callApi(url,API.POST);
   }
 
   deleteInitialStatus = async (payload:{stageId:string,statusId:string}) => {
-    console.log("deleting");
     const url=`/api/lead_stage/delete/stage/${payload.stageId}/${payload.statusId}`;
-    console.log("status delete",url);
     return await callApi(url,API.POST);
   }
 
   restoreDeletedStatus = async (payload:{stageId:string,statusId:string}) => {
-    console.log("restoring");
     const url=`/api/lead_stage/write/active/${payload.stageId}/${payload.statusId}`;
     return await callApi(url,API.POST);
   }
 
   restoreDeletedInitialStatus = async (payload:{stageId:string,statusId:string}) => {
-    console.log("restoring");
     const url=`/api/lead_stage/write/active/${payload.stageId}/${payload.statusId}`;
     return await callApi(url,API.POST);
   }
@@ -273,8 +264,6 @@ class RootService{
         'type':payload.type.toLocaleUpperCase(),
         'options':payload.options
     }
-    console.log("lead field write");
-    console.log("payload2222",payload2);
     return await callApi(url,API.POST,payload2,true);
   }
 
@@ -283,13 +272,11 @@ class RootService{
     const payload2 = {
       'active':!visibility
     }
-    console.log("lead field write");
-    console.log("payload2222",payload2);
+    
     return await callApi(url,API.POST,payload2,true);
   }
 
   getCreatedLeadFields = async (): Promise<CreatedLeadField[]> => {
-    console.log("created gettttt");
     const url = "/api/lead_field/read/get-all-fields";
     return await callApi(url, API.GET);
   };
@@ -305,7 +292,6 @@ class RootService{
   };
 
   DeleteLeadFields = async (id:string) => {
-    console.log("edelete",id);
     const url = `/api/leadField/delete/${id}`;
     return await callApi(url, API.DELETE);
   };

@@ -13,7 +13,6 @@ interface StageProps {
 }
 
 export const ClosedStage: React.FC<StageProps> = ({ className, won, lost,setChange }) => {
-  console.log("won lost",won,lost);
   const [isEditing, setIsEditing] = useState(false);
   const [stageName, setStageName] = useState('');
   const [stageColor, setStageColor] = useState('');

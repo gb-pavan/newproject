@@ -59,7 +59,6 @@ const TeamContainer: React.FC = () => {
   }
 
   const fetchTeam = useCallback(async () => {
-  console.log("check search", userMeta.search);
   try {
     const teamResponse = await TeamInstance.getTeamMembers({
       search:userMeta.search,
@@ -67,7 +66,6 @@ const TeamContainer: React.FC = () => {
       page: currentPage,
       limit: rowsPerPage,
     });
-    console.log("team response", teamResponse);
 
     setTeam(teamResponse.users);
     setTotalRows(teamResponse?.total);
@@ -77,25 +75,20 @@ const TeamContainer: React.FC = () => {
 }, [currentPage, rowsPerPage, userMeta]); // <-- Add userMeta here
 
 useEffect(() => {
-  console.log("mikkkk");
   fetchTeam();
 }, [fetchTeam, query, userMeta]); // 👌 still needed
 
-  console.log("sssss user metal search",userMeta.search);
 
 
    const handleOptionChange = (value: string[]) => {
-    console.log("value",value);
     if (value[0] === 'add_user'){
       setIsSliderOpen(true);
     }
   };
 
   const handleFormSubmit = async (formData: IEmployee) => {
-    console.log("formDataaa",formData);
     try {
-      const addResponse = await TeamInstance.addTeamMember(formData); // Wait for the API call to complete
-      console.log("add res",addResponse);
+      await TeamInstance.addTeamMember(formData); // Wait for the API call to complete
       fetchTeam(); // Refresh the team list after adding a new member
       setIsSliderOpen(false); // Close the panel after submission
     } catch (error) {

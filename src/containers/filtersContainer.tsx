@@ -5,6 +5,9 @@ import DateFilter from "@/components/DateFilter";
 import { TIME_RANGE } from "@/utils/constants/timeRanges";
 import CustomDropdown2 from "@/components/MyDropdown2";
 import { mapAssigneeToDropdownOptions, mapStatusToDropdownOptions } from "@/utils/helpers";
+import { useState } from "react";
+import SlidingPanel from "@/components/SlidePanel";
+import BulkActions from "./BulkEditContainer";
 
 interface TableFiltersProps {
   filterState:FilterState
@@ -26,8 +29,9 @@ interface TableFiltersProps {
 //   showCheckbox?: boolean;
 // }
 
+const TableFilters:React.FC<TableFiltersProps> = ({query, setQuery,assignee,statusInfo,selectedIds}) => { 
 
-const TableFilters:React.FC<TableFiltersProps> = ({query, rowsCount,setQuery,assignee,statusInfo,selectedIds}) => { 
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   const handleStatusChange = (newValues: string[]) => {
     setQuery((prev) => ({
@@ -50,8 +54,64 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, rowsCount,setQuery,ass
     }));
   };
 
+  function extractIds(data:IAssignee[]) {
+    return data
+      .map(item => item._id)
+      .filter(id => id !== undefined && id !== null); // remove undefined/null if any
+  }
+
+
   const handleAssigneeChange = (newValues: string[]) => {
     console.log("assigneeeeee check",newValues);
+    
+    if (newValues.every(val => val.trim() === '')) {
+      const allAssignee:IAssignee[] = assignee;
+      console.log("chekc",allAssignee);
+      const ids = extractIds(allAssignee); // assuming your array is stored in a variable
+      console.log(ids); // ['67c6d2e3ca39a9c9c3c3f824', '67cb17f097eb04cf8489c914', ...]
+    //   setQuery((prev) => ({
+    //   ...prev,
+    //   filters: [
+    //     ...prev.filters.filter((filter) => filter.field !== "assignedOwner"),
+    //     // {
+    //     //   field: "Assignee",
+    //     //   operator: "IN",
+    //     //   value: [...newValues],
+    //     // } as Filter,
+    //     ...(newValues.length > 0
+    //       ? [
+    //           {
+    //             field: "assignedOwner",
+    //             operator: "IN",
+    //             value: [...ids], // Ensure it's an array
+    //           } as Filter,
+    //         ]
+    //       : []),
+    //   ],
+    // }));
+    setQuery((prev) => {
+  const queryWithoutSearch = { ...prev };
+  delete queryWithoutSearch.search;
+
+  return {
+    ...queryWithoutSearch,
+    filters: [
+      ...prev.filters.filter((filter) => filter.field !== "assignedOwner"),
+      ...(newValues.length > 0
+        ? [
+            {
+              field: "assignedOwner",
+              operator: "IN",
+              value: [...ids],
+            } as Filter,
+          ]
+        : []),
+    ],
+  };
+});
+ 
+      return
+    }
     setQuery((prev) => ({
       ...prev,
       filters: [
@@ -74,9 +134,6 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, rowsCount,setQuery,ass
     }));   
   };
 
-  console.log("assgneTODrop",mapAssigneeToDropdownOptions(assignee,{ showCheckbox: false,addDeco:true }));
-    console.log("assgneTODrop2222",assignee);
-
 
   return (
     <div className="flex items-center justify-between dark:invert mb-2">
@@ -89,6 +146,7 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, rowsCount,setQuery,ass
           {/* <SearchBox placeholder="Type and Press Enter" setFilter={setQuery} iconSize={24} responsive
               iconColor="#0D2167"
           /> */}
+
           <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: false,addDeco:true })} defaultValue="Assignee" onChange={handleAssigneeChange} />
           <DateFilter options={[...TIME_RANGE]} setDate={setQuery} />
         
@@ -106,9 +164,22 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, rowsCount,setQuery,ass
           multiSelect={true}
           defaultValue="Status"
         />
+        <button
+            onClick={() => setIsPanelOpen(true)}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+        >
+          Bulk Edit
+        </button>
       </div>
       
       </div>
+
+      
+      <SlidingPanel isOpen={isPanelOpen} onClose={() => setIsPanelOpen(false)}>
+        {/* You can place anything inside here */}
+        <BulkActions />
+      </SlidingPanel>
+
     </div>
   );
 };

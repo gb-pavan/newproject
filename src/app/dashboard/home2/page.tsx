@@ -69,14 +69,12 @@ const Home2: React.FC = () => {
 
     // Explicitly defined scroll handlers
     const scrollLeft = () => {
-      console.log("Left button clicked"); // Debug log
       if (scrollContainerRef.current) {
         scrollContainerRef.current.scrollBy({ left: -200, behavior: 'smooth' });
       }
     };
 
     const scrollRight = () => {
-      console.log("Right button clicked"); // Debug log
       if (scrollContainerRef.current) {
         scrollContainerRef.current.scrollBy({ left: 200, behavior: 'smooth' });
       }

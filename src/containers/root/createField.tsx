@@ -137,7 +137,6 @@ const FieldsSettingsPage = () => {
   const fetchCreatedLeadFields = async () => {
       try {
         const response = await RootInstance.getCreatedLeadFields(); // Await the API response
-        console.log("response lead fields",response);
         setCreatedFields(response);
       } catch (error) {
         handleError(error as AxiosError,false);
@@ -176,11 +175,9 @@ const FieldsSettingsPage = () => {
   // Function to handle creating a new field
   const handleCreateField = useCallback(async (name: string, type: string, options:string[]) => {
     const payload :{name:string,type:string,options:string[]}= {name:name,type:type,options}
-    console.log("lead  fieldddd");
-    const respooo = await RootInstance.createLeadField(payload);
+    await RootInstance.createLeadField(payload);
 
     fetchCreatedLeadFields();
-    console.log("create field",respooo);
     // const newField: Field = {
     //   _id: `new-field-${Date.now()}`,
     //   name: name,
@@ -223,9 +220,7 @@ const FieldsSettingsPage = () => {
   // );
 
   const handleDeleteField = async (fieldId:string) => {
-    console.log("delete check")
     await RootInstance.DeleteLeadFields(fieldId);
-    console.log("delete check2222")
     fetchCreatedLeadFields();
   }
 
@@ -258,12 +253,9 @@ const FieldsSettingsPage = () => {
 
   // Function to toggle field visibility
   const handleToggleVisibility = useCallback(async (SpecificField:Field) => {
-    console.log("1111111");
     // await RootInstance.LeadFieldVisibility(field._id , field.active)
     if (typeof SpecificField.active === 'boolean') {
-      console.log("2222222");
       await RootInstance.LeadFieldVisibility(SpecificField._id, SpecificField.active);
-      console.log("3333333");
     }
 
     setCreatedFields((prev) =>
@@ -342,7 +334,6 @@ const FieldsSettingsPage = () => {
       return <HiOutlineUser className="text-gray-500" />;
     }
   };
-  console.log("createddddd fields",createdFields);
   
   // Filter fields based on search term, type, and active/hidden filter
   const filteredFields = createdFields?.filter((field) => {
@@ -360,7 +351,6 @@ const FieldsSettingsPage = () => {
   });
 
   const searchResults = filteredFields?.length;
-  console.log("filteredFields",filteredFields);
 
   return (
     <div className="bg-gray-100 min-h-screen p-4">

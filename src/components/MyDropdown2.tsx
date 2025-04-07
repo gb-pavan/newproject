@@ -36,7 +36,6 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // Ref for dropdown
   const [isSmallScreen, setIsSmallScreen] = useState(false);
-  console.log("options",options);
 
   useEffect(() => {
     const handleResize = () => {
@@ -136,7 +135,7 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
                 key={option.label.toLocaleString() + option.color + option.id}
                 // onClick={() => handleSelect(option.value.toLocaleString())}
                 // onClick={() => handleSelect(defaultValue === "Assignee" ? option.id : option.value)}
-                onClick={() => handleSelect(defaultValue === "Assignee" ? option.id?.toString() ?? "" : option.value?.toString() ?? "")}
+                onClick={() => handleSelect(defaultValue === "Assignee" ? option.id?.toString() ?? "" :defaultValue === "AssignTo" ? option.id?.toString() ?? "": option.value?.toString() ?? "")}
                 className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100"
               >
                 {/* Optional Checkbox */}

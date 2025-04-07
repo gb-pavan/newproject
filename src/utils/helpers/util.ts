@@ -82,7 +82,6 @@ export const getDateRange = (range: TimeRangeType) => {
   const today = new Date();
   let startDate: Date;
   let endDate: Date;
-  console.log("range",range);
 
   switch (range) {
     case "All":

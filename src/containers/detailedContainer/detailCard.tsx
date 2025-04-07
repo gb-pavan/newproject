@@ -3,7 +3,6 @@ interface LeadDetailsProps {
   }
   
   const LeadDetails: React.FC<LeadDetailsProps> = ({ details }) => {
-    console.log("details",details);
     return (
       <div className="max-w-2xl w-[524px] mx-auto shadow-md">
         <table className="w-full border-collapse border border-black">

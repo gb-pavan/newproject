@@ -18,8 +18,9 @@ interface TableProps {
   statusInfo?:IStatus[];
   tableType:string;
   // onRowClick: (id: number) => void;
-  onRowClick: (id: string) => void;
-  selectedRowIdsRef: React.RefObject<Set<string>>; // 👈 Add this
+  onRowClick?: (id: string) => void;
+  selectedRowIdsRef?: React.RefObject<Set<string>>; // 👈 Add this
+  tabColumns?:string[]
 }
 
 const ItemType = "COLUMN";
@@ -71,7 +72,7 @@ const columnStyles: Record<string, string> = {
 
 const COLUMN_STORAGE_KEY = "displayColumns";
 
-const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableType,onRowClick,selectedRowIdsRef }) => {
+const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns, columns,statusInfo,tableType,onRowClick,selectedRowIdsRef }) => {
   // const [displayColumns, setDisplayColumns] = useState<string[]>([]);
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -89,8 +90,6 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
   });
 
   const excludedCols = tableType === 'lead' ? EXCLUDED_COLUMNS : EXCLUDED_COLUMNS_TEAM;
-  console.log("excluddeeee type",excludedCols);
-  console.log("tabletype",tableType);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -174,7 +173,7 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
   }, [dropdownOpen]);
 
   useEffect(() => {
-    const allSelected = data.every(row => selectedRowIdsRef.current.has(String(row._id)));
+    const allSelected = data.every(row => selectedRowIdsRef?.current.has(String(row._id)));
     setHeaderChecked(allSelected);
   }, [data, selectedRowIdsRef]);
 
@@ -190,11 +189,11 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
     data.forEach(row => {
       const rowId = String(row._id);
       if (!newChecked) {
-        selectedRowIdsRef.current.add(rowId);
-        onRowClick(String(rowId));
+        selectedRowIdsRef?.current.add(rowId);
+        onRowClick?.(String(rowId));
       } else {
-        selectedRowIdsRef.current.delete(rowId);
-        onRowClick(String(rowId));
+        selectedRowIdsRef?.current.delete(rowId);
+        onRowClick?.(String(rowId));
       }
     });
     setHeaderChecked(newChecked);
@@ -212,12 +211,11 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
   }
 
   const handleRowCheckboxChange = (index: number,rowId:string) => {
-    console.log("rowId",rowId);
     const updatedCheckedRows = [...checkedRows];
     updatedCheckedRows[index] = !updatedCheckedRows[index];
     setCheckedRows(updatedCheckedRows);
     setHeaderChecked(updatedCheckedRows.every(Boolean));
-    onRowClick(String(rowId)
+    onRowClick?.(String(rowId)
 );
   };
 
@@ -233,9 +231,6 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
     window.open(detailsUrl, '_blank');
   };
 
-  console.log("column order",columnOrder);
-
-
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="relative overflow-x-auto w-full dark:invert border-l border-r border-t border-gray-800 rounded-t-lg">
@@ -248,7 +243,7 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
                 <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-800 rounded-lg shadow-lg z-40 p-2">
                   <ul className="text-sm text-gray-700">
                     {/* {columnOrder?.map((key, index) => ( */}
-                    {columnOrder?.filter(key => !excludedCols.includes(key)).map((key, index) => (                   
+                    {tabColumns?.filter(key => !excludedCols.includes(key)).map((key, index) => (                   
                       <DraggableItem
                         key={key}
                         id={key}
@@ -298,7 +293,7 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
                     <input
                       type="checkbox"
                       // checked={checkedRows[rowIndex] || false}
-                      checked={selectedRowIdsRef.current.has(String(row._id))}
+                      checked={selectedRowIdsRef?.current.has(String(row._id))}
                       onChange={() => handleRowCheckboxChange(rowIndex,String(row._id))}
                     />
                   </td>
@@ -311,7 +306,6 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
                             <div onClick={(e) => {
                                 e.stopPropagation();
                                 // handleFavoriteToggle(row._id, row.name.favorite);
-                                console.log("row",row);
                                 // if (typeof row.name.favorite === "boolean" && typeof row._id === 'string') {
                                 //   console.log("favvv checkk checkkkkk in if");
                                 //   handleFavoriteToggle(row._id, row.name.favorite);

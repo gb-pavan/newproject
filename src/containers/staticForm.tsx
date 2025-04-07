@@ -64,8 +64,6 @@ const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
     }
   }, []);
 
-  console.log("roleeee",userRole);
-
   useEffect(() => {
   if (!selectedDepartment) return;
 
@@ -92,7 +90,6 @@ const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
 
 
   const onSubmit = (data: IEmployee) => {
-    console.log("Form Data Submitted:", data);
     // const teamDetails = {
     //   ...(() => {
     //     const { reportees, ...rest } = data; // remove `reporting` from `data`

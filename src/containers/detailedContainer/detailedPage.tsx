@@ -75,7 +75,6 @@ const DetailedPage: React.FC = () => {
   const id = params.id;
 
   const handleTaskSubmit = () => {
-    console.log("submitted");
     setBtnClicked("");
   };
 
@@ -102,7 +101,6 @@ const DetailedPage: React.FC = () => {
     async function fetchLeadData() {
       try {
         const response = await TableInstance.getFullDetails(id as string);
-        console.log("lead full",response);
         await setDetailedRow(response);
         } catch (error) {
         handleError(error as AxiosError, false);
@@ -110,8 +108,6 @@ const DetailedPage: React.FC = () => {
     }    
     fetchLeadData();
   }, [id]);
-
-  console.log("checking card",detailedRow?.name,detailedRow?.phone,detailedRow?.fields?.email,detailedRow?.region)
 
   return (
     <div className="container mx-auto p-8">

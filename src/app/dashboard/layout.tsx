@@ -4,6 +4,7 @@ import LayoutWrapper from "@/components/LayoutWrapper";
 import { ThemesProvider } from "@/providers/ThemeProvider";
 import ErrorBoundaryProvider from "@/providers/ErrorBoundaryProvider";
 import "../globals.css";
+import { StringArrayProvider } from "@/providers/StringArrayContext";
 
 
 // const geistSans = Geist({
@@ -30,9 +31,11 @@ export default function RootLayout({
     
         <ErrorBoundaryProvider>
           <ThemesProvider>
-            <LayoutWrapper>
-              {children}
-            </LayoutWrapper>
+            <StringArrayProvider>
+              <LayoutWrapper>
+                {children}
+              </LayoutWrapper>
+            </StringArrayProvider>
           </ThemesProvider>
         </ErrorBoundaryProvider>
   );

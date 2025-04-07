@@ -28,7 +28,6 @@ class TeamService{
       search?:string;
     }) => {
       const params = new URLSearchParams();
-      console.log("rolleeeee",search);
 
       // Always include page and limit
       params.append('page', page.toString());
@@ -43,7 +42,6 @@ class TeamService{
       }
 
       const url = `/api/admin/read/users?${params.toString()}`;
-      console.log("url",url);
       return await callApi(url, API.GET);
     };
 
@@ -59,7 +57,6 @@ class TeamService{
     }
 
     addTeamMember = async (userDetails:IEmployee) => {
-      console.log("member",userDetails);
       const payload5 = {
         ...userDetails,
         "permission":"full"

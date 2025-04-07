@@ -43,11 +43,8 @@ const EditFieldModal: React.FC<EditFieldModalProps> = ({ isOpen, onClose, onEdit
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    console.log("working");
     e.preventDefault();
-    if (name.trim() === '') return;
-    console.log("name,options",name , type,options);
-    
+    if (name.trim() === '') return;    
     // onEditField(name, type, options.length > 0 ? options : ['value1']);
     onEditField(name, type, options.length > 0 ? options : [],field._id);
   };

@@ -35,7 +35,6 @@ const DropdownExample: React.FC = () => {
     { label: "Banana", value: "banana", color: "yellow" },
     { label: "Grape", value: "grape", color: "purple" },
   ];
-  console.log("selectsingle",selectedSingle);
 
   const handleOptionsChange = (updatedOptions: string[]) => {
     console.log("Updated options:", updatedOptions);

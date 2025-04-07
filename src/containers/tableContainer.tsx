@@ -6,7 +6,7 @@ import SearchBox from "@/components/SearchBox";
 import TableFilters from "@/containers/filtersContainer";
 import { ITableFields } from "@/interfaces";
 import { FilterState,QueryState, IAssignee, IStatus } from "@/interfaces/tableFilterTypes";
-import { getAllKeys, handleError } from "@/utils/helpers";
+import { handleError } from "@/utils/helpers";
 import { AxiosError } from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { IoSettingsOutline } from "react-icons/io5";
@@ -16,8 +16,12 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { FilterInstance } from "@/services/tableFilter.service";
 import { DropdownInstance } from "@/services/dropdown.service";
 import { columns } from "@/utils/constants";
+import { TableInstance } from "@/services/table.service";
+import { useStringArray } from "@/providers/StringArrayContext";
 
 const TableContainer: React.FC = () => {
+
+  const { setValues } = useStringArray();
 
   const [tableData,setTableData] = useState<ITableFields[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -34,8 +38,10 @@ const TableContainer: React.FC = () => {
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [addCondition,setCondition] = useState<boolean>(false);
   const [filters, setFilters] = useState<string[]>([]);
+  const [tabColumns, setColumns] = useState<string[]>([]);
   const [totalRows, setTotalRows] = useState<number>(0);
   const [query, setQuery] = useState<QueryState>({
+    selectedId:"SYSTEM_FILTER_ALL_LEAD",
     filters:[],
     logic: "AND",
     pagination: {
@@ -61,6 +67,11 @@ const TableContainer: React.FC = () => {
   //   console.log('Selected Row IDs:', Array.from(selectedRowIdsRef.current));
   // };
 
+  useEffect(() => {
+    setValues(selectedIds);
+  }, [selectedIds, setValues]);
+
+
   const handleRowClick = (id: string) => {
     if (selectedRowIdsRef.current.has(id)) {
       selectedRowIdsRef.current.delete(id);
@@ -69,11 +80,7 @@ const TableContainer: React.FC = () => {
     }
     setSelectedIds(Array.from(selectedRowIdsRef.current)); // causes re-render, but ref is safe
 
-    console.log('Selected Row IDs:', Array.from(selectedRowIdsRef.current));
   };
-
-  console.log("on renbder selected id",Array.from(selectedRowIdsRef.current));
-
 
   const handleClickOutside = (event: MouseEvent) => {
     if (listRef.current && !listRef.current.contains(event.target as Node)) {
@@ -118,18 +125,26 @@ const TableContainer: React.FC = () => {
   }, []); // Empty dependency array ensures this runs only once on mount
 
   useEffect(() => {
-    console.log("pages",rowsPerPage);
      const filterData = async () => {
     try {
       const filterResponse = await FilterInstance.getFilterResponse(query); // Await the response
-      console.log("filter resssssppppp check",filterResponse);
       setTableData(filterResponse?.leads);
       setTotalRows(filterResponse?.total);
     } catch (error) {
       handleError(error as AxiosError,false);
     }
   };
+  const getColumns = async () => {
+    try {
+      const tabColResponse = await TableInstance.getColumns(); // Await the response
+      console.log("tab cols",tabColResponse);
+      setColumns(tabColResponse.columns);
+    } catch (error) {
+      handleError(error as AxiosError,false);
+    }
+  };
     filterData();
+    getColumns();
   }, [query, currentPage, rowsPerPage]); // Runs when these dependencies change
 
 
@@ -165,7 +180,7 @@ const TableContainer: React.FC = () => {
         </div>
         {addCondition && <div ref={listRef}>
           <ul className="m-3 mt-0 p-3 pt-0 border border-[#C6CCE0] rounded-md">
-            {getAllKeys(tableData).map((key) => (
+            {tabColumns.map((key) => (
               <li
                 key={key}
                 onClick={() => handleCondition(key)}
@@ -209,7 +224,7 @@ const TableContainer: React.FC = () => {
         </div>
         <TableFilters rowsCount={tableData?.length} setFilter={setFilterState} selectedIds={selectedIds} query={query} setQuery={setQuery} filterState={filterState} assignee={assignee} statusInfo={statusInfo} />
         <DndProvider backend={HTML5Backend}>
-        <DynamicTable3 data={tableData} selectedRowIdsRef={selectedRowIdsRef} columns={columns} statusInfo={statusInfo} tableType="lead" onRowClick={handleRowClick} /></DndProvider>
+        <DynamicTable3 data={tableData} tabColumns={tabColumns} selectedRowIdsRef={selectedRowIdsRef} columns={columns} statusInfo={statusInfo} tableType="lead" onRowClick={handleRowClick} /></DndProvider>
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

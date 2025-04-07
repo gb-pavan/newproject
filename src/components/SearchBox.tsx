@@ -191,7 +191,7 @@ const SearchBox = ({
         updatedFilters.push({ operator: "CONTAINS", value: query });
       }
 
-      return { ...prev, filters: updatedFilters };
+      return { ...prev, filters: updatedFilters, "search":true };
     });
   }, [query, setFilter]);
 

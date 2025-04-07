@@ -62,7 +62,6 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
   const selectedType = fieldTypeOptions.find(option => option.value === fieldType);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log("checking submit");
     e.preventDefault();
     // console.log("form fields",fieldName,fieldType);
     // const payload :{name:string,type:string}= {name:fieldName,type:fieldType}
@@ -92,7 +91,6 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
   if (!isOpen) return null;
 
   const handleOptionsChange = (updatedOptions: string[]) => {
-    console.log("Updated options:", updatedOptions);
     setSelectedProperties(updatedOptions);
   }
 
