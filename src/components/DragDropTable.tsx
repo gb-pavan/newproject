@@ -18,7 +18,8 @@ interface TableProps {
   statusInfo?:IStatus[];
   tableType:string;
   // onRowClick: (id: number) => void;
-    onRowClick: (id: string) => void;
+  onRowClick: (id: string) => void;
+  selectedRowIdsRef: React.RefObject<Set<string>>; // 👈 Add this
 }
 
 const ItemType = "COLUMN";
@@ -70,7 +71,7 @@ const columnStyles: Record<string, string> = {
 
 const COLUMN_STORAGE_KEY = "displayColumns";
 
-const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableType,onRowClick }) => {
+const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableType,onRowClick,selectedRowIdsRef }) => {
   // const [displayColumns, setDisplayColumns] = useState<string[]>([]);
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -172,11 +173,31 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
       return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [dropdownOpen]);
 
+  useEffect(() => {
+    const allSelected = data.every(row => selectedRowIdsRef.current.has(String(row._id)));
+    setHeaderChecked(allSelected);
+  }, [data, selectedRowIdsRef]);
+
+
+  // const handleHeaderCheckboxChange = () => {
+  //   const newChecked = !headerChecked;
+  //   setHeaderChecked(newChecked);
+  //   setCheckedRows(Array(data.length).fill(newChecked));
+  // };
+
   const handleHeaderCheckboxChange = () => {
     const newChecked = !headerChecked;
+    data.forEach(row => {
+      const rowId = String(row._id);
+      if (newChecked) {
+        selectedRowIdsRef.current.add(rowId);
+      } else {
+        selectedRowIdsRef.current.delete(rowId);
+      }
+    });
     setHeaderChecked(newChecked);
-    setCheckedRows(Array(data.length).fill(newChecked));
   };
+
 
   function getStatusColor(id: number): string | undefined {
     const status = statusInfo?.find(s => s.statusid === id);
@@ -274,7 +295,8 @@ const DynamicTable3: React.FC<TableProps> = ({ data, columns,statusInfo,tableTyp
                   <td className="sticky left-0 p-3 border-r border-gray-800 bg-white w-12 text-center">
                     <input
                       type="checkbox"
-                      checked={checkedRows[rowIndex] || false}
+                      // checked={checkedRows[rowIndex] || false}
+                      checked={selectedRowIdsRef.current.has(String(row._id))}
                       onChange={() => handleRowCheckboxChange(rowIndex,String(row._id))}
                     />
                   </td>
