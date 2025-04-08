@@ -58,17 +58,29 @@ const FieldsSettingsPage = () => {
     "State",
   ];
 
+  // const typeOptions = [
+  //   { value: "all", label: "All" },
+  //   { value: "text", label: "Text" },
+  //   { value: "checkbox", label: "Checkbox" },
+  //   { value: "dropdown", label: "Dropdown" },
+  //   { value: "email", label: "Email" },
+  //   { value: "money", label: "Money" },
+  //   { value: "number", label: "Number" },
+  //   { value: "phone", label: "Phone" },
+  //   { value: "date", label: "Date" },
+  // ];
   const typeOptions = [
-    { value: "all", label: "All" },
     { value: "text", label: "Text" },
-    { value: "checkbox", label: "Checkbox" },
-    { value: "dropdown", label: "Dropdown" },
     { value: "email", label: "Email" },
-    { value: "money", label: "Money" },
-    { value: "number", label: "Number" },
+    { value: "dropdown", label: "Dropdown" },
+    { value: "tags", label: "Tags" },
     { value: "phone", label: "Phone" },
+    { value: "checkbox", label: "Checkbox" },
+    { value: "number", label: "Number" },
     { value: "date", label: "Date" },
+    { value: "url", label: "URL" },
   ];
+
 
   // Sample data for the fields
   // const [fields, setFields] = useState<Field[]>([

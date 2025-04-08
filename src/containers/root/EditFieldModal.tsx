@@ -31,23 +31,67 @@ const EditFieldModal: React.FC<EditFieldModalProps> = ({ isOpen, onClose, onEdit
     }
   }, [field]);
   
-  const handleAddOption = () => {
-    if (newOption.trim() !== '') {
-      setOptions([...options, newOption.trim()]);
-      setNewOption('');
-    }
-  };
+  // const handleAddOption = () => {
+  //   if (newOption.trim() !== '') {
+  //     setOptions([...options, newOption.trim()]);
+  //     setNewOption('');
+  //   }
+  // };
+  const handleAddOption = async () => {
+  if (newOption.trim() !== '') {
+    await new Promise(resolve => setTimeout(resolve, 100));
+    setOptions(prev => [...prev, newOption.trim()]);
+    setNewOption('');
+  }
+};
+  // const handleAddOption = async () => {
+  //   if (newOption.trim() !== '') {
+  //     // Example: pretend there's an async call here
+  //     await new Promise(resolve => setTimeout(resolve, 2000)); // Simulated delay
+
+  //     setOptions(prev => [...prev, newOption.trim()]);
+  //     setNewOption('');
+  //   }
+  // };
+
 
   const handleRemoveOption = (index: number) => {
     setOptions(options.filter((_, i) => i !== index));
   };
+  // const handleRemoveOption = async (index: number) => {
+  //   // Simulated delay
+  //   await new Promise(resolve => setTimeout(resolve, 100));
 
+  //   setOptions(prev => prev.filter((_, i) => i !== index));
+  // };
+
+
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   console.log("checking form");
+  //   e.preventDefault();
+  //   if (name.trim() === '') return; 
+  //   console.log("check after",name,type,options.length > 0 ? options : [],field._id )
+  //   // onEditField(name, type, options.length > 0 ? options : ['value1']);
+  //   onEditField(name, type, options.length > 0 ? options : [],field._id);
+  // };
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (name.trim() === '') return;    
-    // onEditField(name, type, options.length > 0 ? options : ['value1']);
-    onEditField(name, type, options.length > 0 ? options : [],field._id);
-  };
+  e.preventDefault();
+  if (name.trim() === '') return;
+
+  const finalOptions =
+    newOption.trim() !== ''
+      ? [...options, newOption.trim()]
+      : options;
+
+  // Optional: also update state to reflect UI immediately
+  if (newOption.trim() !== '') {
+    setOptions(finalOptions);
+    setNewOption('');
+  }
+
+  onEditField(name, type, finalOptions.length > 0 ? finalOptions : [], field._id);
+};
+
 
   if (!isOpen) return null;
 
@@ -85,12 +129,21 @@ const EditFieldModal: React.FC<EditFieldModalProps> = ({ isOpen, onClose, onEdit
                 onChange={(e) => setType(e.target.value)}
                 required
               >
-                <option value="TEXT">Text</option>
+                {/* <option value="TEXT">Text</option>
                 <option value="EMAIL">Email</option>
                 <option value="DROPDOWN">Dropdown</option>
                 <option value="PHONE">Phone</option>
                 <option value="NUMBER">Number</option>
+                <option value="DATE">Date</option> */}
+                <option value="TEXT">Text</option>
+                <option value="EMAIL">Email</option>
+                <option value="DROPDOWN">Dropdown</option>
+                <option value="TAGS">Tags</option>
+                <option value="PHONE">Phone</option>
+                <option value="CHECKBOX">Checkbox</option>
+                <option value="NUMBER">Number</option>
                 <option value="DATE">Date</option>
+                <option value="URL">URL</option>
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                 <IoIosArrowDown className="text-gray-400" />
