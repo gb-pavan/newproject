@@ -16,6 +16,8 @@ import { BiWorld } from 'react-icons/bi';
 // import { MdOutlineScreenSearchDesktop } from 'react-icons/md';
 // import { TbArrowsRightLeft } from 'react-icons/tb';
 import DynamicInputList from '@/components/DynamicDropdownOptions';
+import ColorPicker from '@/components/ColorPicker';
+import ToggleSwitch from '@/components/ToggleSwitch';
 
 interface CreateFieldModalProps {
   isOpen: boolean;
@@ -54,6 +56,10 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
   const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
   // const [isPropertiesOpen, setIsPropertiesOpen] = useState(true);
   const [selectedProperties, setSelectedProperties] = useState<string[]>([]);
+  const [selectedColor, setSelectedColor] = useState<string>("");
+    const [toggleValue, setToggleValue] = useState(false);
+
+
   // const [minLength, setMinLength] = useState('1');
   // const [maxLength, setMaxLength] = useState('100');
   // const [dropDownOptions,setDropdownOptions] = useState<string[]>([]);
@@ -78,6 +84,10 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
       setSelectedProperties([]);
       onClose();
     }
+  };
+
+  const handleColorChange = (colorValue: string) => {
+    setSelectedColor(colorValue);
   };
 
   // const toggleProperty = (property: string) => {
@@ -159,6 +169,40 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
 
               </div>
             </div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Select Color
+            </label>
+            <div className="grid grid-cols-4 gap-2 mb-6">
+              
+              <ColorPicker onChange={handleColorChange} />
+            </div>
+
+            <div className="flex items-center gap-4">
+              <label className="block text-sm font-medium text-gray-700">Active</label>
+              <ToggleSwitch
+                label="Submit as True/False"
+                value={toggleValue}
+                onChange={setToggleValue}
+              />
+            </div>
+
+            {/* <div className="flex items-center gap-4">
+              <label className="block text-sm font-medium text-gray-700">Is Form</label>
+              <ToggleSwitch
+                label="Is Form"
+                value={isForm}
+                onChange={setIsForm}
+              />
+            </div>
+
+            <div className="flex items-center gap-4">
+              <label className="block text-sm font-medium text-gray-700">Required</label>
+              <ToggleSwitch
+                label="Required"
+                value={isRequired}
+                onChange={setIsRequired}
+              />
+            </div> */}
 
             {/* <div className="mb-4">
               <button
