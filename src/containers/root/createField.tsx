@@ -185,9 +185,11 @@ const FieldsSettingsPage = () => {
   };
 
   // Function to handle creating a new field
-  const handleCreateField = useCallback(async (name: string, type: string, options:string[]) => {
-    const payload :{name:string,type:string,options:string[]}= {name:name,type:type,options}
-    await RootInstance.createLeadField(payload);
+  const handleCreateField = useCallback(async (name: string, type: string, options:string[],mandatory:boolean,toggleValue:boolean,isForm:boolean,selectedColor:string) => {
+    console.log("check field createing step",mandatory,isForm,toggleValue);
+    const payload :{name:string,type:string,options:string[],required:boolean,active:boolean,isForm:boolean,columnColor:string}= {name:name,type:type,options,required:mandatory,active:toggleValue,isForm,columnColor:selectedColor}
+    const checkCreatedField = await RootInstance.createLeadField(payload);
+    console.log("yessss",checkCreatedField);
 
     fetchCreatedLeadFields();
     // const newField: Field = {
@@ -399,7 +401,7 @@ const FieldsSettingsPage = () => {
         </div>
 
         {/* Lead ID section */}
-        <div className="p-4 border-b">
+        {/* <div className="p-4 border-b">
           <div className="flex items-center">
             <div className="text-sm text-gray-600">Lead Id</div>
             <a href="#" className="ml-2 text-purple-500 text-sm">
@@ -414,7 +416,7 @@ const FieldsSettingsPage = () => {
             </div>
             <button className="text-purple-500 text-sm">Change</button>
           </div>
-        </div>
+        </div> */}
 
         {/* Primary fields section */}
         <div className="p-4">
@@ -430,16 +432,16 @@ const FieldsSettingsPage = () => {
                 <span>{selectedH1Field}</span>
               </div>
               <div className="flex items-center">
-                <button className="text-gray-400 mr-2">
+                {/* <button className="text-gray-400 mr-2">
                   <FiEdit />
-                </button>
+                </button> */}
                 <div className="relative">
-                  <button
+                  {/* <button
                     className="text-gray-400 hover:text-blue-500"
                     onClick={() => setIsH1DropdownOpen(!isH1DropdownOpen)}
                   >
                     <IoIosArrowDown />
-                  </button>
+                  </button> */}
                   {isH1DropdownOpen && (
                     <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-10">
                       <ul className="py-1">
@@ -466,16 +468,16 @@ const FieldsSettingsPage = () => {
                 <span>{selectedH2Field}</span>
               </div>
               <div className="flex items-center">
-                <button className="text-gray-400 mr-2">
+                {/* <button className="text-gray-400 mr-2">
                   <FiEdit />
-                </button>
+                </button> */}
                 <div className="relative">
-                  <button
+                  {/* <button
                     className="text-gray-400 hover:text-blue-500"
                     onClick={() => setIsH2DropdownOpen(!isH2DropdownOpen)}
                   >
                     <IoIosArrowDown />
-                  </button>
+                  </button> */}
                   {isH2DropdownOpen && (
                     <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-10">
                       <ul className="py-1">

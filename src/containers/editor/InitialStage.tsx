@@ -195,6 +195,7 @@ interface StageProps {
 }
 
 export const InitialStage: React.FC<StageProps> = ({ className, initial, setChange }) => {
+  console.log("initial",initial);
   const [isEditing, setIsEditing] = useState(false);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [stageName, setStageName] = useState<string>("");

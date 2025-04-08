@@ -22,7 +22,7 @@ import ToggleSwitch from '@/components/ToggleSwitch';
 interface CreateFieldModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onCreateField: (name: string, type: string, properties: string[]) => void;
+  onCreateField: (name: string, type: string, properties: string[],mandatory:boolean,isForm:boolean,toggleValue:boolean,selectedColor:string) => void;
 }
 
 // Field type options
@@ -57,7 +57,9 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
   // const [isPropertiesOpen, setIsPropertiesOpen] = useState(true);
   const [selectedProperties, setSelectedProperties] = useState<string[]>([]);
   const [selectedColor, setSelectedColor] = useState<string>("");
-    const [toggleValue, setToggleValue] = useState(false);
+  const [toggleValue, setToggleValue] = useState(false);
+  const [isForm,setIsForm] = useState<boolean>(false);
+  const [mandatory,setMandatory] = useState<boolean>(false);
 
 
   // const [minLength, setMinLength] = useState('1');
@@ -75,7 +77,8 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
     // if (fieldType === "dropdown") {
     //   payload.options = selectedProperties; // Assuming selectedProperties holds dropdown options
     // }
-    onCreateField(fieldName, fieldType, selectedProperties);
+    console.log("field creation cheching",mandatory,isForm,toggleValue);
+    await onCreateField(fieldName, fieldType, selectedProperties, mandatory,isForm,toggleValue,selectedColor);
     if (fieldName.trim()) {
       // onCreateField(fieldName, fieldType, selectedProperties);
       setFieldName('');
@@ -178,16 +181,16 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
             </div>
 
             <div className="flex items-center gap-4">
-              <label className="block text-sm font-medium text-gray-700">Active</label>
+              {/* <label className="block text-sm font-medium text-gray-700">Active</label> */}
               <ToggleSwitch
-                label="Submit as True/False"
+                label="Active"
                 value={toggleValue}
                 onChange={setToggleValue}
               />
             </div>
 
-            {/* <div className="flex items-center gap-4">
-              <label className="block text-sm font-medium text-gray-700">Is Form</label>
+            <div className="flex items-center gap-4">
+              {/* <label className="block text-sm font-medium text-gray-700">Is Form</label> */}
               <ToggleSwitch
                 label="Is Form"
                 value={isForm}
@@ -196,13 +199,13 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
             </div>
 
             <div className="flex items-center gap-4">
-              <label className="block text-sm font-medium text-gray-700">Required</label>
+              {/* <label className="block text-sm font-medium text-gray-700">Required</label> */}
               <ToggleSwitch
                 label="Required"
-                value={isRequired}
-                onChange={setIsRequired}
+                value={mandatory}
+                onChange={setMandatory}
               />
-            </div> */}
+            </div>
 
             {/* <div className="mb-4">
               <button

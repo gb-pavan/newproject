@@ -257,13 +257,18 @@ class RootService{
     return await callApi(url,API.POST);
   }
 
-  createLeadField = async (payload:{name:string,type:string,options:string[]}) => {
+  createLeadField = async (payload:{name:string,type:string,options:string[],required:boolean,active:boolean,isForm:boolean,columnColor:string}) => {
     const url=`/api/lead_field/write/create-or-update`;
     const payload2 = {
         'name':payload.name,
         'type':payload.type.toLocaleUpperCase(),
-        'options':payload.options
+        'options':payload.options,
+        'required':payload.required,
+        'active':payload.active,
+        'isForm':payload.isForm,
+        'columnColor':payload.columnColor
     }
+    console.log("filed payloadddd now check",payload2);
     return await callApi(url,API.POST,payload2,true);
   }
 
@@ -278,6 +283,7 @@ class RootService{
 
   getCreatedLeadFields = async (): Promise<CreatedLeadField[]> => {
     const url = "/api/lead_field/read/get-all-fields";
+    console.log("yes getting total fields");
     return await callApi(url, API.GET);
   };
 
