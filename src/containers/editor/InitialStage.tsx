@@ -183,7 +183,9 @@
 
 'use client';
 import React, { useState } from 'react';
-import { Edit2, Trash2, RefreshCcw, ChevronDown, ChevronUp } from 'lucide-react';
+// import { Edit2, Trash2, RefreshCcw, ChevronDown, ChevronUp } from 'lucide-react';
+import { Edit2 } from 'lucide-react';
+
 import { IEditStatus, IStage } from '@/interfaces/root.interface';
 import ColorPicker from '@/components/ColorPicker';
 import { RootInstance } from '@/services/root.service';
@@ -201,7 +203,7 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
   const [stageName, setStageName] = useState<string>("");
   const [stageColor, setStageColor] = useState<string>("");
   const [stageId, setStageId] = useState<string>("");
-  const [showDeletedItems, setShowDeletedItems] = useState(false);
+  // const [showDeletedItems, setShowDeletedItems] = useState(false);
 
   const handleEditClick = (id: string, color: string, label: string) => {
     setIsEditing(true);
@@ -211,13 +213,13 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
     setIsAddingNew(false);
   };
 
-  const handleAddNew = () => {
-    setIsEditing(true);
-    setIsAddingNew(true);
-    setStageName('');
-    setStageColor('');
-    setStageId('');
-  };
+  // const handleAddNew = () => {
+  //   setIsEditing(true);
+  //   setIsAddingNew(true);
+  //   setStageName('');
+  //   setStageColor('');
+  //   setStageId('');
+  // };
 
   const handleColorChange = (colorValue: string) => {
     setStageColor(colorValue);
@@ -237,25 +239,25 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
     closePopup();
   };
 
-  const handleDelete = async (statusId: string) => {
-    await RootInstance.deleteInitialStatus({
-      stageId: initial?.stageid.toString() || '',
-      statusId,
-    });
-    setChange((prev) => !prev);
-  };
+  // const handleDelete = async (statusId: string) => {
+  //   await RootInstance.deleteInitialStatus({
+  //     stageId: initial?.stageid.toString() || '',
+  //     statusId,
+  //   });
+  //   setChange((prev) => !prev);
+  // };
 
-  const handleRestore = async (statusId: string) => {
-    await RootInstance.restoreDeletedInitialStatus({
-      stageId: initial?.stageid.toString() || '',
-      statusId,
-    });
-    setChange((prev) => !prev);
-  };
+  // const handleRestore = async (statusId: string) => {
+  //   await RootInstance.restoreDeletedInitialStatus({
+  //     stageId: initial?.stageid.toString() || '',
+  //     statusId,
+  //   });
+  //   setChange((prev) => !prev);
+  // };
 
-  const toggleDeletedItems = () => {
-    setShowDeletedItems(!showDeletedItems);
-  };
+  // const toggleDeletedItems = () => {
+  //   setShowDeletedItems(!showDeletedItems);
+  // };
 
   const closePopup = () => {
     setIsEditing(false);

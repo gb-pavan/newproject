@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const ToggleSwitch = ({ label, value, onChange }: { label: string; value: boolean; onChange: (val: boolean) => void }) => {
   return (
