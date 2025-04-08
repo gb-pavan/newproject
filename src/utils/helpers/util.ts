@@ -224,7 +224,6 @@ export const getColumnValue = (row: Record<string, unknown>, col: string): strin
 };
 
 export const getAssignedOwnerName = (row: Record<string, unknown>): string => {
-  console.log("row check ing",row);
   const owner = row['assignedOwner'];
   if (typeof owner === 'object' && owner !== null && 'name' in owner) {
     return String((owner as Record<string, unknown>).name ?? '-');

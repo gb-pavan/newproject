@@ -163,23 +163,51 @@ const FieldsSettingsPage = () => {
   //   },
   // ]);
   const [createdFields,setCreatedFields] = useState<CreatedLeadField[]>([]);
-  const fetchCreatedLeadFields = async () => {
+  // const fetchCreatedLeadFields = async () => {
+  //     try {
+  //       if (activeFilter === 'Hidden'){
+  //         const response = await RootInstance.getCreatedLeadFields(false); // Await the API response
+  //         setCreatedFields(response);
+  //       } else if (activeFilter === 'Active'){
+  //          const response = await RootInstance.getCreatedLeadFields(true); // Await the API response
+  //         setCreatedFields(response);
+  //       }
+  //     } catch (error) {
+  //       handleError(error as AxiosError,false);
+  //     }
+  //   };
+  // useEffect(() => {
+  //   fetchCreatedLeadFields();
+  // }, [activeFilter,fetchCreatedLeadFields]);
+
+  const fetchCreatedLeadFields = useCallback(async () => {
+  try {
+    const isActive = activeFilter === "Active";
+    const response = await RootInstance.getCreatedLeadFields(isActive);
+    setCreatedFields(response);
+  } catch (error) {
+    handleError(error as AxiosError, false);
+  }
+}, [activeFilter]); // 👈 make sure dependencies are correct
+
+// useEffect to call it when `activeFilter` changes
+useEffect(() => {
+  fetchCreatedLeadFields();
+}, [fetchCreatedLeadFields]);
+
+  useEffect(() => {
+    const fetchFilteredFields = async () => {
       try {
-        if (activeFilter === 'Hidden'){
-          const response = await RootInstance.getCreatedLeadFields(false); // Await the API response
-          setCreatedFields(response);
-        } else if (activeFilter === 'Active'){
-           const response = await RootInstance.getCreatedLeadFields(true); // Await the API response
-          setCreatedFields(response);
-        }
+        const searchFiltered = await RootInstance.getLeadFieldSearch(searchTerm);
+        setCreatedFields(searchFiltered);
       } catch (error) {
-        handleError(error as AxiosError,false);
+        console.error("Error fetching filtered fields:", error);
       }
     };
-  useEffect(() => {
-    fetchCreatedLeadFields();
-  }, [activeFilter]);
-  console.log("cjecking active inactive created lead fields",createdFields);
+
+    fetchFilteredFields();
+  }, [searchTerm]);
+
 
   // useEffect(() => {
   //   if (activeFilter === 'Hidden'){
@@ -237,7 +265,7 @@ const FieldsSettingsPage = () => {
 
     // setFields((prev) => [...prev, newField]);
     setIsCreateModalOpen(false);
-  }, []);
+  }, [fetchCreatedLeadFields]);
 
   // Function to handle editing a field
   // const handleEditField = useCallback(

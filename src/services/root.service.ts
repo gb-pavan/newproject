@@ -311,6 +311,11 @@ class RootService{
     const url = `/api/leadField/delete/${id}`;
     return await callApi(url, API.DELETE);
   };
+
+  getLeadFieldSearch = async (name:string): Promise<CreatedLeadField[]> => {
+    const url = `/api/lead_field/read/get-all-fields?name=${name}`;
+    return await callApi(url,API.GET);
+  }
 }
 
 export const RootInstance = new RootService();

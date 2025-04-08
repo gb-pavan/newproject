@@ -7,7 +7,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { BsFillTelephoneOutboundFill } from "react-icons/bs";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 import { capitalizeFirstLetterOfEachWord, formatCamelCase, formatDate, getAssignedOwnerEmail, getAssignedOwnerName, getColumnValue, handleError } from "@/utils/helpers";
-import { IStatus } from "@/interfaces/tableFilterTypes";
+import { IStatus, QueryState } from "@/interfaces/tableFilterTypes";
 import { AxiosError } from "axios";
 import { TableInstance } from "@/services/table.service";
 import { EXCLUDED_COLUMNS, EXCLUDED_COLUMNS_TEAM } from "@/utils/enum";
@@ -20,7 +20,8 @@ interface TableProps {
   // onRowClick: (id: number) => void;
   onRowClick?: (id: string) => void;
   selectedRowIdsRef?: React.RefObject<Set<string>>; // 👈 Add this
-  tabColumns?:string[]
+  tabColumns?:string[];
+  setQuery?:(query: QueryState | ((prev: QueryState) => QueryState)) => void;
 }
 
 const ItemType = "COLUMN";
@@ -72,8 +73,9 @@ const columnStyles: Record<string, string> = {
 
 const COLUMN_STORAGE_KEY = "displayColumns";
 
-const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns, columns,statusInfo,tableType,onRowClick,selectedRowIdsRef }) => {
+const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns,statusInfo,tableType,onRowClick,selectedRowIdsRef }) => {
   // const [displayColumns, setDisplayColumns] = useState<string[]>([]);
+  console.log("setQuery",setQuery);
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [checkedRows, setCheckedRows] = useState<boolean[]>([]);
@@ -114,6 +116,17 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns, columns,statusIn
 
     setFavoriteRows(initialFavorites);
   }, [data]);
+
+  useEffect(() => {
+    if (setQuery) {
+      setQuery((prev: QueryState) => ({
+        ...prev,
+        selectedFields: displayColumns
+      }));
+    }
+  }, [displayColumns, setQuery]);
+
+
 
 
   useEffect(() => {
@@ -243,7 +256,8 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns, columns,statusIn
                 <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-800 rounded-lg shadow-lg z-40 p-2">
                   <ul className="text-sm text-gray-700">
                     {/* {columnOrder?.map((key, index) => ( */}
-                    {tabColumns?.filter(key => !excludedCols.includes(key)).map((key, index) => (                   
+                    {/* {tabColumns?.filter(key => !excludedCols.includes(key)).map((key, index) => (                    */}
+                    {tabColumns?.map((key, index) => (
                       <DraggableItem
                         key={key}
                         id={key}
@@ -321,7 +335,12 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns, columns,statusIn
                                 }
                               }}
                               style={{ cursor: "pointer" }}>
-                              {favoriteRows[row._id as string] ? <FaStar color="#fcba03" /> : <FaRegStar color="black" />}
+                              {/* {favoriteRows[row._id as string] ? <FaStar color="#fcba03" /> : <FaRegStar color="black" />} */}
+                              {tableType !== 'team' && (
+                                favoriteRows[row._id as string]
+                                  ? <FaStar color="#fcba03" />
+                                  : <FaRegStar color="black" />
+                              )}
                             </div>
                             {/* <span className="text-[14px] ml-2" onClick={() => handleNameClick(row._id)} 
                               style={{ cursor: "pointer", color: "#0D2167", textDecoration: "underline" }}>{row[col]?.name || "-"}</span> */}

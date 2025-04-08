@@ -226,7 +226,7 @@ const TableContainer: React.FC = () => {
         </div>
         <TableFilters rowsCount={tableData?.length} setFilter={setFilterState} selectedIds={selectedIds} query={query} setQuery={setQuery} filterState={filterState} assignee={assignee} statusInfo={statusInfo} />
         <DndProvider backend={HTML5Backend}>
-        <DynamicTable3 data={tableData} tabColumns={tabColumns} selectedRowIdsRef={selectedRowIdsRef} columns={columns} statusInfo={statusInfo} tableType="lead" onRowClick={handleRowClick} /></DndProvider>
+        <DynamicTable3 data={tableData} tabColumns={tabColumns} selectedRowIdsRef={selectedRowIdsRef} columns={columns} statusInfo={statusInfo} tableType="lead" onRowClick={handleRowClick} setQuery={setQuery} /></DndProvider>
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
