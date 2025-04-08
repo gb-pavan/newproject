@@ -120,6 +120,9 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
       >
         {defaultValue === 'Assignee' && <DynamicIcon name={btnIcon ?? "GoPerson"} className="text-gray-600" size={24} />}
         <span>{defaultValue === 'Assignee' && isSmallScreen ? '' : displayText}</span>
+        {/* <span>{defaultValue === 'Assignee' && isSmallScreen ? '' : ''}</span> */}
+        <span>{defaultValue === 'Active' ? selectedValues :''}</span>
+        {/* <span>{defaultValue?.length && defaultValue}</span> */}
         <ChevronDown size={16} />
       </button>
 

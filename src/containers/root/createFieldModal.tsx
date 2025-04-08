@@ -77,7 +77,7 @@ const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ isOpen, onClose, on
     // if (fieldType === "dropdown") {
     //   payload.options = selectedProperties; // Assuming selectedProperties holds dropdown options
     // }
-    console.log("field creation cheching",mandatory,isForm,toggleValue);
+    console.log("field creation cheching mandatory isForm active",mandatory,isForm,toggleValue);
     await onCreateField(fieldName, fieldType, selectedProperties, mandatory,isForm,toggleValue,selectedColor);
     if (fieldName.trim()) {
       // onCreateField(fieldName, fieldType, selectedProperties);

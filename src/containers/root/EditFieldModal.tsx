@@ -26,9 +26,9 @@ const EditFieldModal: React.FC<EditFieldModalProps> = ({ isOpen, onClose, onEdit
   const [options, setOptions] = useState<string[]>([]);
   const [newOption, setNewOption] = useState('');
   const [selectedColor, setSelectedColor] = useState<string>("");
-  const [active, setActive] = useState(field.active);
-  const [isForm,setIsForm] = useState<boolean>(field.isForm);
-  const [mandatory,setMandatory] = useState<boolean>(field.required);
+  const [active, setActive] = useState<boolean>(false);
+  const [isForm,setIsForm] = useState<boolean>(false);
+  const [mandatory,setMandatory] = useState<boolean>(false);
 
 
   // Reset form when field changes
@@ -37,6 +37,9 @@ const EditFieldModal: React.FC<EditFieldModalProps> = ({ isOpen, onClose, onEdit
       setName(field.name);
       setType(field.type);
       setOptions([...field.options]);
+      setActive(field.active);
+      setIsForm(field.isForm);
+      setMandatory(field.required)
     }
   }, [field]);
   

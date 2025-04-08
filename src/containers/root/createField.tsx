@@ -25,21 +25,38 @@ import CustomDropdown2 from "@/components/MyDropdown2";
 
 // import { create } from "domain";
 
-interface Field {
-  _id: string;
+// interface Field {
+//   _id: string;
+//   name: string;
+//   type: string;
+//   options: string[];
+//   createdAt: string;
+//   updatedAt: string;
+//   __v?: number;
+//   active?: boolean;
+// }
+
+interface Field{
+    _id: string;
   name: string;
   type: string;
   options: string[];
   createdAt: string;
   updatedAt: string;
-  __v?: number;
-  active?: boolean;
+  __v: number;
+  active: boolean;
+  columnIconCode: string;
+  columnColor: string;
+  position: number;
+  isForm: boolean;
+  required: boolean;
+  format: string;
 }
 
 const FieldsSettingsPage = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeFilter, setActiveFilter] = useState("Active Fields");
+  const [activeFilter, setActiveFilter] = useState("Active");
   const [selectedType, setSelectedType] = useState("Select type");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -187,7 +204,7 @@ const FieldsSettingsPage = () => {
   };
 
   // Function to handle creating a new field
-  const handleCreateField = useCallback(async (name: string, type: string, options:string[],mandatory:boolean,toggleValue:boolean,isForm:boolean,selectedColor:string) => {
+  const handleCreateField = useCallback(async (name: string, type: string, options:string[],mandatory:boolean,isForm:boolean,toggleValue:boolean, selectedColor:string) => {
     console.log("check field createing step",mandatory,isForm,toggleValue);
     const payload :{name:string,type:string,options:string[],required:boolean,active:boolean,isForm:boolean,columnColor:string}= {name:name,type:type,options,required:mandatory,active:toggleValue,isForm,columnColor:selectedColor}
     const checkCreatedField = await RootInstance.createLeadField(payload);
@@ -271,9 +288,10 @@ const FieldsSettingsPage = () => {
 
   // Function to toggle field visibility
   const handleToggleVisibility = useCallback(async (SpecificField:Field) => {
+    console.log("sep field visbility sctive isform check",SpecificField);
     // await RootInstance.LeadFieldVisibility(field._id , field.active)
-    if (typeof SpecificField.active === 'boolean') {
-      await RootInstance.LeadFieldVisibility(SpecificField._id, SpecificField.active);
+    if (typeof SpecificField.active === 'boolean' && typeof SpecificField.isForm === 'boolean') {
+      await RootInstance.LeadFieldVisibility(SpecificField._id, SpecificField.active,SpecificField.isForm);
     }
 
     setCreatedFields((prev) =>
@@ -316,7 +334,7 @@ const FieldsSettingsPage = () => {
     setActiveFilter(
       values[0]
     );
-  }, [activeFilter]);
+  }, []);
 
   // Function to handle H2 field selection
   const handleH2Selection = useCallback((field: string) => {
@@ -368,7 +386,7 @@ const FieldsSettingsPage = () => {
       .includes(searchTerm.toLowerCase());
       console.log("matchessearch",matchesSearch);
     const matchesVisibility =
-      activeFilter === "active" ? !field.active : field.active;
+      activeFilter === "Active" ? !field.active : field.active;
       console.log("visbility",matchesVisibility);
     const matchesType =
       selectedType === "Select type" || selectedType === "All"
@@ -575,9 +593,9 @@ const FieldsSettingsPage = () => {
                 <IoIosArrowDown className="ml-2" />
               </button> */}
               <CustomDropdown2 options={[
-                { label: "Active", value: "active", icon: "user-plus" },
-                { label: "Hidden", value: "hidden", icon: "file-spreadsheet" },
-              ]} onChange={handleActive} defaultValue="Active" />
+                { label: "Active", value: "Active", icon: "user-plus" },
+                { label: "Hidden", value: "Hidden", icon: "file-spreadsheet" },
+              ]} selectedValues={activeFilter} onChange={handleActive} />
             </div>
           </div>
 
@@ -635,7 +653,7 @@ const FieldsSettingsPage = () => {
                                 className="text-gray-400 hover:text-blue-500"
                                 onClick={() => handleToggleVisibility(field)}
                               >
-                                {field.active ? (
+                                {field.active? (
                                   <span className="text-gray-400"><FaRegEyeSlash /></span>
                                 ) : (
                                   <span className="text-green-500"><FiEye /></span>
