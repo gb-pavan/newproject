@@ -288,7 +288,6 @@ const FieldsSettingsPage = () => {
 
   // Function to toggle field visibility
   const handleToggleVisibility = useCallback(async (SpecificField:Field) => {
-    console.log("sep field visbility sctive isform check",SpecificField);
     // await RootInstance.LeadFieldVisibility(field._id , field.active)
     if (typeof SpecificField.active === 'boolean' && typeof SpecificField.isForm === 'boolean') {
       await RootInstance.LeadFieldVisibility(SpecificField._id, SpecificField.active,SpecificField.isForm);
@@ -307,9 +306,9 @@ const FieldsSettingsPage = () => {
   // Function to handle edit button click
   const handleEditClick = useCallback(
     (fieldName: string) => {
-      const field = createdFields.find((f) => f.name === fieldName);
-      if (field) {
-        setEditingField(field);
+      const editField = createdFields.find((f) => f.name === fieldName);
+      if (editField) {
+        setEditingField(editField);
         setIsEditModalOpen(true);
       }
     },
@@ -330,7 +329,6 @@ const FieldsSettingsPage = () => {
   }, []);
 
   const handleActive = useCallback((values:string[]) => {
-    console.log("selected active o r not",values[0]);
     setActiveFilter(
       values[0]
     );
@@ -379,24 +377,33 @@ const FieldsSettingsPage = () => {
   };
   
   // Filter fields based on search term, type, and active/hidden filter
+  // const filteredFields = createdFields?.filter((field) => {
+  //   const matchesSearch = field.name
+  //     .toLowerCase()
+  //     .includes(searchTerm.toLowerCase());
+  //   const matchesVisibility =
+  //     activeFilter === "Active" ? !field.active : field.active;
+  //   const matchesType =
+  //     selectedType === "Select type" || selectedType === "All"
+  //       ? true
+  //       : field.type.toLowerCase() === selectedType.toLowerCase();
+
+  //   return matchesSearch && matchesVisibility && matchesType;
+  // });
+
   const filteredFields = createdFields?.filter((field) => {
-    console.log("filtered field ccccccc",field);
     const matchesSearch = field.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
-      console.log("matchessearch",matchesSearch);
     const matchesVisibility =
-      activeFilter === "Active" ? !field.active : field.active;
-      console.log("visbility",matchesVisibility);
+      activeFilter === "Active" ? (field.active) : !field.active;
     const matchesType =
       selectedType === "Select type" || selectedType === "All"
         ? true
         : field.type.toLowerCase() === selectedType.toLowerCase();
-    console.log("matchestype",matchesType);
 
     return matchesSearch && matchesVisibility && matchesType;
   });
-  console.log("filteredd fieldsssss",filteredFields);
 
   const searchResults = filteredFields?.length;
 
@@ -654,9 +661,9 @@ const FieldsSettingsPage = () => {
                                 onClick={() => handleToggleVisibility(field)}
                               >
                                 {field.active? (
-                                  <span className="text-gray-400"><FaRegEyeSlash /></span>
-                                ) : (
                                   <span className="text-green-500"><FiEye /></span>
+                                ) : (
+                                  <span className="text-gray-400"><FaRegEyeSlash /></span>
                                 )}
                               </button>
                             </div>
