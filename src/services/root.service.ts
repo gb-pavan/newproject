@@ -199,7 +199,7 @@ class RootService{
         'color':statusCreated.color,
         'label':statusCreated.label
     }
-    const url='/api/lead_stage/write/create-update/stage_active';
+    const url='/api/lead_stage/write/create-update/stage_fresh';
     return await callApi(url,API.POST,payload,true);
     // return stages;
   }

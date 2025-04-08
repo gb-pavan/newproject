@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { Edit2, Trash2, RotateCw, ChevronDown, ChevronUp } from 'lucide-react';
+// import { Edit2, Trash2, RotateCw, ChevronDown, ChevronUp } from 'lucide-react';
+import { Edit2 } from 'lucide-react';
 import ColorPicker from '@/components/ColorPicker';
 import { RootInstance } from '@/services/root.service';
 import { IStage } from '@/interfaces/root.interface';
@@ -19,8 +20,8 @@ export const ClosedStage: React.FC<StageProps> = ({ className, won, lost,setChan
   const [stageId, setStageId] = useState('');
   const [currentType, setCurrentType] = useState<'won' | 'lost' | null>(null);
 
-  const [showDeletedWon, setShowDeletedWon] = useState(false);
-  const [showDeletedLost, setShowDeletedLost] = useState(false);
+  // const [showDeletedWon, setShowDeletedWon] = useState(false);
+  // const [showDeletedLost, setShowDeletedLost] = useState(false);
 
   const handleEditClick = (id: string, color: string, label: string, type: 'won' | 'lost') => {
     setIsEditing(true);
@@ -44,17 +45,17 @@ export const ClosedStage: React.FC<StageProps> = ({ className, won, lost,setChan
     closePopup();
   };
 
-  const handleDelete = async (id: string, type: 'won' | 'lost') => {
-    const stageKey = type === 'won' ? 'stage_won' : 'stage_lost';
-    await RootInstance.deleteInitialStatus({ stageId: stageKey, statusId: id });
-    setChange((prev) => !prev);
-  };
+  // const handleDelete = async (id: string, type: 'won' | 'lost') => {
+  //   const stageKey = type === 'won' ? 'stage_won' : 'stage_lost';
+  //   await RootInstance.deleteInitialStatus({ stageId: stageKey, statusId: id });
+  //   setChange((prev) => !prev);
+  // };
 
-  const handleRestore = async (id: string, type: 'won' | 'lost') => {
-    const stageKey = type === 'won' ? 'stage_won' : 'stage_lost';
-    await RootInstance.restoreDeletedInitialStatus({ stageId: stageKey, statusId: id });
-    setChange((prev) => !prev);
-  };
+  // const handleRestore = async (id: string, type: 'won' | 'lost') => {
+  //   const stageKey = type === 'won' ? 'stage_won' : 'stage_lost';
+  //   await RootInstance.restoreDeletedInitialStatus({ stageId: stageKey, statusId: id });
+  //   setChange((prev) => !prev);
+  // };
 
   const renderActiveStatuses = (
     activeItems: IStage['activeStatuses'] | undefined,
@@ -71,64 +72,64 @@ export const ClosedStage: React.FC<StageProps> = ({ className, won, lost,setChan
           <button onClick={() => handleEditClick(item.statusid.toLocaleString(), item.color, item.label, type)}>
             <Edit2 size={16} className="text-gray-500 hover:text-gray-700" />
           </button>
-          <button onClick={() => handleDelete(item.statusid.toString(), type)}>
+          {/* <button onClick={() => handleDelete(item.statusid.toString(), type)}>
             <Trash2 size={16} className="text-gray-500 hover:text-red-700" />
-          </button>
+          </button> */}
         </div>
       </div>
     ));
   };
 
-  const renderArchivedStatuses = (
-    archivedItems: IStage['archivedStatuses'] | undefined,
-    type: 'won' | 'lost'
-  ) => {
-    return (
-      <div className="mt-4">
-        <button
-          className="flex items-center text-sm text-gray-500 hover:text-gray-700 cursor-pointer"
-          onClick={() => type === 'won' ? setShowDeletedWon(!showDeletedWon) : setShowDeletedLost(!showDeletedLost)}
-        >
-          <span>
-            Deleted statuses (
-            {Array.isArray(archivedItems) ? archivedItems.length : 0})
-          </span>
-          {type === 'won'
-            ? showDeletedWon
-              ? <ChevronUp size={16} className="ml-1" />
-              : <ChevronDown size={16} className="ml-1" />
-            : showDeletedLost
-              ? <ChevronUp size={16} className="ml-1" />
-              : <ChevronDown size={16} className="ml-1" />}
-        </button>
+  // const renderArchivedStatuses = (
+  //   archivedItems: IStage['archivedStatuses'] | undefined,
+  //   type: 'won' | 'lost'
+  // ) => {
+  //   return (
+  //     <div className="mt-4">
+  //       <button
+  //         className="flex items-center text-sm text-gray-500 hover:text-gray-700 cursor-pointer"
+  //         onClick={() => type === 'won' ? setShowDeletedWon(!showDeletedWon) : setShowDeletedLost(!showDeletedLost)}
+  //       >
+  //         <span>
+  //           Deleted statuses (
+  //           {Array.isArray(archivedItems) ? archivedItems.length : 0})
+  //         </span>
+  //         {type === 'won'
+  //           ? showDeletedWon
+  //             ? <ChevronUp size={16} className="ml-1" />
+  //             : <ChevronDown size={16} className="ml-1" />
+  //           : showDeletedLost
+  //             ? <ChevronUp size={16} className="ml-1" />
+  //             : <ChevronDown size={16} className="ml-1" />}
+  //       </button>
 
-        {(type === 'won' ? showDeletedWon : showDeletedLost) && (
-          <div className="mt-2 space-y-2 border-t border-gray-200 pt-2">
-            {(archivedItems || []).map((item) => (
-              <div
-                key={item.statusid}
-                className="flex items-center justify-between p-2 rounded-md relative opacity-70"
-                style={{ backgroundColor: item.color || '#f3f4f6' }}
-              >
-                <div className="flex items-center space-x-2">
-                  <span className="font-medium">{item.label}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <button
-                    className="text-gray-500 hover:text-green-600"
-                    onClick={() => handleRestore(item.statusid.toString(), type)}
-                    title="Restore"
-                  >
-                    <RotateCw size={16} />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
+  //       {(type === 'won' ? showDeletedWon : showDeletedLost) && (
+  //         <div className="mt-2 space-y-2 border-t border-gray-200 pt-2">
+  //           {(archivedItems || []).map((item) => (
+  //             <div
+  //               key={item.statusid}
+  //               className="flex items-center justify-between p-2 rounded-md relative opacity-70"
+  //               style={{ backgroundColor: item.color || '#f3f4f6' }}
+  //             >
+  //               <div className="flex items-center space-x-2">
+  //                 <span className="font-medium">{item.label}</span>
+  //               </div>
+  //               <div className="flex items-center space-x-2">
+  //                 <button
+  //                   className="text-gray-500 hover:text-green-600"
+  //                   onClick={() => handleRestore(item.statusid.toString(), type)}
+  //                   title="Restore"
+  //                 >
+  //                   <RotateCw size={16} />
+  //                 </button>
+  //               </div>
+  //             </div>
+  //           ))}
+  //         </div>
+  //       )}
+  //     </div>
+  //   );
+  // };
 
   return (
     <div className={`flex flex-col w-full ${className}`}>
@@ -138,14 +139,14 @@ export const ClosedStage: React.FC<StageProps> = ({ className, won, lost,setChan
       <div className="border border-green-400 rounded-lg bg-green-50 p-4 space-y-3 m-2">
         <div className="text-green-700 font-semibold">Won</div>
         <div className="space-y-2">{renderActiveStatuses(won?.activeStatuses, 'won')}</div>
-        {renderArchivedStatuses(won?.archivedStatuses, 'won')}
+        {/* {renderArchivedStatuses(won?.archivedStatuses, 'won')} */}
       </div>
 
       {/* LOST Section */}
       <div className="border border-green-400 rounded-lg bg-green-50 p-4 space-y-3 m-2">
         <div className="text-green-700 font-semibold">Lost</div>
         <div className="space-y-2">{renderActiveStatuses(lost?.activeStatuses, 'lost')}</div>
-        {renderArchivedStatuses(lost?.archivedStatuses, 'lost')}
+        {/* {renderArchivedStatuses(lost?.archivedStatuses, 'lost')} */}
       </div>
 
       {/* Edit Popup */}

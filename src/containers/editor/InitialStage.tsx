@@ -230,6 +230,7 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
       label: stageName,
       color: stageColor,
     };
+    console.log("check edit",payload);
     await RootInstance.createInitialStatus(payload);
     setChange((prev) => !prev);
     closePopup();
@@ -270,14 +271,14 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
       </div>
 
       <div className="border border-gray-200 rounded-b-lg p-4">
-        <div className="flex items-center justify-center mb-4">
+        {/* <div className="flex items-center justify-center mb-4">
           <div
             className="flex items-center justify-center w-full border border-gray-300 rounded-md px-4 py-2 cursor-pointer hover:bg-gray-50"
             onClick={handleAddNew}
           >
             <span className="text-black">+ Add</span>
           </div>
-        </div>
+        </div> */}
 
         <div className="space-y-2">
           {Array.isArray(initial?.activeStatuses) &&
@@ -301,19 +302,19 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
                   >
                     <Edit2 size={16} />
                   </button>
-                  <button
+                  {/* <button
                     className="text-gray-600 hover:text-red-600"
                     onClick={() => handleDelete(item.statusid.toString())}
                   >
                     <Trash2 size={16} />
-                  </button>
+                  </button> */}
                 </div>
               </div>
             ))}
         </div>
 
         {/* Deleted statuses */}
-        <div className="mt-4">
+        {/* <div className="mt-4">
           <button
             className="flex items-center text-sm text-gray-500 hover:text-gray-700"
             onClick={toggleDeletedItems}
@@ -349,7 +350,7 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
               ))}
             </div>
           )}
-        </div>
+        </div> */}
       </div>
 
       {isEditing && (
