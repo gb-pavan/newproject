@@ -21,6 +21,7 @@ import { AxiosError } from "axios";
 import { Trash2 } from 'lucide-react';
 import { FiEye } from "react-icons/fi";
 import { FaRegEyeSlash } from "react-icons/fa6";
+import CustomDropdown2 from "@/components/MyDropdown2";
 
 // import { create } from "domain";
 
@@ -298,17 +299,24 @@ const FieldsSettingsPage = () => {
   );
 
   // Function to toggle between Active Fields and Hidden Fields views
-  const handleToggleFieldsView = useCallback(() => {
-    setActiveFilter(
-      activeFilter === "Active Fields" ? "Hidden Fields" : "Active Fields"
-    );
-  }, [activeFilter]);
+  // const handleToggleFieldsView = useCallback(() => {
+  //   setActiveFilter(
+  //     activeFilter === "Active Fields" ? "Hidden Fields" : "Active Fields"
+  //   );
+  // }, [activeFilter]);
 
   // Function to handle H1 field selection
   const handleH1Selection = useCallback((field: string) => {
     setSelectedH1Field(field);
     setIsH1DropdownOpen(false);
   }, []);
+
+  const handleActive = useCallback((values:string[]) => {
+    console.log("selected active o r not",values[0]);
+    setActiveFilter(
+      values[0]
+    );
+  }, [activeFilter]);
 
   // Function to handle H2 field selection
   const handleH2Selection = useCallback((field: string) => {
@@ -360,7 +368,7 @@ const FieldsSettingsPage = () => {
       .includes(searchTerm.toLowerCase());
       console.log("matchessearch",matchesSearch);
     const matchesVisibility =
-      activeFilter === "Active Fields" ? !field.active : field.active;
+      activeFilter === "active" ? !field.active : field.active;
       console.log("visbility",matchesVisibility);
     const matchesType =
       selectedType === "Select type" || selectedType === "All"
@@ -550,7 +558,7 @@ const FieldsSettingsPage = () => {
                   </div>
                 )}
               </div>
-              <button
+              {/* <button
                 className="flex items-center justify-between px-4 py-2 border border-gray-300 rounded-md bg-white text-sm text-black hover:bg-purple-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 onClick={handleToggleFieldsView}
               >
@@ -565,7 +573,11 @@ const FieldsSettingsPage = () => {
                   <span>{activeFilter}</span>
                 </div>
                 <IoIosArrowDown className="ml-2" />
-              </button>
+              </button> */}
+              <CustomDropdown2 options={[
+                { label: "Active", value: "active", icon: "user-plus" },
+                { label: "Hidden", value: "hidden", icon: "file-spreadsheet" },
+              ]} onChange={handleActive} defaultValue="Active" />
             </div>
           </div>
 
