@@ -25,7 +25,7 @@ class TableService {
   };
 
   getFormFields = async (): Promise<FormField[]> => {
-    const url = "/api/lead_field/read/get-all-fields";
+    const url = "/api/lead_field/read/get-all-fields?active=true&isForm=true";
     return await callApi(url, API.GET);
   };
 
@@ -36,14 +36,14 @@ class TableService {
 
   assignTo = async (payload:{leadIds:string[],managerId:string}) => {
     console.log("check assign to",payload);
-    // const payload2 = {
-    //   "leadIds":payload.leadIds,
-    //   "managerId":payload.managerId
-    // }
     const payload2 = {
-  "leadIds": ["67f0da5edf5db3a5769661b3","67f0da3bdf5db3a576966189","67f0c8b6243da460622e2ca3","67f0c66d243da460622e2c84"],
-  "managerId": "67daa956062b34038e35df4c"
-}
+      "leadIds":payload.leadIds,
+      "managerId":payload.managerId
+    }
+//     const payload2 = {
+//   "leadIds": ["67f0da5edf5db3a5769661b3","67f0da3bdf5db3a576966189","67f0c8b6243da460622e2ca3","67f0c66d243da460622e2c84"],
+//   "managerId": "67daa956062b34038e35df4c"
+// }
     const url = "/api/admin/write/assign-multiple-leads-to-manager";
     return await callApi(url, API.PUT,payload2,true);
   };

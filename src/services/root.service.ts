@@ -282,8 +282,9 @@ class RootService{
     return await callApi(url,API.POST,payload2,true);
   }
 
-  getCreatedLeadFields = async (): Promise<CreatedLeadField[]> => {
-    const url = "/api/lead_field/read/get-all-fields";
+  getCreatedLeadFields = async (active:boolean): Promise<CreatedLeadField[]> => {
+    const url = `/api/lead_field/read/get-all-fields?active=${active}`;
+    console.log("url lead active",url);
     return await callApi(url, API.GET);
   };
 

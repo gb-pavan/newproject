@@ -43,6 +43,7 @@ const TableContainer: React.FC = () => {
   const [query, setQuery] = useState<QueryState>({
     selectedId:"SYSTEM_FILTER_ALL_LEAD",
     filters:[],
+    selectedFields:["name", "phone","favorite","region","assignedOwner","createdAt","updatedAt","status","leadscore","class","email","createdBy"],
     logic: "AND",
     pagination: {
       page: currentPage,
@@ -128,6 +129,7 @@ const TableContainer: React.FC = () => {
      const filterData = async () => {
     try {
       const filterResponse = await FilterInstance.getFilterResponse(query); // Await the response
+      console.log("filter Response",filterResponse?.leads);
       setTableData(filterResponse?.leads);
       setTotalRows(filterResponse?.total);
     } catch (error) {

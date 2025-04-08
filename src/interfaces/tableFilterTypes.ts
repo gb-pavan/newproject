@@ -23,6 +23,7 @@ export interface QueryState {
   selectedId?:string,
   search?:boolean,
   filters: Filter[];
+  selectedFields:string[]
   logic: "AND";
   pagination: {
     page: number;

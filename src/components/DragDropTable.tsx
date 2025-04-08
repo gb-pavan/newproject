@@ -6,7 +6,7 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { BsFillTelephoneOutboundFill } from "react-icons/bs";
 import { FaRegStar, FaStar } from "react-icons/fa6";
-import { capitalizeFirstLetterOfEachWord, formatCamelCase, formatDate, getColumnValue, handleError } from "@/utils/helpers";
+import { capitalizeFirstLetterOfEachWord, formatCamelCase, formatDate, getAssignedOwnerEmail, getAssignedOwnerName, getColumnValue, handleError } from "@/utils/helpers";
 import { IStatus } from "@/interfaces/tableFilterTypes";
 import { AxiosError } from "axios";
 import { TableInstance } from "@/services/table.service";
@@ -378,15 +378,15 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns, columns,statusIn
                                 </div>
                               </div>
                             ):col.toLowerCase() === 'assignedowner'? (
-                              <div className="h-full flex items-center">
+                              <div className="h-full flex items-center" title={getAssignedOwnerEmail(row)} >
                                 <div className="w-8 h-8 rounded-full bg-purple-200 flex items-center justify-center text-purple-800 font-medium">
                                   {/* {typeof row[col] === "object" ? row[col]?.[col] ?? "-" : row[col]?.split(' ').map((n: string) => n[0]).join('')} */}
                                   {typeof row[col] === "object" 
-                                    ? getColumnValue(row, col)?.split(" ").map((word: string) => word[0]?.toUpperCase()).join("") ?? "-" 
-                                    : getColumnValue(row, col)?.split(" ").map((word: string) => word[0]?.toUpperCase()).join("")
+                                    ? getAssignedOwnerName(row)?.split(" ").map((word: string) => word[0]?.toUpperCase()).join("") ?? "-" 
+                                    : getAssignedOwnerName(row)?.split(" ").map((word: string) => word[0]?.toUpperCase()).join("")
                                   }
                                 </div>
-                                <span className="ml-2 text-sm text-gray-800 text-[14px]">{getColumnValue(row, col)}</span>
+                                <span className="ml-2 text-sm text-gray-800 text-[14px]">{getAssignedOwnerName(row)}</span>
                               </div>
                             ):
                         (

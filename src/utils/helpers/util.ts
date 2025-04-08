@@ -223,6 +223,24 @@ export const getColumnValue = (row: Record<string, unknown>, col: string): strin
   return String(value ?? "-");
 };
 
+export const getAssignedOwnerName = (row: Record<string, unknown>): string => {
+  console.log("row check ing",row);
+  const owner = row['assignedOwner'];
+  if (typeof owner === 'object' && owner !== null && 'name' in owner) {
+    return String((owner as Record<string, unknown>).name ?? '-');
+  }
+  return '-';
+};
+
+export const getAssignedOwnerEmail = (row: Record<string, unknown>): string => {
+  const owner = row['assignedOwner'];
+  if (typeof owner === 'object' && owner !== null && 'email' in owner) {
+    return String((owner as Record<string, unknown>).email ?? '-');
+  }
+  return '-';
+};
+
+
 export function convertToOptions(data: RegionOption[]): DropdownOption[] {
     return data.map(item => ({
         label: item.name,

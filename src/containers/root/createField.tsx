@@ -165,16 +165,29 @@ const FieldsSettingsPage = () => {
   const [createdFields,setCreatedFields] = useState<CreatedLeadField[]>([]);
   const fetchCreatedLeadFields = async () => {
       try {
-        const response = await RootInstance.getCreatedLeadFields(); // Await the API response
-        setCreatedFields(response);
+        if (activeFilter === 'Hidden'){
+          const response = await RootInstance.getCreatedLeadFields(false); // Await the API response
+          setCreatedFields(response);
+        } else if (activeFilter === 'Active'){
+           const response = await RootInstance.getCreatedLeadFields(true); // Await the API response
+          setCreatedFields(response);
+        }
       } catch (error) {
         handleError(error as AxiosError,false);
       }
     };
   useEffect(() => {
     fetchCreatedLeadFields();
-  }, []);
-  console.log("created fields",createdFields);
+  }, [activeFilter]);
+  console.log("cjecking active inactive created lead fields",createdFields);
+
+  // useEffect(() => {
+  //   if (activeFilter === 'Hidden'){
+  //     RootInstance.getCreatedFields(false);
+  //   } else if (activeFilter === 'Active'){
+  //     RootInstance.getCreatedFields(true);
+  //   }
+  // }, [activeFilter]);
 
   // Function to handle drag end event
   const handleDragEnd = (result:DropResult) => {
@@ -300,6 +313,7 @@ const FieldsSettingsPage = () => {
           : field
       )
     );
+    setActiveFilter(SpecificField.active === true? "Hidden":"Active")
 
   }, []);
 
@@ -395,14 +409,15 @@ const FieldsSettingsPage = () => {
     const matchesSearch = field.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
-    const matchesVisibility =
-      activeFilter === "Active" ? (field.active) : !field.active;
+    // const matchesVisibility =
+    //   activeFilter === "Active" ? (field.active) : !field.active;
     const matchesType =
       selectedType === "Select type" || selectedType === "All"
         ? true
         : field.type.toLowerCase() === selectedType.toLowerCase();
 
-    return matchesSearch && matchesVisibility && matchesType;
+    // return matchesSearch && matchesVisibility && matchesType;
+    return matchesSearch && matchesType;
   });
 
   const searchResults = filteredFields?.length;
