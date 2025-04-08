@@ -24,6 +24,17 @@ export interface IEditableStatusBox {
     // icon:string;
 }
 
+// export interface CreatedLeadField {
+//   _id: string;
+//   name: string;
+//   type: string;
+//   options: string[];
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+//   active?: boolean;
+// }
+
 export interface CreatedLeadField {
   _id: string;
   name: string;
@@ -32,6 +43,13 @@ export interface CreatedLeadField {
   createdAt: string;
   updatedAt: string;
   __v: number;
-  active?: boolean;
+  active: boolean;
+  columnIconCode: string;
+  columnColor: string;
+  position: number;
+  isForm: boolean;
+  required: boolean;
+  format: string;
 }
+
   

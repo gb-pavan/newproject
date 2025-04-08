@@ -287,13 +287,22 @@ class RootService{
     return await callApi(url, API.GET);
   };
 
-  EditLeadFields = async (name:string,type:string,options:string[],_id:string) => {
+  EditLeadFields = async (name:string,type:string,options:string[],_id:string,selectedColor:string,active:boolean,mandatory:boolean,isForm:boolean) => {
     const payload = {
       "name":name,
       "type":type,
-      "options":options
+      "options":options,
+      "active":active,
+      "required":mandatory,
+      "isForm":isForm,
+      "columnColor":selectedColor,
+        "columnIconCode": '',
+        "position":15
+
     }
+    console.log("edit payload",payload);
     const url = `/api/lead_field/write/create-or-update/${_id}`;
+    console.log("check url",url);
     return await callApi(url, API.POST,payload,true);
   };
 

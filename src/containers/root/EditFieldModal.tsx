@@ -2,24 +2,33 @@
 import React, { useState, useEffect } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
 import { AiOutlinePlus, AiOutlineClose } from 'react-icons/ai';
+import ColorPicker from '@/components/ColorPicker';
+import ToggleSwitch from '@/components/ToggleSwitch';
+import { CreatedLeadField } from '@/interfaces/root.interface';
 
 interface EditFieldModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onEditField: (name: string, type: string, options: string[],_id:string) => void;
-  field: {
-    name: string;
-    type: string;
-    options: string[];
-    _id:string
-  };
+  onEditField: (name: string, type: string, options: string[],_id:string,selectedColor:string,active:boolean,mandatory:boolean,isForm:boolean) => void;
+  // field: {
+  //   name: string;
+  //   type: string;
+  //   options: string[];
+  //   _id:string
+  // };
+  field:CreatedLeadField
 }
 
 const EditFieldModal: React.FC<EditFieldModalProps> = ({ isOpen, onClose, onEditField, field }) => {
+  console.log("editeing field check props",field);
   const [name, setName] = useState('');
   const [type, setType] = useState('');
   const [options, setOptions] = useState<string[]>([]);
   const [newOption, setNewOption] = useState('');
+  const [selectedColor, setSelectedColor] = useState<string>("");
+  const [active, setActive] = useState(field.active);
+  const [isForm,setIsForm] = useState<boolean>(field.isForm);
+  const [mandatory,setMandatory] = useState<boolean>(field.required);
 
 
   // Reset form when field changes
@@ -89,8 +98,14 @@ const EditFieldModal: React.FC<EditFieldModalProps> = ({ isOpen, onClose, onEdit
     setNewOption('');
   }
 
-  onEditField(name, type, finalOptions.length > 0 ? finalOptions : [], field._id);
+      console.log("editeeeddd fields child active mandatory isFOrm",active,mandatory,isForm);
+
+  onEditField(name, type, finalOptions.length > 0 ? finalOptions : [], field._id,selectedColor,mandatory,isForm,active);
 };
+
+const handleColorChange = (colorValue: string) => {
+    setSelectedColor(colorValue);
+  };
 
 
   if (!isOpen) return null;
@@ -196,6 +211,41 @@ const EditFieldModal: React.FC<EditFieldModalProps> = ({ isOpen, onClose, onEdit
               </div>
             </div>
           )}
+
+           <label className="block text-sm font-medium text-gray-700 mb-2">
+              Select Color
+            </label>
+            <div className="grid grid-cols-4 gap-2 mb-6">
+              
+              <ColorPicker onChange={handleColorChange} />
+            </div>
+
+            <div className="flex items-center gap-4">
+              {/* <label className="block text-sm font-medium text-gray-700">Active</label> */}
+              <ToggleSwitch
+                label="Active"
+                value={active}
+                onChange={setActive}
+              />
+            </div>
+
+            <div className="flex items-center gap-4">
+              {/* <label className="block text-sm font-medium text-gray-700">Is Form</label> */}
+              <ToggleSwitch
+                label="Is Form"
+                value={isForm}
+                onChange={setIsForm}
+              />
+            </div>
+
+            <div className="flex items-center gap-4">
+              {/* <label className="block text-sm font-medium text-gray-700">Required</label> */}
+              <ToggleSwitch
+                label="Required"
+                value={mandatory}
+                onChange={setMandatory}
+              />
+            </div>
           
           <div className="flex justify-end mt-6 space-x-2">
             <button

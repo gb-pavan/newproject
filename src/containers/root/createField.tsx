@@ -21,6 +21,7 @@ import { AxiosError } from "axios";
 import { Trash2 } from 'lucide-react';
 import { FiEye } from "react-icons/fi";
 import { FaRegEyeSlash } from "react-icons/fa6";
+import { chownSync } from "fs";
 
 
 // import { create } from "domain";
@@ -43,7 +44,7 @@ const FieldsSettingsPage = () => {
   const [selectedType, setSelectedType] = useState("Select type");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingField, setEditingField] = useState<Field | null>(null);
+  const [editingField, setEditingField] = useState<CreatedLeadField | null>(null);
   const [isH1DropdownOpen, setIsH1DropdownOpen] = useState(false);
   const [isH2DropdownOpen, setIsH2DropdownOpen] = useState(false);
   const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
@@ -157,10 +158,12 @@ const FieldsSettingsPage = () => {
   useEffect(() => {
     fetchCreatedLeadFields();
   }, []);
+  console.log("created fields",createdFields);
 
   // Function to handle drag end event
   const handleDragEnd = (result:DropResult) => {
     const { destination, source } = result;
+    console.log("source destination",source,destination);
 
     // Return if dropped outside the list or dropped in the same position
     if (
@@ -239,10 +242,12 @@ const FieldsSettingsPage = () => {
   }
 
   const handleEditField = useCallback(
-  async (name: string, type: string, options: string[], _id: string) => {
+  async (name: string, type: string, options: string[], _id: string,selectedColor:string,mandatory:boolean,isForm:boolean,active:boolean) => {
     if (!editingField) return;
+    console.log("editeeeddd fields active mandatory isFOrm",active,mandatory,isForm);
 
-    await RootInstance.EditLeadFields(name, type, options, _id);
+    const editedResponse = await RootInstance.EditLeadFields(name, type, options, _id,selectedColor,active,mandatory,isForm);
+    console.log("editedResponse",editedResponse);
 
     setCreatedFields((prev) =>
       prev.map((field) =>
@@ -351,18 +356,23 @@ const FieldsSettingsPage = () => {
   
   // Filter fields based on search term, type, and active/hidden filter
   const filteredFields = createdFields?.filter((field) => {
+    console.log("filtered field ccccccc",field);
     const matchesSearch = field.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
+      console.log("matchessearch",matchesSearch);
     const matchesVisibility =
-      activeFilter === "Active Fields" ? field.active : !field.active;
+      activeFilter === "Active Fields" ? !field.active : field.active;
+      console.log("visbility",matchesVisibility);
     const matchesType =
       selectedType === "Select type" || selectedType === "All"
         ? true
         : field.type.toLowerCase() === selectedType.toLowerCase();
+    console.log("matchestype",matchesType);
 
     return matchesSearch && matchesVisibility && matchesType;
   });
+  console.log("filteredd fieldsssss",filteredFields);
 
   const searchResults = filteredFields?.length;
 
