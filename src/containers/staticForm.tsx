@@ -9,6 +9,8 @@ import { IEmployee } from "@/interfaces";
 import { handleError } from "@/utils/helpers";
 import { AxiosError } from "axios";
 import { TeamInstance } from "@/services/team.service";
+import { RegionOption } from "@/interfaces/form.interface";
+import { FormInstance } from "@/services/form.service";
 
 interface Reports {
   _id: string;
@@ -38,6 +40,7 @@ const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
       reporting: "",
       reportees: [], // if used
       ivrActive: false,
+      region:''
     },
   });
 
@@ -46,9 +49,19 @@ const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
   const [reporteesOptions, setReporteesOptions] = useState<Reports[]>([]);
   const [removedReportees, setRemovedReportees] = useState<string[]>([]); // ← store unchecked
   const [userRole, setUserRole] = useState<string | null>(null);
+  const [regionOptions, setRegionOptions] = useState<RegionOption[]>([]);
 
 
   const selectedDepartment = watch("department");
+
+  const fetchRegions = async () => {
+    try {
+      const response: RegionOption[] = await FormInstance.getRegions();
+      setRegionOptions(response);
+    } catch (error) {
+      handleError(error as AxiosError,true);
+    }
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -63,7 +76,7 @@ const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
       }
     }
   }, []);
-
+  
   useEffect(() => {
   if (!selectedDepartment) return;
 
@@ -186,6 +199,28 @@ const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
             )}
           />
         </FormControl>)}
+
+        <FormControl fullWidth>
+          <InputLabel>Region</InputLabel>
+          <Controller
+            name="region"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                label="Region"
+                onOpen={fetchRegions} // <- fetch data when dropdown opens
+              >
+                {regionOptions?.map((option) => (
+                  <MenuItem key={option._id} value={option._id}>
+                    {option.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
+        </FormControl>
+
 
         {/* <FormControl fullWidth>
           <InputLabel>Reportees</InputLabel>

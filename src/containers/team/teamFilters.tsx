@@ -23,6 +23,7 @@ const TeamFilters:React.FC<TeamFiltersProps> = ({setUserMeta}) => {
   // State for selected values
   // const [selectedStatus, setSelectedStatus] = useState<string>('Active');
   const [selectedRole, setSelectedRole] = useState<string>('');
+  const [selectedDept, setSelectedDept] = useState<string>('');
   const [selectedPermission, setSelectedPermission] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
 
@@ -43,6 +44,12 @@ const TeamFilters:React.FC<TeamFiltersProps> = ({setUserMeta}) => {
     { value: 'marketing', label: 'Marketing', icon: <FaBullhorn className="h-4 w-4 mr-2" /> }
   ];
 
+  const DeptOptions = [
+    { value: 'All', label: 'All', icon: <FaUserShield className="h-4 w-4 mr-2" /> },
+    { value: 'sales', label: 'Sales', icon: <FaUserTie className="h-4 w-4 mr-2" /> },
+    { value: 'marketing', label: 'Marketing', icon: <FaBullhorn className="h-4 w-4 mr-2" /> }
+  ];
+
   // Permission Template dropdown options
   const permissionTemplateOptions = [
     { value: 'all', label: 'All', icon: <FaLock className="h-4 w-4 mr-2" /> },
@@ -59,6 +66,12 @@ const TeamFilters:React.FC<TeamFiltersProps> = ({setUserMeta}) => {
 
   const handleRoleChange = (value: string) => {
     setSelectedRole(value);
+    // setUserMeta({ ...userMeta, role: value });
+    setUserMeta(prev => ({ ...prev, role: value }));
+  };
+
+  const handleDeptChange = (value: string) => {
+    setSelectedDept(value);
     // setUserMeta({ ...userMeta, role: value });
     setUserMeta(prev => ({ ...prev, role: value }));
   };
@@ -104,6 +117,14 @@ const TeamFilters:React.FC<TeamFiltersProps> = ({setUserMeta}) => {
               icon={<FaCheck className="h-4 w-4 text-gray-500" />}
               onSelect={handleActiveStatusChange}
             /> */}
+
+            <MyDropdown 
+              options={DeptOptions}
+              defaultValue={selectedDept}
+              placeholder="Department"
+              icon={<FaUserTie className="h-4 w-4 text-gray-500" />}
+              onSelect={handleDeptChange}
+            />
             
             {/* Role dropdown */}
             <MyDropdown 

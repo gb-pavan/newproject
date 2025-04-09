@@ -23,6 +23,7 @@ export interface IEmployee {
   reporting?: string;
   reportees?: string[];
   ivrActive?: boolean;
+  region?:string
 }
 
 

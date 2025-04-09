@@ -248,9 +248,9 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
     <DndProvider backend={HTML5Backend}>
       <div className="relative overflow-x-auto w-full dark:invert border-l border-r border-t border-gray-800 rounded-t-lg">
         <div ref={dropdownRef} className="absolute cursor-pointer z-30" style={{top:10, right:10}}>
-              <button onClick={() => setDropdownOpen((prev) => !prev)} className="p-2 rounded-full hover:bg-gray-300">
+              {tableType !== 'team' && <button onClick={() => setDropdownOpen((prev) => !prev)} className="p-2 rounded-full hover:bg-gray-300">
                 <PiDotsThreeOutlineVertical size={20} className="text-gray-600 hover:text-gray-900" />
-              </button>
+              </button>}
 
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-800 rounded-lg shadow-lg z-40 p-2">
@@ -378,7 +378,7 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
                         ):col.toLowerCase() === "phone" ? (
                           <span className="flex gap-3 text-[12px] font-[400]">
                             <span className="text-[14px]">{getColumnValue(row, col)}</span>
-                            <span style={{cursor:'pointer'}}><BsFillTelephoneOutboundFill color='#4287f5' /></span>
+                            {tableType !== 'team' && <span style={{cursor:'pointer'}}><BsFillTelephoneOutboundFill color='#4287f5' /></span>}
                           </span>
                         ) :col.toLowerCase() === "updatedat" ? (
                           <span className="flex gap-3 text-[12px] font-[400] ">
