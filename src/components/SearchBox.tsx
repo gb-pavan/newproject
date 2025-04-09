@@ -159,6 +159,7 @@ interface SearchBoxProps {
   height?: string | number;
   width?: string | number;
   responsive?: boolean;
+  setFilterOptions?: (value: string) => void;
 }
 
 const SearchBox = ({
@@ -166,6 +167,7 @@ const SearchBox = ({
   placeholder,
   iconSize,
   iconColor,
+  setFilterOptions,
   responsive = false,
 }: SearchBoxProps) => {
   const [query, setQuery] = useState("");
@@ -183,17 +185,38 @@ const SearchBox = ({
     }
   }, [responsive]);
 
+  // useEffect(() => {
+  //   if (setFilterOptions) {
+  //     setFilterOptions(query);
+  //   }
+  //   setFilter?.((prev) => {
+  //     const updatedFilters = prev.filters.filter((f) => f.operator !== "CONTAINS");
+
+  //     if (query.trim() !== "") {
+  //       updatedFilters.push({ operator: "CONTAINS", value: query });
+  //     }
+
+  //     return { ...prev, filters: updatedFilters, "search":true };
+  //   });
+  // }, [query, setFilter]);
   useEffect(() => {
-    setFilter?.((prev) => {
-      const updatedFilters = prev.filters.filter((f) => f.operator !== "CONTAINS");
+    if (setFilterOptions) {
+      setFilterOptions(query);
+    }
 
-      if (query.trim() !== "") {
-        updatedFilters.push({ operator: "CONTAINS", value: query });
-      }
+    if (setFilter) {
+      setFilter((prev) => {
+        const updatedFilters = prev.filters.filter((f) => f.operator !== "CONTAINS");
 
-      return { ...prev, filters: updatedFilters, "search":true };
-    });
-  }, [query, setFilter]);
+        if (query.trim() !== "") {
+          updatedFilters.push({ operator: "CONTAINS", value: query });
+        }
+
+        return { ...prev, filters: updatedFilters, search: true };
+      });
+    }
+  }, [query, setFilter, setFilterOptions]);
+
 
   return (
     <div
