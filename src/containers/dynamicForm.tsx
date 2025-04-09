@@ -155,22 +155,50 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ fields }) => {
     });
   };
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   const { name, phone, ...rest } = formData;
+  //   const payload = {
+  //     name,
+  //     phone,
+  //     fields: { ...rest },
+  //   };
+  //   try {
+  //     await FormInstance.submitForm(payload);
+  //     toast.success("Form submitted successfully");
+  //     setFormData({}); // ✅ Clear form state
+  //   } catch (error) {
+  //     toast.error('Something went wrong!');
+  //     handleError(error as AxiosError, true);
+  //   }
+  // };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const { name, phone, ...rest } = formData;
     const payload = {
       name,
       phone,
       fields: { ...rest },
     };
+
     try {
-      await FormInstance.submitForm(payload);
-      toast.success("Form submitted successfully");
-      setFormData({}); // ✅ Clear form state
+      await toast.promise(
+        FormInstance.submitForm(payload),
+        {
+          loading: 'Submitting form...',
+          success: 'Form submitted successfully!',
+          error: 'Submission failed!',
+        }
+      );
+
+      setFormData({}); // ✅ Clear form after success
     } catch (error) {
-      handleError(error as AxiosError, true);
+      handleError(error as AxiosError, true); // Optional: detailed error logging
     }
   };
+
 
   const fetchRegions = async () => {
     try {

@@ -1,5 +1,5 @@
 export interface IEditStatus {
-    statusid: number;
+    statusid?: number;
     label: string;
     color: string;
     backgroundColor:string;

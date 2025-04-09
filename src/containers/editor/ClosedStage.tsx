@@ -5,6 +5,9 @@ import { Edit2 } from 'lucide-react';
 import ColorPicker from '@/components/ColorPicker';
 import { RootInstance } from '@/services/root.service';
 import { IStage } from '@/interfaces/root.interface';
+import { toast } from 'react-hot-toast';
+import { handleError } from '@/utils/helpers';
+import { AxiosError } from 'axios';
 
 interface StageProps {
   className?: string;
@@ -34,17 +37,43 @@ export const ClosedStage: React.FC<StageProps> = ({ className, won, lost,setChan
   const handleBgColorChange = (color: string) => setBgColor(color);
   const closePopup = () => setIsEditing(false);
 
+  // const handleSave = async () => {
+  //   const statusId = currentType === 'won' ? 'stage_won': 'stage_lost';
+  //   await RootInstance.editCloseStatus({
+  //     statusid: stageId,
+  //     label: stageName,
+  //     color: stageColor,
+  //     backgroundColor: bgColor
+  //   },statusId);
+  //   setChange((prev) => !prev);
+  //   closePopup();
+  // };
+
   const handleSave = async () => {
-    const statusId = currentType === 'won' ? 'stage_won': 'stage_lost';
-    await RootInstance.editCloseStatus({
-      statusid: stageId,
-      label: stageName,
-      color: stageColor,
-      backgroundColor: bgColor
-    },statusId);
-    setChange((prev) => !prev);
-    closePopup();
+    const statusId = currentType === 'won' ? 'stage_won' : 'stage_lost';
+
+    try {
+      await toast.promise(
+        RootInstance.editCloseStatus({
+          statusid: stageId,
+          label: stageName,
+          color: stageColor,
+          backgroundColor: bgColor,
+        }, statusId),
+        {
+          loading: 'Saving status...',
+          success: 'Status saved successfully!',
+          error: 'Failed to save status!',
+        }
+      );
+
+      setChange((prev) => !prev);
+      closePopup();
+    } catch (error) {
+      handleError(error as AxiosError, true);
+    }
   };
+
 
   // const handleDelete = async (id: string, type: 'won' | 'lost') => {
   //   const stageKey = type === 'won' ? 'stage_won' : 'stage_lost';
@@ -70,7 +99,7 @@ export const ClosedStage: React.FC<StageProps> = ({ className, won, lost,setChan
       >
         <span className="text-sm text-gray-800" style={{ color:item.color }}>{item.label}</span>
         <div className="flex gap-2">
-          <button onClick={() => handleEditClick(item.statusid.toLocaleString(), item.color, item.label, type,item.backgroundColor)}>
+          <button onClick={() => handleEditClick(item?.statusid?.toLocaleString()!, item.color, item.label, type,item.backgroundColor)}>
             <Edit2 size={16} className="text-gray-500 hover:text-gray-700" />
           </button>
           {/* <button onClick={() => handleDelete(item.statusid.toString(), type)}>

@@ -189,6 +189,9 @@ import { Edit2 } from 'lucide-react';
 import { IEditStatus, IStage } from '@/interfaces/root.interface';
 import ColorPicker from '@/components/ColorPicker';
 import { RootInstance } from '@/services/root.service';
+import { toast } from 'react-hot-toast';
+import { handleError } from '@/utils/helpers';
+import { AxiosError } from 'axios';
 
 interface StageProps {
   className?: string;
@@ -231,20 +234,50 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
     setBgColor(bgColorValue);
   };
 
+  // const handleSave = async () => {
+  //   const payload:IEditStatus = {
+  //     statusid: isAddingNew
+  //       ? (Number(initial?.activeStatuses?.length ?? 0) + 1)
+  //       : Number(stageId),
+  //     label: stageName,
+  //     color: stageColor,
+  //     backgroundColor:bgColor
+  //   };
+  //   console.log("check edit",payload);
+  //   await RootInstance.createInitialStatus(payload);
+  //   setChange((prev) => !prev);
+  //   closePopup();
+  // };
+
   const handleSave = async () => {
-    const payload:IEditStatus = {
+    const payload: IEditStatus = {
       statusid: isAddingNew
         ? (Number(initial?.activeStatuses?.length ?? 0) + 1)
         : Number(stageId),
       label: stageName,
       color: stageColor,
-      backgroundColor:bgColor
+      backgroundColor: bgColor,
     };
-    console.log("check edit",payload);
-    await RootInstance.createInitialStatus(payload);
-    setChange((prev) => !prev);
-    closePopup();
+
+    console.log("check edit", payload);
+
+    try {
+      await toast.promise(
+        RootInstance.createInitialStatus(payload),
+        {
+          loading: isAddingNew ? 'Adding status...' : 'Updating status...',
+          success: isAddingNew ? 'Status added successfully!' : 'Status updated successfully!',
+          error: isAddingNew ? 'Failed to add status!' : 'Failed to update status!',
+        }
+      );
+
+      setChange((prev) => !prev);
+      closePopup();
+    } catch (error) {
+      handleError(error as AxiosError, true);
+    }
   };
+
 
   // const handleDelete = async (statusId: string) => {
   //   await RootInstance.deleteInitialStatus({
@@ -305,7 +338,7 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
                     className="text-gray-600 hover:text-gray-800"
                     onClick={() =>
                       handleEditClick(
-                        item.statusid.toString(),
+                        item?.statusid?.toString()!,
                         item.color,
                         item.label,
                         item.backgroundColor
