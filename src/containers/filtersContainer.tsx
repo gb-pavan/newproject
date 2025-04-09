@@ -144,7 +144,7 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, setQuery,assignee,stat
               iconColor="#0D2167"
           /> */}
 
-          <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: false,addDeco:true })} defaultValue="Assignee" onChange={handleAssigneeChange} />
+          <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true })} multiSelect defaultValue="Assignee" onChange={handleAssigneeChange} />
           <DateFilter options={[...TIME_RANGE]} setDate={setQuery} />
         
         {/* <MultiSelectDropdown options={statusInfo} selectedOptions={filterState.status} onSelect={(values: string[]) => {

@@ -207,14 +207,29 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
   >
 
     <div className="m-4 space-y-2">
-      {(defaultValue === 'Assignee' || defaultValue ==='Status' || defaultValue === 'AssignTo') && <SearchBox
-          iconSize={32}
-          placeholder="Search"
-          iconColor="#0D2167"
-          responsive={false}
-          setFilterOptions={setFilterOptions}
-          // setFilter={setQuery}
-        />}
+      {(defaultValue === 'Assignee' || defaultValue ==='Status' || defaultValue === 'AssignTo') && 
+      // <SearchBox
+      //     iconSize={32}
+      //     placeholder="Search"
+      //     iconColor="#0D2167"
+      //     responsive={false}
+      //     setFilterOptions={setFilterOptions}
+      //     // setFilter={setQuery}
+      //   />
+      (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {defaultValue === "AssignTo" && <input type="checkbox" className="w-4 h-4"/>}
+          <SearchBox
+            iconSize={32}
+            placeholder="Search"
+            iconColor="#0D2167"
+            responsive={false}
+            setFilterOptions={setFilterOptions}
+            // setFilter={setQuery}
+          />
+        </div>
+      )
+      }
         {defaultValue === 'AssignTo' && <FilterChips onSelectionChange={handleSelectionChange} />}
     </div>
     {/* Scrollable container for search and list */}
@@ -223,7 +238,7 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
       <ul>
         {filteringOptions.map((option) => {
           const IconComponent = option.icon ? Icons[option.icon] : null;
-          const isSelected = selectedValues?.includes(option.value.toLocaleString());
+          const isSelected = selectedValues?.includes(option?.value?.toLocaleString()!);
 
           return (
             <li

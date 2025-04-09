@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaUser, FaMinusCircle, FaPlusCircle } from 'react-icons/fa';
-import { BsFilter } from 'react-icons/bs';
-import { AiFillStar } from 'react-icons/ai';
+import { FaUser} from 'react-icons/fa';
 import CustomDropdown2 from '@/components/MyDropdown2';
 import { handleError, mapAssigneeToDropdownOptions } from '@/utils/helpers';
 import { AxiosError } from 'axios';
@@ -21,6 +19,7 @@ const BulkActions: React.FC = () => {
   const { values } = useStringArray();
 
   const [assignee, setGetAssignee] = useState<IAssignee[]>([]);
+  const [assignTo, setAssignedTo] = useState<string[]>([]);
 
   useEffect(() => {
      const fetchAssignees = async () => {
@@ -35,13 +34,15 @@ const BulkActions: React.FC = () => {
   
     fetchAssignees();
   }, []); 
+  console.log("assignee options",mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true }));
 
   const handleAssignTo = async (assignedTo:string[]) => {
-    const payloadAssign = {
-      leadIds : values,
-      managerId :assignedTo[0]
-    }
-    await TableInstance.assignTo(payloadAssign);
+    setAssignedTo(assignedTo);
+    // const payloadAssign = {
+    //   leadIds : values,
+    //   managerId :assignedTo[0]
+    // }
+    // await TableInstance.assignTo(payloadAssign);
   }
 
   return (
@@ -81,7 +82,7 @@ const BulkActions: React.FC = () => {
         <div className="flex items-center space-x-2">
           <span className="text-sm text-gray-600">Re/assign leads to</span>
           <FaUser className="text-gray-500" />
-          <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: false,addDeco:true })} defaultValue='AssignTo' onChange={handleAssignTo} />
+          <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true })} multiSelect selectedValues={assignTo} defaultValue='AssignTo' onChange={handleAssignTo} />
         </div>
 
         {/* <div className="flex items-center space-x-2">
