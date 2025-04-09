@@ -5,6 +5,7 @@ import { ThemesProvider } from "@/providers/ThemeProvider";
 import ErrorBoundaryProvider from "@/providers/ErrorBoundaryProvider";
 import "../globals.css";
 import { StringArrayProvider } from "@/providers/StringArrayContext";
+import { Toaster } from 'react-hot-toast';
 
 
 // const geistSans = Geist({
@@ -35,6 +36,7 @@ export default function RootLayout({
               <LayoutWrapper>
                 {children}
               </LayoutWrapper>
+              {/* <Toaster position="top-right" toastOptions={{ duration: 3000 }} /> */}
             </StringArrayProvider>
           </ThemesProvider>
         </ErrorBoundaryProvider>

@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemesProvider } from "@/providers/ThemeProvider";
 import ErrorBoundaryProvider from "@/providers/ErrorBoundaryProvider";
+import { Toaster } from 'react-hot-toast';
+import ToasterProvider from "@/components/ToasterProvider";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +34,7 @@ export default function RootLayout({
       >
         <ErrorBoundaryProvider>
           <ThemesProvider>
+            <ToasterProvider />
             {children}
           </ThemesProvider>
         </ErrorBoundaryProvider>

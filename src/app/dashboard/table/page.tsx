@@ -1,3 +1,4 @@
+'use client';
 import TableContainer from '@/containers/tableContainer';
 import React from 'react';
 
