@@ -50,8 +50,8 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
 
   const filteringOptions = useMemo(() =>
     options?.filter(option =>
-      option.label.toLowerCase().includes(filteredOptions.toLowerCase()) ||
-      option.value.toString().toLowerCase().includes(filteredOptions.toLowerCase())
+      option.label?.toLowerCase().includes(filteredOptions.toLowerCase()) ||
+      option.value?.toString().toLowerCase().includes(filteredOptions.toLowerCase())
     ), [options, filteredOptions]
   );
 
@@ -200,9 +200,8 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
       width: defaultValue === "Status" ? "10.5rem" : defaultValue === "Assignee" ? "16rem" : undefined,
     }}
   >
-    {/* Scrollable container for search and list */}
-    <div className="max-h-64 overflow-y-auto p-2">
-      {(defaultValue === 'Assignee' || defaultValue ==='Status') && <SearchBox
+
+    {(defaultValue === 'Assignee' || defaultValue ==='Status') && <SearchBox
         iconSize={32}
         placeholder="Search"
         iconColor="#0D2167"
@@ -210,6 +209,9 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
         setFilterOptions={setFilterOptions}
         // setFilter={setQuery}
       />}
+    {/* Scrollable container for search and list */}
+    <div className="max-h-64 overflow-y-auto p-2">
+      
       <ul>
         {filteringOptions.map((option) => {
           const IconComponent = option.icon ? Icons[option.icon] : null;
