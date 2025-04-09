@@ -2,11 +2,11 @@ export const columns = [
   "name",
   "phone",
   "status",
-  "AssignedOwner",
-  "CreatedBy",
-  "CreatedAt",
-  "UpdatedAt",
-  "SourceBy",
+  "assignedOwner",
+  "createdBy",
+  "createdAt",
+  "updatedAt",
+  "sourceBy",
 ]
 
 export const TeamColumns = [
