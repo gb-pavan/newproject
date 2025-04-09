@@ -46,11 +46,11 @@ const BulkActions: React.FC = () => {
 
   return (
     <div className="bg-white p-4 rounded-md shadow-md border border-gray-200 mt-4 w-[500px]">
-      <div className="flex items-center justify-between mb-3">
+      {/* <div className="flex items-center justify-between mb-3">
         <div className="text-sm font-semibold text-gray-700">
           Selected leads:  <button  className="text-blue-500 underline ml-2 text-xs">Edit</button>
         </div>
-      </div>
+      </div> */}
 
       <div className="flex flex-col space-y-2 gap-2">
         {/* Update Status */}
@@ -60,7 +60,7 @@ const BulkActions: React.FC = () => {
             <BsFilter className="mr-1" /> Stage
           </span>
         </div> */}
-        <div className="flex items-center space-x-2 flex-nowrap">
+        {/* <div className="flex items-center space-x-2 flex-nowrap">
           <span className="text-sm text-gray-600 whitespace-nowrap">Update Lead/s Status:</span>
           <span className="bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full inline-flex items-center">
             <BsFilter className="mr-1 text-sm" />
@@ -68,7 +68,6 @@ const BulkActions: React.FC = () => {
           </span>
         </div>
 
-        {/* Rating */}
         <div className="flex items-center space-x-2">
           <span className="text-sm text-gray-600">Update Lead/s Rating:</span>
           <div className="flex space-x-1">
@@ -76,7 +75,7 @@ const BulkActions: React.FC = () => {
               <AiFillStar key={i} className="text-gray-300" />
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Reassign */}
         <div className="flex items-center space-x-2">
@@ -85,25 +84,21 @@ const BulkActions: React.FC = () => {
           <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: false,addDeco:true })} defaultValue='AssignTo' onChange={handleAssignTo} />
         </div>
 
-        {/* Add to */}
-        <div className="flex items-center space-x-2">
+        {/* <div className="flex items-center space-x-2">
           <span className="text-sm text-gray-600">Add Lead to</span>
           <FaPlusCircle className="text-gray-500" />
         </div>
 
-        {/* Remove from */}
         <div className="flex items-center space-x-2">
           <span className="text-sm text-gray-600">Remove Lead from</span>
           <FaMinusCircle className="text-gray-500" />
         </div>
 
-        {/* Dropdown field */}
         <div className="col-span-full">
           <select className="w-full border border-gray-300 rounded-md p-2 text-sm">
             <option>Select a field</option>
-            {/* Add options dynamically */}
           </select>
-        </div>
+        </div> */}
       </div>
 
       <div className="text-center mt-3">

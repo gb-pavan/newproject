@@ -23,19 +23,6 @@ import { FiEye } from "react-icons/fi";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import CustomDropdown2 from "@/components/MyDropdown2";
 
-// import { create } from "domain";
-
-// interface Field {
-//   _id: string;
-//   name: string;
-//   type: string;
-//   options: string[];
-//   createdAt: string;
-//   updatedAt: string;
-//   __v?: number;
-//   active?: boolean;
-// }
-
 interface Field{
     _id: string;
   name: string;
@@ -75,17 +62,7 @@ const FieldsSettingsPage = () => {
     "State",
   ];
 
-  // const typeOptions = [
-  //   { value: "all", label: "All" },
-  //   { value: "text", label: "Text" },
-  //   { value: "checkbox", label: "Checkbox" },
-  //   { value: "dropdown", label: "Dropdown" },
-  //   { value: "email", label: "Email" },
-  //   { value: "money", label: "Money" },
-  //   { value: "number", label: "Number" },
-  //   { value: "phone", label: "Phone" },
-  //   { value: "date", label: "Date" },
-  // ];
+ 
   const typeOptions = [
     { value: "text", label: "Text" },
     { value: "email", label: "Email" },
@@ -99,101 +76,24 @@ const FieldsSettingsPage = () => {
   ];
 
 
-  // Sample data for the fields
-  // const [fields, setFields] = useState<Field[]>([
-  //   {
-  //     _id: "67c056d750770385063ce1dd",
-  //     name: "class",
-  //     type: "DROPDOWN",
-  //     options: ["1st", "2nd"],
-  //     createdAt: "2025-02-27T12:13:11.865Z",
-  //     updatedAt: "2025-03-11T06:20:51.724Z",
-  //     __v: 0,
-  //     isHidden: false,
-  //   },
-  //   {
-  //     _id: "67c8316e805b8529252cdcc6",
-  //     name: "fatherName",
-  //     type: "TEXT",
-  //     options: ["academic", "upsc"],
-  //     createdAt: "2025-03-05T11:11:42.096Z",
-  //     updatedAt: "2025-03-05T11:11:42.096Z",
-  //     __v: 0,
-  //     isHidden: false,
-  //   },
-  //   {
-  //     _id: "67c831a4805b8529252cdcc9",
-  //     name: "board",
-  //     type: "DROPDOWN",
-  //     options: ["academic", "upsc"],
-  //     createdAt: "2025-03-05T11:12:36.537Z",
-  //     updatedAt: "2025-03-05T11:12:36.537Z",
-  //     __v: 0,
-  //     isHidden: false,
-  //   },
-  //   {
-  //     _id: "67c831be805b8529252cdccc",
-  //     name: "status",
-  //     type: "TEXT",
-  //     options: ["academic", "upsc"],
-  //     createdAt: "2025-03-05T11:13:02.827Z",
-  //     updatedAt: "2025-03-05T11:13:02.827Z",
-  //     __v: 0,
-  //     isHidden: false,
-  //   },
-  //   {
-  //     _id: "67c831e4805b8529252cdccf",
-  //     name: "assigned",
-  //     type: "TEXT",
-  //     options: ["academic", "upsc"],
-  //     createdAt: "2025-03-05T11:13:40.975Z",
-  //     updatedAt: "2025-03-05T11:13:40.975Z",
-  //     __v: 0,
-  //     isHidden: false,
-  //   },
-  //   {
-  //     _id: "67c831fd805b8529252cdcd2",
-  //     name: "leadScore",
-  //     type: "TEXT",
-  //     options: ["academic", "upsc"],
-  //     createdAt: "2025-03-05T11:14:05.826Z",
-  //     updatedAt: "2025-03-05T11:14:05.826Z",
-  //     __v: 0,
-  //     isHidden: false,
-  //   },
-  // ]);
+
   const [createdFields,setCreatedFields] = useState<CreatedLeadField[]>([]);
-  // const fetchCreatedLeadFields = async () => {
-  //     try {
-  //       if (activeFilter === 'Hidden'){
-  //         const response = await RootInstance.getCreatedLeadFields(false); // Await the API response
-  //         setCreatedFields(response);
-  //       } else if (activeFilter === 'Active'){
-  //          const response = await RootInstance.getCreatedLeadFields(true); // Await the API response
-  //         setCreatedFields(response);
-  //       }
-  //     } catch (error) {
-  //       handleError(error as AxiosError,false);
-  //     }
-  //   };
-  // useEffect(() => {
-  //   fetchCreatedLeadFields();
-  // }, [activeFilter,fetchCreatedLeadFields]);
+ 
 
   const fetchCreatedLeadFields = useCallback(async () => {
-  try {
-    const isActive = activeFilter === "Active";
-    const response = await RootInstance.getCreatedLeadFields(isActive);
-    setCreatedFields(response);
-  } catch (error) {
-    handleError(error as AxiosError, false);
-  }
-}, [activeFilter]); // 👈 make sure dependencies are correct
+    try {
+      const isActive = activeFilter === "Active";
+      const response = await RootInstance.getCreatedLeadFields(isActive);
+      setCreatedFields(response);
+    } catch (error) {
+      handleError(error as AxiosError, false);
+    }
+  }, [activeFilter]); // 👈 make sure dependencies are correct
 
-// useEffect to call it when `activeFilter` changes
-useEffect(() => {
-  fetchCreatedLeadFields();
-}, [fetchCreatedLeadFields]);
+  // useEffect to call it when `activeFilter` changes
+  useEffect(() => {
+    fetchCreatedLeadFields();
+  }, [fetchCreatedLeadFields]);
 
   useEffect(() => {
     const fetchFilteredFields = async () => {
@@ -205,17 +105,18 @@ useEffect(() => {
       }
     };
 
+    const filterFieldType = async (fieldType:string) => {
+      try {
+        const searchFiltered = await RootInstance.getLeadFieldType(searchTerm);
+        setCreatedFields(searchFiltered);
+      } catch (error) {
+        console.error("Error fetching filtered fields:", error);
+      }
+    };
+
     fetchFilteredFields();
+    filterFieldType(selectedType);
   }, [searchTerm]);
-
-
-  // useEffect(() => {
-  //   if (activeFilter === 'Hidden'){
-  //     RootInstance.getCreatedFields(false);
-  //   } else if (activeFilter === 'Active'){
-  //     RootInstance.getCreatedFields(true);
-  //   }
-  // }, [activeFilter]);
 
   // Function to handle drag end event
   const handleDragEnd = (result:DropResult) => {
@@ -250,46 +151,12 @@ useEffect(() => {
     await RootInstance.createLeadField(payload);
 
     fetchCreatedLeadFields();
-    // const newField: Field = {
-    //   _id: `new-field-${Date.now()}`,
-    //   name: name,
-    //   type: type.toUpperCase(),
-    //   options: type === "dropdown" ? ["Option 1", "Option 2"] : ["value1"],
-    //   createdAt: new Date().toISOString(),
-    //   updatedAt: new Date().toISOString(),
-    //   __v: 0,
-    //   isHidden: false,
-    // };
 
     // setFields((prev) => [...prev, newField]);
     setIsCreateModalOpen(false);
   }, [fetchCreatedLeadFields]);
 
-  // Function to handle editing a field
-  // const handleEditField = useCallback(
-  //   (name: string, type: string, options: string[],_id:string) => {
-  //     if (!editingField) return;
-  //     RootInstance.EditLeadFields(name,type,options,_id);
 
-  //     setCreatedFields((prev) =>
-  //       prev.map((field) =>
-  //         field._id === editingField._id
-  //           ? {
-  //               ...field,
-  //               name,
-  //               type: type.toUpperCase(),
-  //               options,
-  //               updatedAt: new Date().toISOString(),
-  //             }
-  //           : field
-  //       )
-  //     );
-
-  //     setIsEditModalOpen(false);
-  //     setEditingField(null);
-  //   },
-  //   [editingField]
-  // );
 
   const handleDeleteField = async (fieldId:string) => {
     await RootInstance.DeleteLeadFields(fieldId);
@@ -353,13 +220,6 @@ useEffect(() => {
     [createdFields]
   );
 
-  // Function to toggle between Active Fields and Hidden Fields views
-  // const handleToggleFieldsView = useCallback(() => {
-  //   setActiveFilter(
-  //     activeFilter === "Active Fields" ? "Hidden Fields" : "Active Fields"
-  //   );
-  // }, [activeFilter]);
-
   // Function to handle H1 field selection
   const handleH1Selection = useCallback((field: string) => {
     setSelectedH1Field(field);
@@ -413,21 +273,6 @@ useEffect(() => {
       return <HiOutlineUser className="text-gray-500" />;
     }
   };
-  
-  // Filter fields based on search term, type, and active/hidden filter
-  // const filteredFields = createdFields?.filter((field) => {
-  //   const matchesSearch = field.name
-  //     .toLowerCase()
-  //     .includes(searchTerm.toLowerCase());
-  //   const matchesVisibility =
-  //     activeFilter === "Active" ? !field.active : field.active;
-  //   const matchesType =
-  //     selectedType === "Select type" || selectedType === "All"
-  //       ? true
-  //       : field.type.toLowerCase() === selectedType.toLowerCase();
-
-  //   return matchesSearch && matchesVisibility && matchesType;
-  // });
 
   const filteredFields = createdFields?.filter((field) => {
     const matchesSearch = field.name
@@ -480,24 +325,6 @@ useEffect(() => {
           </button>
         </div>
 
-        {/* Lead ID section */}
-        {/* <div className="p-4 border-b">
-          <div className="flex items-center">
-            <div className="text-sm text-gray-600">Lead Id</div>
-            <a href="#" className="ml-2 text-purple-500 text-sm">
-              Learn more
-            </a>
-          </div>
-          <div className="mt-1 ml-7 text-sm text-back">Phone</div>
-          <div className="mt-1 flex items-center justify-between">
-            <div className="flex items-center">
-              <BsPhone className="text-gray-400 mr-2" />
-              <div className="text-gray-400 text-sm">+91 999999999</div>
-            </div>
-            <button className="text-purple-500 text-sm">Change</button>
-          </div>
-        </div> */}
-
         {/* Primary fields section */}
         <div className="p-4">
           <div className="text-sm font-medium text-gray-500 mb-2">
@@ -516,12 +343,7 @@ useEffect(() => {
                   <FiEdit />
                 </button> */}
                 <div className="relative">
-                  {/* <button
-                    className="text-gray-400 hover:text-blue-500"
-                    onClick={() => setIsH1DropdownOpen(!isH1DropdownOpen)}
-                  >
-                    <IoIosArrowDown />
-                  </button> */}
+               
                   {isH1DropdownOpen && (
                     <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-10">
                       <ul className="py-1">
@@ -622,22 +444,7 @@ useEffect(() => {
                   </div>
                 )}
               </div>
-              {/* <button
-                className="flex items-center justify-between px-4 py-2 border border-gray-300 rounded-md bg-white text-sm text-black hover:bg-purple-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                onClick={handleToggleFieldsView}
-              >
-                <div className="flex items-center">
-                  <span
-                    className={`h-2 w-2 rounded-full ${
-                      activeFilter === "Active Fields"
-                        ? "bg-green-500"
-                        : "bg-gray-500"
-                    } mr-2`}
-                  ></span>
-                  <span>{activeFilter}</span>
-                </div>
-                <IoIosArrowDown className="ml-2" />
-              </button> */}
+          
               <CustomDropdown2 options={[
                 { label: "Active", value: "Active", icon: "user-plus" },
                 { label: "Hidden", value: "Hidden", icon: "file-spreadsheet" },

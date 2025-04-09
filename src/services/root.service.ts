@@ -315,6 +315,10 @@ class RootService{
     const url = `/api/lead_field/read/get-all-fields?name=${name}`;
     return await callApi(url,API.GET);
   }
+  getLeadFieldType = async (type:string): Promise<CreatedLeadField[]> => {
+    const url = `/api/lead_field/read/get-all-fields?type=${type.toLocaleUpperCase()}`;
+    return await callApi(url,API.GET);
+  }
 }
 
 export const RootInstance = new RootService();

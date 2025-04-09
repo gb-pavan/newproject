@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useMemo } from "react";
 import { Check, ChevronDown, LucideProps } from "lucide-react";
 import DynamicIcon from "./DynamicIcon";
 import SearchBox from "./SearchBox";
+import FilterChips from "./FilterChips";
 
 interface DropdownOption {
   label: string;
@@ -47,6 +48,10 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
   //     option.label.toLowerCase().includes(filteredOptions.toLowerCase())
   //   );
   // }, [options, filteredOptions]);
+
+  const handleSelectionChange = (selected: string[]) => {
+    console.log("Selected Roles:", selected);
+  };
 
   const filteringOptions = useMemo(() =>
     options?.filter(option =>
@@ -201,14 +206,17 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
     }}
   >
 
-    {(defaultValue === 'Assignee' || defaultValue ==='Status') && <SearchBox
-        iconSize={32}
-        placeholder="Search"
-        iconColor="#0D2167"
-        responsive={false}
-        setFilterOptions={setFilterOptions}
-        // setFilter={setQuery}
-      />}
+    <div className="m-4 space-y-2">
+      {(defaultValue === 'Assignee' || defaultValue ==='Status' || defaultValue === 'AssignTo') && <SearchBox
+          iconSize={32}
+          placeholder="Search"
+          iconColor="#0D2167"
+          responsive={false}
+          setFilterOptions={setFilterOptions}
+          // setFilter={setQuery}
+        />}
+        {defaultValue === 'AssignTo' && <FilterChips onSelectionChange={handleSelectionChange} />}
+    </div>
     {/* Scrollable container for search and list */}
     <div className="max-h-64 overflow-y-auto p-2">
       
