@@ -236,7 +236,6 @@ class RootService{
     "label":string,
     "backgroundColor":string
     },statusId:string) => {
-      console.log("editClose",payload);
         const url=`/api/lead_stage/write/create-update/${statusId}`;
         return await callApi(url,API.POST,payload,true);
   }
@@ -272,12 +271,11 @@ class RootService{
         'isForm':payload.isForm,
         'columnColor':payload.columnColor
     }
-    console.log("filed payloadddd now check",payload2);
     return await callApi(url,API.POST,payload2,true);
   }
 
   LeadFieldVisibility = async (id:string,visibility:boolean,isForm:boolean) => {
-    console.log("check isForm",isForm);
+    console.log("isForm",isForm);
     const url=`/api/lead_field/write/create-or-update/${id}`;
     const payload2 = {
       'active':!visibility
@@ -288,7 +286,6 @@ class RootService{
 
   getCreatedLeadFields = async (active:boolean): Promise<CreatedLeadField[]> => {
     const url = `/api/lead_field/read/get-all-fields?active=${active}`;
-    console.log("url lead active",url);
     return await callApi(url, API.GET);
   };
 
@@ -305,9 +302,7 @@ class RootService{
         "position":15
 
     }
-    console.log("edit payload",payload);
     const url = `/api/lead_field/write/create-or-update/${_id}`;
-    console.log("check url",url);
     return await callApi(url, API.POST,payload,true);
   };
 

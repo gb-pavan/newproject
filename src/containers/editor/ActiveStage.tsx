@@ -82,7 +82,6 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject,setChan
   const toggleDeletedItems = () => {
     setShowDeletedItems(!showDeletedItems);
   };
-  console.log("active stauts",fullObject?.activeStatuses);
 
   return (
     <div className={`flex flex-col w-full ${className}`}>

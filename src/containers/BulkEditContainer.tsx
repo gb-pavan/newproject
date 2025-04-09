@@ -37,13 +37,11 @@ const BulkActions: React.FC = () => {
   }, []); 
 
   const handleAssignTo = async (assignedTo:string[]) => {
-    console.log("assigned tooo",assignedTo);
     const payloadAssign = {
       leadIds : values,
       managerId :assignedTo[0]
     }
-    const respoAssignoo = await TableInstance.assignTo(payloadAssign);
-    console.log("check assigntooooo",respoAssignoo);
+    await TableInstance.assignTo(payloadAssign);
   }
 
   return (

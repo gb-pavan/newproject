@@ -35,7 +35,6 @@ class TableService {
   };
 
   assignTo = async (payload:{leadIds:string[],managerId:string}) => {
-    console.log("check assign to",payload);
     const payload2 = {
       "leadIds":payload.leadIds,
       "managerId":payload.managerId

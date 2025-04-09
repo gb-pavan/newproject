@@ -11,7 +11,6 @@ class FilterService{
         page: pagination.page,
         limit: pagination.limit
       };   
-      console.log("table filters",payload2); 
       const url = '/api/lead/read/leads-without-actions';
       return await callApi(url,API.POST,payload2);
     }

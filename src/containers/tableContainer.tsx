@@ -43,7 +43,16 @@ const TableContainer: React.FC = () => {
   const [query, setQuery] = useState<QueryState>({
     selectedId:"SYSTEM_FILTER_ALL_LEAD",
     filters:[],
-    selectedFields:["name", "phone","favorite","region","assignedOwner","createdAt","updatedAt","status","leadscore","class","email","createdBy"],
+    // selectedFields:["name", "phone","favorite","region","assignedOwner","createdAt","updatedAt","status","leadscore","class","email","createdBy"],
+    selectedFields:["name",
+      "phone",
+      "status",
+      "assignedOwner",
+      "createdBy",
+      "createdAt",
+      "updatedAt",
+      "sourceBy"
+    ],
     logic: "AND",
     pagination: {
       page: currentPage,
@@ -106,7 +115,6 @@ const TableContainer: React.FC = () => {
      const fetchAssignees = async () => {
     try {
       const response = await DropdownInstance.getAssignee(); // Await the API response
-      console.log("response assignee",response);
       setGetAssignee(response?.users);
     } catch (error) {
       handleError(error as AxiosError,false);
@@ -129,7 +137,6 @@ const TableContainer: React.FC = () => {
      const filterData = async () => {
     try {
       const filterResponse = await FilterInstance.getFilterResponse(query); // Await the response
-      console.log("filter Response",filterResponse?.leads);
       setTableData(filterResponse?.leads);
       setTotalRows(filterResponse?.total);
     } catch (error) {
@@ -139,7 +146,6 @@ const TableContainer: React.FC = () => {
   const getColumns = async () => {
     try {
       const tabColResponse = await TableInstance.getColumns(); // Await the response
-      console.log("tab cols",tabColResponse);
       setColumns(tabColResponse.columns);
     } catch (error) {
       handleError(error as AxiosError,false);

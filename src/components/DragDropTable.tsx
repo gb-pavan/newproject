@@ -75,7 +75,7 @@ const COLUMN_STORAGE_KEY = "displayColumns";
 
 const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns,statusInfo,tableType,onRowClick,selectedRowIdsRef }) => {
   // const [displayColumns, setDisplayColumns] = useState<string[]>([]);
-  console.log("setQuery",setQuery);
+  console.log("data table",data);
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [checkedRows, setCheckedRows] = useState<boolean[]>([]);
@@ -86,11 +86,11 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
   const [displayColumns, setDisplayColumns] = useState<string[]>(() => {
     if (typeof window !== "undefined") {
       const savedColumns = localStorage.getItem(COLUMN_STORAGE_KEY);
+      console.log("savedCOlumns",savedColumns);
       return savedColumns ? JSON.parse(savedColumns) : columns;
     }
     return columns;
   });
-
   const excludedCols = tableType === 'lead' ? EXCLUDED_COLUMNS : EXCLUDED_COLUMNS_TEAM;
 
   useEffect(() => {
@@ -186,7 +186,7 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
   }, [dropdownOpen]);
 
   useEffect(() => {
-    const allSelected = data.every(row => selectedRowIdsRef?.current.has(String(row._id)));
+    const allSelected = data?.every(row => selectedRowIdsRef?.current.has(String(row._id)));
     setHeaderChecked(allSelected);
   }, [data, selectedRowIdsRef]);
 
@@ -243,6 +243,7 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
     // Open the details page in a new tab
     window.open(detailsUrl, '_blank');
   };
+  console.log("displayCols",displayColumns);
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -254,7 +255,7 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
 
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-800 rounded-lg shadow-lg z-40 p-2">
-                  <ul className="text-sm text-gray-700">
+                  <ul className="text-sm text-gray-700 overflow-y-auto" style={{maxHeight:'200px'}}>
                     {/* {columnOrder?.map((key, index) => ( */}
                     {/* {tabColumns?.filter(key => !excludedCols.includes(key)).map((key, index) => (                    */}
                     {tabColumns?.map((key, index) => (
@@ -389,7 +390,14 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
                           <span className="flex gap-3 text-[12px] font-[400] ">
                             <span className="text-[14px]">{formatDate(getColumnValue(row, col))}</span>
                           </span>
-                        ):col.toLowerCase() === 'leadscore'? (
+                        ):col.toLowerCase() === "createdat" ? (
+                          <span className="flex gap-3 text-[12px] font-[400] ">
+                            <span className="text-[14px]">{formatDate(getColumnValue(row, col))}</span>
+                          </span>
+                        ):
+                        
+                        
+                        col.toLowerCase() === 'leadscore'? (
                               <div className="flex justify-center">
                                 <div className="px-2 py-1 rounded bg-[#F0FDF4] text-[#15803D] text-[14px] text-sm font-medium">
                                   {/* {isNaN(Number(getColumnValue(row, col))) 

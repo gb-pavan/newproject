@@ -41,7 +41,6 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ fields }) => {
       phone,
       fields: { ...rest },
     };
-    console.log('payload formmmmmm',payload);    
     FormInstance.submitForm(payload)
   };
 

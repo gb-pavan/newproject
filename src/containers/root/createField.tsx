@@ -246,10 +246,8 @@ useEffect(() => {
 
   // Function to handle creating a new field
   const handleCreateField = useCallback(async (name: string, type: string, options:string[],mandatory:boolean,isForm:boolean,toggleValue:boolean, selectedColor:string) => {
-    console.log("check field createing step",mandatory,isForm,toggleValue);
     const payload :{name:string,type:string,options:string[],required:boolean,active:boolean,isForm:boolean,columnColor:string}= {name:name,type:type,options,required:mandatory,active:toggleValue,isForm,columnColor:selectedColor}
-    const checkCreatedField = await RootInstance.createLeadField(payload);
-    console.log("yessss",checkCreatedField);
+    await RootInstance.createLeadField(payload);
 
     fetchCreatedLeadFields();
     // const newField: Field = {
@@ -301,10 +299,8 @@ useEffect(() => {
   const handleEditField = useCallback(
   async (name: string, type: string, options: string[], _id: string,selectedColor:string,mandatory:boolean,isForm:boolean,active:boolean) => {
     if (!editingField) return;
-    console.log("editeeeddd fields active mandatory isFOrm",active,mandatory,isForm);
 
-    const editedResponse = await RootInstance.EditLeadFields(name, type, options, _id,selectedColor,active,mandatory,isForm);
-    console.log("editedResponse",editedResponse);
+    await RootInstance.EditLeadFields(name, type, options, _id,selectedColor,active,mandatory,isForm);
 
     setCreatedFields((prev) =>
       prev.map((field) =>

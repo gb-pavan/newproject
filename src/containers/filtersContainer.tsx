@@ -62,13 +62,10 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, setQuery,assignee,stat
 
 
   const handleAssigneeChange = (newValues: string[]) => {
-    console.log("assigneeeeee check",newValues);
     
     if (newValues.every(val => val.trim() === '')) {
       const allAssignee:IAssignee[] = assignee;
-      console.log("chekc",allAssignee);
       const ids = extractIds(allAssignee); // assuming your array is stored in a variable
-      console.log(ids); // ['67c6d2e3ca39a9c9c3c3f824', '67cb17f097eb04cf8489c914', ...]
     //   setQuery((prev) => ({
     //   ...prev,
     //   filters: [

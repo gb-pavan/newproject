@@ -49,7 +49,7 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
   // }, [options, filteredOptions]);
 
   const filteringOptions = useMemo(() =>
-    options.filter(option =>
+    options?.filter(option =>
       option.label.toLowerCase().includes(filteredOptions.toLowerCase()) ||
       option.value.toString().toLowerCase().includes(filteredOptions.toLowerCase())
     ), [options, filteredOptions]

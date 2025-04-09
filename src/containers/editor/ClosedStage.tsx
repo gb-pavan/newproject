@@ -14,7 +14,6 @@ interface StageProps {
 }
 
 export const ClosedStage: React.FC<StageProps> = ({ className, won, lost,setChange }) => {
-  console.log("lost",lost?.activeStatuses);
   const [isEditing, setIsEditing] = useState(false);
   const [stageName, setStageName] = useState('');
   const [stageColor, setStageColor] = useState('');
@@ -37,13 +36,12 @@ export const ClosedStage: React.FC<StageProps> = ({ className, won, lost,setChan
 
   const handleSave = async () => {
     const statusId = currentType === 'won' ? 'stage_won': 'stage_lost';
-    const editCloseResponse = await RootInstance.editCloseStatus({
+    await RootInstance.editCloseStatus({
       statusid: stageId,
       label: stageName,
       color: stageColor,
       backgroundColor: bgColor
     },statusId);
-    console.log("editCloseResponse",editCloseResponse);
     setChange((prev) => !prev);
     closePopup();
   };

@@ -1,14 +1,12 @@
 export const columns = [
   "name",
   "phone",
-  "class",
-  "board",
-  "status",  
-  "email",
-  "fatherOccupation",
-  "schoolName",
-  "state",
-  "interactWith"
+  "status",
+  "AssignedOwner",
+  "CreatedBy",
+  "CreatedAt",
+  "UpdatedAt",
+  "SourceBy",
 ]
 
 export const TeamColumns = [

@@ -18,7 +18,6 @@ export async function middleware(req: NextRequest) {
 
     // If the user is on the home page and logged in, redirect to /dashboard/table
     if (pathname === "/" && token) {
-        console.log("in middleware");
         return NextResponse.redirect(new URL("/dashboard/table", req.url));
     }
 

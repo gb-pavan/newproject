@@ -27,7 +27,7 @@ function Header({ toggleSidebar, incentive }: IProfileHeaderProps) {
   };
 
   const handleLogout = async () => {
-    localStorage.clear();
+    await localStorage.clear();
     await fetch("/api/logout", {
     method: "POST",
     credentials: "include", // Ensures cookies are handled correctly
