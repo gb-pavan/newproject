@@ -22,18 +22,24 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject,setChan
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [stageName, setStageName] = useState<string>("");
+  const [bgColor,setBgColor] = useState<string>("");
 
-  const handleEditClick = async (itemId: string, color: string, title: string) => {
+  const handleEditClick = async (itemId: string, color: string, title: string, bagColor:string) => {
       
     setEditingItem(itemId);
     setSelectedColor(color);
     setStageName(title);
     setIsAddingNew(false);
+    setBgColor(bagColor);
   };
 
 
   const handleColorChange = (colorValue: string) => {
     setSelectedColor(colorValue);
+  };
+
+  const handleBgColorChange = (colorValue: string) => {
+    setBgColor(colorValue);
   };
 
   const handleCreateStatus = async () => {
@@ -42,7 +48,8 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject,setChan
     const statusCreated = {
       statusid:Number(id),
       color:selectedColor,
-      label:stageName
+      label:stageName,
+      backgroundColor:bgColor
     }
     await RootInstance.createStatus(statusCreated);
     setChange(prev=>!prev);
@@ -62,8 +69,9 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject,setChan
   const handleAddNew = () => {
     setIsAddingNew(true);
     setEditingItem("");
-    setSelectedColor("bg-green-100");
+    setSelectedColor("");
     setStageName("");
+    setBgColor('');
   };
 
   const closePopup = () => {
@@ -74,6 +82,7 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject,setChan
   const toggleDeletedItems = () => {
     setShowDeletedItems(!showDeletedItems);
   };
+  console.log("active stauts",fullObject?.activeStatuses);
 
   return (
     <div className={`flex flex-col w-full ${className}`}>
@@ -100,7 +109,7 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject,setChan
             <div 
               key={item.statusid} 
               className={`flex items-center justify-between p-2 rounded-md relative`}
-              style={{ backgroundColor: item.color }}
+              style={{ backgroundColor: item.backgroundColor,color:item.color }}
             >
               <div className="flex items-center space-x-2">
                 {/* {item.icon} */}
@@ -109,7 +118,7 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject,setChan
               <div className="flex items-center space-x-2">
                 <button 
                   className="text-gray-500 hover:text-gray-700"
-                  onClick={() => handleEditClick(item.statusid.toLocaleString(), item.color, item.label)}
+                  onClick={() => handleEditClick(item.statusid.toLocaleString(), item.color, item.label,item.backgroundColor)}
                 >
                   <Edit2 size={16} />
                 </button>
@@ -194,9 +203,15 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject,setChan
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Select Color
             </label>
-            <div className="grid grid-cols-4 gap-2 mb-6">
-              
+            <div className="grid grid-cols-4 gap-2 mb-6">              
               <ColorPicker onChange={handleColorChange} />
+            </div>
+
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Select Background Color
+            </label>
+            <div className="grid grid-cols-4 gap-2 mb-6">              
+              <ColorPicker onChange={handleBgColorChange} />
             </div>
             <div className="flex justify-end space-x-2">
               <button 

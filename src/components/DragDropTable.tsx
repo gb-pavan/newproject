@@ -298,6 +298,11 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
                     </th>
                   );
                 })}
+                {/* {tableType === 'team' && (
+                  <th className="p-3 border-r border-gray-800 text-[12px] font-[800] min-w-[120px]">
+                    Actions
+                  </th>
+                )} */}
               </tr>
             </thead>
             <tbody>

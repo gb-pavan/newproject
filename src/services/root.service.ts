@@ -186,7 +186,8 @@ class RootService{
     const payload = {
         'statusid':statusCreated.statusid,
         'color':statusCreated.color,
-        'label':statusCreated.label
+        'label':statusCreated.label,
+        'backgroundColor':statusCreated.backgroundColor
     }
     const url='/api/lead_stage/write/create-update/stage_active';
     return await callApi(url,API.POST,payload,true);
@@ -197,7 +198,8 @@ class RootService{
     const payload = {
         'statusid':statusCreated.statusid,
         'color':statusCreated.color,
-        'label':statusCreated.label
+        'label':statusCreated.label,
+        'backgroundColor':statusCreated.backgroundColor
     }
     const url='/api/lead_stage/write/create-update/stage_fresh';
     return await callApi(url,API.POST,payload,true);
@@ -231,8 +233,10 @@ class RootService{
   editCloseStatus = async (payload:{
     "statusid":string,
     "color":string,
-    "label":string
+    "label":string,
+    "backgroundColor":string
     },statusId:string) => {
+      console.log("editClose",payload);
         const url=`/api/lead_stage/write/create-update/${statusId}`;
         return await callApi(url,API.POST,payload,true);
   }

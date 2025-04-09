@@ -203,14 +203,16 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
   const [stageName, setStageName] = useState<string>("");
   const [stageColor, setStageColor] = useState<string>("");
   const [stageId, setStageId] = useState<string>("");
+  const [bgColor,setBgColor] = useState<string>("");
   // const [showDeletedItems, setShowDeletedItems] = useState(false);
 
-  const handleEditClick = (id: string, color: string, label: string) => {
+  const handleEditClick = (id: string, color: string, label: string,bagColor:string) => {
     setIsEditing(true);
     setStageName(label);
     setStageColor(color);
     setStageId(id);
     setIsAddingNew(false);
+    setBgColor(bagColor);
   };
 
   // const handleAddNew = () => {
@@ -225,6 +227,10 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
     setStageColor(colorValue);
   };
 
+  const handleBgColorChange = (bgColorValue: string) => {
+    setBgColor(bgColorValue);
+  };
+
   const handleSave = async () => {
     const payload:IEditStatus = {
       statusid: isAddingNew
@@ -232,6 +238,7 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
         : Number(stageId),
       label: stageName,
       color: stageColor,
+      backgroundColor:bgColor
     };
     console.log("check edit",payload);
     await RootInstance.createInitialStatus(payload);
@@ -265,6 +272,7 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
     setStageName('');
     setStageColor('');
     setStageId('');
+    setBgColor('');
   };
 
   return (
@@ -289,7 +297,7 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
               <div
                 key={item.statusid}
                 className="flex items-center justify-between p-2 rounded-md"
-                style={{ backgroundColor: item.color }}
+                style={{ backgroundColor: item.backgroundColor, color: item.color  }}
               >
                 <span className="font-medium">{item.label}</span>
                 <div className="flex items-center space-x-2">
@@ -299,7 +307,8 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
                       handleEditClick(
                         item.statusid.toString(),
                         item.color,
-                        item.label
+                        item.label,
+                        item.backgroundColor
                       )
                     }
                   >
@@ -374,6 +383,14 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
                 onChange={(e) => setStageName(e.target.value)}
                 placeholder="Enter stage name"
               />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Choose Background Color
+              </label>
+              <ColorPicker onChange={handleBgColorChange} />
+              <p className="text-center mt-2 text-sm">Selected Color: {bgColor}</p>
             </div>
 
             <div className="mb-4">

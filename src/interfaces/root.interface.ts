@@ -2,6 +2,7 @@ export interface IEditStatus {
     statusid: number;
     label: string;
     color: string;
+    backgroundColor:string;
     _id?: string;
 }
 
@@ -21,6 +22,7 @@ export interface IEditableStatusBox {
     statusid: string;
     label: string;
     color: string;
+    backgroundColor:string;
     // icon:string;
 }
 

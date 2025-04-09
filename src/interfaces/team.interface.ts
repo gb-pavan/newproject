@@ -27,20 +27,46 @@ export interface IEmployee {
 }
 
 
-  export interface IEmployeeDetails {
-    _id: string;
-    name: string;
-    email: string;
-    role: string;
-    permission: string;
-    phone: string;
-    region: string[];
-    ivrActive: boolean;
-    createdBy: string;
-    department: string;
-    createdAt: string;
-    updatedAt: string;
-    __v: number;
-    depth: number;
-    reporting?: string;
+//   export interface IEmployeeDetails {
+//     _id: string;
+//     name: string;
+//     email: string;
+//     role: string;
+//     permission: string;
+//     phone: string;
+//     region: string[];
+//     ivrActive: boolean;
+//     createdBy: string;
+//     department: string;
+//     createdAt: string;
+//     updatedAt: string;
+//     __v: number;
+//     depth: number;
+//     reporting?: string;
+// }
+
+export interface Region {
+  _id: string;
+  name: string;
+}
+
+export interface IEmployeeDetails {
+  _id: string;
+  name: string;
+  initial: string;
+  email: string;
+  password?: string;
+  role: string;
+  permission: string;
+  reporting: string;
+  phone: string;
+  region?: Region[];
+  ivrActive: boolean;
+  isDeleted: boolean;
+  department: string;
+  createdBy: string;
+  tokens?: string[]; // You can replace `any` with a specific type if you know the structure of tokens
+  createdAt: string; // Consider using `Date` if working directly with JS Date objects
+  updatedAt: string;
+  __v: number;
 }

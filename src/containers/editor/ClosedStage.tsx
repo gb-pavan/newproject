@@ -14,33 +14,36 @@ interface StageProps {
 }
 
 export const ClosedStage: React.FC<StageProps> = ({ className, won, lost,setChange }) => {
+  console.log("lost",lost?.activeStatuses);
   const [isEditing, setIsEditing] = useState(false);
   const [stageName, setStageName] = useState('');
   const [stageColor, setStageColor] = useState('');
   const [stageId, setStageId] = useState('');
   const [currentType, setCurrentType] = useState<'won' | 'lost' | null>(null);
+  const [bgColor,setBgColor] = useState<string>("");
 
-  // const [showDeletedWon, setShowDeletedWon] = useState(false);
-  // const [showDeletedLost, setShowDeletedLost] = useState(false);
-
-  const handleEditClick = (id: string, color: string, label: string, type: 'won' | 'lost') => {
+  const handleEditClick = (id: string, color: string, label: string, type: 'won' | 'lost',bagColor:string) => {
     setIsEditing(true);
     setStageName(label);
     setStageColor(color);
     setStageId(id);
     setCurrentType(type);
+    setBgColor(bagColor);
   };
 
   const handleColorChange = (color: string) => setStageColor(color);
+  const handleBgColorChange = (color: string) => setBgColor(color);
   const closePopup = () => setIsEditing(false);
 
   const handleSave = async () => {
     const statusId = currentType === 'won' ? 'stage_won': 'stage_lost';
-    await RootInstance.editCloseStatus({
+    const editCloseResponse = await RootInstance.editCloseStatus({
       statusid: stageId,
       label: stageName,
       color: stageColor,
+      backgroundColor: bgColor
     },statusId);
+    console.log("editCloseResponse",editCloseResponse);
     setChange((prev) => !prev);
     closePopup();
   };
@@ -65,11 +68,11 @@ export const ClosedStage: React.FC<StageProps> = ({ className, won, lost,setChan
       <div
         key={item._id}
         className="flex items-center justify-between px-3 py-2 rounded-md"
-        style={{ backgroundColor: item.color || '#bbf7d0' }}
+        style={{ backgroundColor: item.backgroundColor, color:item.color }}
       >
-        <span className="text-sm text-gray-800">{item.label}</span>
+        <span className="text-sm text-gray-800" style={{ color:item.color }}>{item.label}</span>
         <div className="flex gap-2">
-          <button onClick={() => handleEditClick(item.statusid.toLocaleString(), item.color, item.label, type)}>
+          <button onClick={() => handleEditClick(item.statusid.toLocaleString(), item.color, item.label, type,item.backgroundColor)}>
             <Edit2 size={16} className="text-gray-500 hover:text-gray-700" />
           </button>
           {/* <button onClick={() => handleDelete(item.statusid.toString(), type)}>
@@ -166,6 +169,12 @@ export const ClosedStage: React.FC<StageProps> = ({ className, won, lost,setChan
                 onChange={(e) => setStageName(e.target.value)}
               />
             </div>
+
+            <div className="mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Choose Background Color</label>
+              <ColorPicker onChange={handleBgColorChange} />
+            </div>
+            <p className="text-center">Selected Background Color: {bgColor}</p>
 
             <div className="mb-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">Choose Color</label>
