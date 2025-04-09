@@ -46,9 +46,9 @@ const TeamFilters:React.FC<TeamFiltersProps> = ({setUserMeta}) => {
 
   const DeptOptions = [
     { value: 'All', label: 'All', icon: <FaUserShield className="h-4 w-4 mr-2" /> },
-    { value: 'sales', label: 'Sales', icon: <FaUserTie className="h-4 w-4 mr-2" /> },
-    { value: 'marketing', label: 'Marketing', icon: <FaBullhorn className="h-4 w-4 mr-2" /> },
-    { value: 'support', label: 'Support', icon: <FaBullhorn className="h-4 w-4 mr-2" /> }
+    { value: 'Sales', label: 'Sales', icon: <FaUserTie className="h-4 w-4 mr-2" /> },
+    { value: 'Marketing', label: 'Marketing', icon: <FaBullhorn className="h-4 w-4 mr-2" /> },
+    { value: 'Support', label: 'Support', icon: <FaBullhorn className="h-4 w-4 mr-2" /> }
   ];
 
   // Permission Template dropdown options

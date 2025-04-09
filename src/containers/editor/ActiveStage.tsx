@@ -44,6 +44,8 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject,setChan
 
   const handleCreateStatus = async () => {
 
+    console.log("isAddingNew",isAddingNew);
+
     const id = isAddingNew ? Number(fullObject?.activeStatuses?.length) + 1 : editingItem;
     const statusCreated = {
       statusid:Number(id),
@@ -51,6 +53,7 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject,setChan
       label:stageName,
       backgroundColor:bgColor
     }
+    console.log("status feture",statusCreated);
     await RootInstance.createStatus(statusCreated);
     setChange(prev=>!prev);
     closePopup();
@@ -103,7 +106,7 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject,setChan
           </div>
         </div>
         
-        <div className="space-y-2">
+        <div className="space-y-2 max-h-64 overflow-y-auto">
           {Array.isArray(fullObject?.activeStatuses) &&fullObject?.activeStatuses?.map((item) => (
             <div 
               key={item.statusid} 
@@ -148,7 +151,7 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject,setChan
           
           {/* Deleted items list */}
           {showDeletedItems && (
-            <div className="mt-2 space-y-2 border-t border-gray-200 pt-2">
+            <div className="mt-2 space-y-2 border-t border-gray-200 pt-2 max-h-64 overflow-y-auto">
              
               {Array.isArray(fullObject?.archivedStatuses) &&fullObject?.archivedStatuses.map((item) => (
                 <div 
@@ -203,14 +206,22 @@ export const ActiveStage: React.FC<StageProps> = ({ className,fullObject,setChan
               Select Color
             </label>
             <div className="grid grid-cols-4 gap-2 mb-6">              
-              <ColorPicker onChange={handleColorChange} />
+              {/* <ColorPicker onChange={handleColorChange} /> */}
+              <ColorPicker
+                onChange={handleColorChange}
+                {...(!isAddingNew && { color: selectedColor })}
+              />
             </div>
 
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Select Background Color
             </label>
             <div className="grid grid-cols-4 gap-2 mb-6">              
-              <ColorPicker onChange={handleBgColorChange} />
+              {/* <ColorPicker onChange={handleBgColorChange} /> */}
+              <ColorPicker
+                onChange={handleBgColorChange}
+                {...(!isAddingNew && { color: bgColor })}
+              />
             </div>
             <div className="flex justify-end space-x-2">
               <button 
