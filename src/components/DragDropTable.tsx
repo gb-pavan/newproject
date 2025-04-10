@@ -71,7 +71,7 @@ const columnStyles: Record<string, string> = {
   board:"bg-[#FBE8FF] text-[#8E198F]"
 };
 
-const COLUMN_STORAGE_KEY = "displayColumns";
+const COLUMN_STORAGE_KEY = "displayColumns2";
 
 const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns,statusInfo,tableType,onRowClick,selectedRowIdsRef }) => {
   // const [displayColumns, setDisplayColumns] = useState<string[]>([]);
@@ -85,8 +85,9 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
   const tableRef = useRef<HTMLDivElement | null>(null);
   const [displayColumns, setDisplayColumns] = useState<string[]>(() => {
     if (typeof window !== "undefined") {
+      if (tableType === 'lead'){
       const savedColumns = localStorage.getItem(COLUMN_STORAGE_KEY);
-      return savedColumns ? JSON.parse(savedColumns) : columns;
+      return savedColumns ? JSON.parse(savedColumns) : columns;}
     }
     return columns;
   });
@@ -126,7 +127,7 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
   }, [displayColumns, setQuery]);
 
 
-
+  console.log("displayCOls",displayColumns);
 
   useEffect(() => {
     if (data?.length) {
@@ -261,7 +262,7 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
       <div className="relative overflow-x-auto w-full dark:invert border-l border-r border-t border-gray-800 rounded-t-lg">
         <div ref={dropdownRef} className="absolute cursor-pointer z-30" style={{top:10, right:10}}>
               <button onClick={() => setDropdownOpen((prev) => !prev)} className="p-2 rounded-full hover:bg-gray-300">
-                <PiDotsThreeOutlineVertical size={20} className="text-gray-600 hover:text-gray-900" />
+                {tableType === "lead" && <PiDotsThreeOutlineVertical size={20} className="text-gray-600 hover:text-gray-900" />}
               </button>
 
               {dropdownOpen && (

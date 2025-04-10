@@ -8,10 +8,13 @@ export const EXCLUDED_COLUMNS = ['_id','__v'];
 //   'createdBy', 'reporting'
 // ];
 
+// export const EXCLUDED_COLUMNS_TEAM = [
+//   '_id', 'intial', 'initial', 'password', 'permission', 'region',
+//   'ivrActive', 'tokens', 'createdAt', 'updatedAt', '__v', 'isDeleted',
+//   'createdBy', 'reporting'
+// ];
 export const EXCLUDED_COLUMNS_TEAM = [
-  '_id', 'intial', 'initial', 'password', 'permission', 'region',
-  'ivrActive', 'tokens', 'createdAt', 'updatedAt', '__v', 'isDeleted',
-  'createdBy', 'reporting'
+  
 ];
 
 
