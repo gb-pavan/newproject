@@ -143,6 +143,7 @@ const reg = [
 ];
 
 const DynamicForm: React.FC<DynamicFormProps> = ({ fields }) => {
+  console.log("form fields",fields);
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [regionOptions, setRegionOptions] = useState<RegionOption[]>([]);
   console.log("regions",regionOptions);
@@ -223,9 +224,16 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ fields }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {[...additionalFields, ...fields].map((field) => (
           <div key={field._id} className="flex flex-col">
+            {/* <label className="font-semibold text-gray-700 capitalize">
+              {field.name.replace(/([A-Z])/g, " $1")}
+            </label> */}
             <label className="font-semibold text-gray-700 capitalize">
               {field.name.replace(/([A-Z])/g, " $1")}
+              {(field.name === "name" || field.name === "phone" || field.required) && (
+                <span className="text-red-500 ml-1">*</span>
+              )}
             </label>
+
 
             {field.type === "DROPDOWN" && field.name === "region" ? (
               <select

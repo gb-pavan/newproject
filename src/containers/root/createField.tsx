@@ -278,15 +278,15 @@ const FieldsSettingsPage = () => {
     const matchesSearch = field.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
-    // const matchesVisibility =
-    //   activeFilter === "Active" ? (field.active) : !field.active;
+    const matchesVisibility =
+      activeFilter === "Active" ? (field.active) : !field.active;
     const matchesType =
       selectedType === "Select type" || selectedType === "All"
         ? true
         : field.type.toLowerCase() === selectedType.toLowerCase();
 
     // return matchesSearch && matchesVisibility && matchesType;
-    return matchesSearch && matchesType;
+    return matchesSearch && matchesType && matchesVisibility;
   });
 
   const searchResults = filteredFields?.length;

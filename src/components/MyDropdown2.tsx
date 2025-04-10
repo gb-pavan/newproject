@@ -12,6 +12,7 @@ interface DropdownOption {
   addDeco?: boolean;
   showCheckbox?: boolean;
   id?: string;
+  role?:string
 }
 
 interface DropdownCategory {
@@ -49,10 +50,11 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [filteredOptions, setFilterOptions] = useState("");
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
+  const [filterValues, setFilterValues] = useState<string[]>([]);
   console.log("selectedValues assignee",selectedValues);
 
   const handleSelectionChange = (selected: string[]) => {
-    console.log("Selected Values:", selected);
+    setFilterValues(selected);
   };
 
   const toggleCategory = (key: string) => {
@@ -62,15 +64,50 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
     }));
   };
 
-  const filteringOptions = useMemo(
-    () =>
-      options.filter(
-        (option) =>
-          option.label?.toLowerCase().includes(filteredOptions.toLowerCase()) ||
-          option.value?.toString().toLowerCase().includes(filteredOptions.toLowerCase())
-      ),
-    [options, filteredOptions]
-  );
+  // const filteringOptions = useMemo(
+  //   () =>
+  //     options.filter(
+  //       (option) =>
+  //         option.label?.toLowerCase().includes(filteredOptions.toLowerCase()) ||
+  //         option.value?.toString().toLowerCase().includes(filteredOptions.toLowerCase())
+  //     ),
+  //   [options, filteredOptions]
+  // );
+
+  // const filteringOptions = useMemo(() => {
+  //   return options.filter(
+  //     (option) =>
+  //       option.label?.toLowerCase().includes(filteredOptions.toLowerCase()) &&
+  //       (filterValues.length === 0 || filterValues.includes(option.value?.toString()))
+  //   );
+  // }, [options, filteredOptions, filterValues]);
+  const filteringOptions = useMemo(() => {
+    return options.filter((option) => {
+      const labelMatch = option.label?.toLowerCase().includes(filteredOptions.toLowerCase());
+      const valueMatch =
+        filterValues.length === 0 ||
+        filterValues.map((v) => v.toLowerCase()).includes(option.role!.toString().toLowerCase());
+
+      return labelMatch && valueMatch;
+    });
+  }, [options, filteredOptions, filterValues]);
+
+  console.log(
+  "role filter check",
+  options,filterValues.map((v) => v.toLowerCase())
+);
+
+// console.log(
+//   "role filter check",
+//   options.some((option) =>
+//     filterValues.map((v) => v.toLowerCase()).includes(option.value?.toString().toLowerCase())
+//   )
+// );
+
+
+
+
+
 
   const filteredCategories = useMemo(() => {
     if (!categories) return [];
@@ -175,11 +212,11 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
           <div className="max-h-64 overflow-y-auto p-2">
             <ul>
               {categories ? (
-                filteredCategories.map((cat) => {
+                filteredCategories.map((cat,index) => {
                   const isExpanded = expandedCategories[cat.key] ?? true;
 
                   return (
-                    <div key={cat.key} className="mb-2">
+                    <div key={index} className="mb-2">
                       <div
                         className="flex justify-between items-center font-medium text-sm text-gray-600 px-2 py-1 cursor-pointer hover:bg-gray-100 rounded"
                         onClick={() => toggleCategory(cat.key)}
@@ -234,7 +271,12 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
                 })
               ) : (
                 filteringOptions.map((option) => {
-                  const isSelected = selectedValues?.includes(option.value.toString()!);
+                  // const isSelected = selectedValues?.includes(option.id!.toString());
+                  const isSelected =
+                    defaultValue === "AssignTo"
+                      ? selectedValues?.includes(option.id?.toString() ?? "")
+                      : selectedValues?.includes(option.value?.toString() ?? "");
+
                   const IconComponent = option.icon ? Icons[option.icon] : null;
 
                   return (

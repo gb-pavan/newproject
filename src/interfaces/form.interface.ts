@@ -3,6 +3,7 @@ export interface FormField {
   name: string;
   type: string;
   options?: string[];
+  required?:boolean;
 }
 
 export interface RegionOption {

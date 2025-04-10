@@ -5,7 +5,9 @@ import { handleError, mapAssigneeToDropdownOptions } from '@/utils/helpers';
 import { AxiosError } from 'axios';
 import { DropdownInstance } from '@/services/dropdown.service';
 import { IAssignee } from '@/interfaces/tableFilterTypes';
-// import { useStringArray } from '@/providers/StringArrayContext';
+import { useStringArray } from '@/providers/StringArrayContext';
+import { TableInstance } from '@/services/table.service';
+import { toast } from "react-hot-toast";
 
 // interface BulkActionsProps {
 //   selectedCount: number;
@@ -15,7 +17,7 @@ import { IAssignee } from '@/interfaces/tableFilterTypes';
 
 const BulkActions: React.FC = () => {
 
-  // const { values } = useStringArray();
+  const { values } = useStringArray();
 
   const [assignee, setGetAssignee] = useState<IAssignee[]>([]);
   const [assignTo, setAssignedTo] = useState<string[]>([]);
@@ -43,6 +45,31 @@ const BulkActions: React.FC = () => {
     // }
     // await TableInstance.assignTo(payloadAssign);
   }
+
+  // const handleDistribute = async () => {
+  //   const payloadAssign = {
+  //     leadIds : values,
+  //     managerId :assignTo
+  //   }
+  //   await TableInstance.assignTo(payloadAssign);
+  // }
+
+  const handleDistribute = async () => {
+    const payloadAssign = {
+      leadIds: values,
+      managerId: assignTo,
+    };
+
+    await toast.promise(
+      TableInstance.assignTo(payloadAssign),
+      {
+        loading: "Distributing leads...",
+        success: "Leads assigned successfully!",
+        error: "Failed to assign leads. Please try again.",
+      }
+    );
+  };
+
 
   return (
     <div className="bg-white p-4 rounded-md shadow-md border border-gray-200 mt-4 w-[500px]">
@@ -81,7 +108,7 @@ const BulkActions: React.FC = () => {
         <div className="flex items-center space-x-2">
           <span className="text-sm text-gray-600">Re/assign leads to</span>
           <FaUser className="text-gray-500" />
-          <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true })} multiSelect selectedValues={assignTo} defaultValue='AssignTo' onChange={handleAssignTo} />
+          <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true }).filter((option) => option.label?.toLowerCase() !== "select all")} multiSelect selectedValues={assignTo} defaultValue='AssignTo' onChange={handleAssignTo} />
         </div>
 
         {/* <div className="flex items-center space-x-2">
@@ -102,7 +129,7 @@ const BulkActions: React.FC = () => {
       </div>
 
       <div className="text-center mt-3">
-        <button className="bg-purple-500 hover:bg-purple-600 text-white text-sm px-6 py-2">
+        <button className="bg-purple-500 hover:bg-purple-600 text-white text-sm px-6 py-2" onClick={handleDistribute}>
           ✓ PROCEED WITH LEAD
         </button>
       </div>
