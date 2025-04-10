@@ -105,7 +105,7 @@ const FieldsSettingsPage = () => {
       }
     };
 
-    const filterFieldType = async (fieldType:string) => {
+    const filterFieldType = async () => {
       try {
         const searchFiltered = await RootInstance.getLeadFieldType(searchTerm);
         setCreatedFields(searchFiltered);
@@ -115,7 +115,7 @@ const FieldsSettingsPage = () => {
     };
 
     fetchFilteredFields();
-    filterFieldType(selectedType);
+    filterFieldType();
   }, [searchTerm]);
 
   // Function to handle drag end event

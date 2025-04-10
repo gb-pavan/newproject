@@ -75,7 +75,6 @@ const COLUMN_STORAGE_KEY = "displayColumns";
 
 const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns,statusInfo,tableType,onRowClick,selectedRowIdsRef }) => {
   // const [displayColumns, setDisplayColumns] = useState<string[]>([]);
-  console.log("data table",data);
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [checkedRows, setCheckedRows] = useState<boolean[]>([]);
@@ -86,7 +85,6 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
   const [displayColumns, setDisplayColumns] = useState<string[]>(() => {
     if (typeof window !== "undefined") {
       const savedColumns = localStorage.getItem(COLUMN_STORAGE_KEY);
-      console.log("savedCOlumns",savedColumns);
       return savedColumns ? JSON.parse(savedColumns) : columns;
     }
     return columns;
@@ -243,7 +241,6 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
     // Open the details page in a new tab
     window.open(detailsUrl, '_blank');
   };
-  console.log("displayCols",displayColumns);
 
   return (
     <DndProvider backend={HTML5Backend}>

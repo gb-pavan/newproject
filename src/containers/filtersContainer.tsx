@@ -32,6 +32,7 @@ interface TableFiltersProps {
 const TableFilters:React.FC<TableFiltersProps> = ({query, setQuery,assignee,statusInfo,selectedIds}) => { 
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [assigneeIds, setAssigneeIds] = useState<string[]>([]);
 
   const handleStatusChange = (newValues: string[]) => {
     setQuery((prev) => ({
@@ -66,26 +67,7 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, setQuery,assignee,stat
     if (newValues.every(val => val.trim() === '')) {
       const allAssignee:IAssignee[] = assignee;
       const ids = extractIds(allAssignee); // assuming your array is stored in a variable
-    //   setQuery((prev) => ({
-    //   ...prev,
-    //   filters: [
-    //     ...prev.filters.filter((filter) => filter.field !== "assignedOwner"),
-    //     // {
-    //     //   field: "Assignee",
-    //     //   operator: "IN",
-    //     //   value: [...newValues],
-    //     // } as Filter,
-    //     ...(newValues.length > 0
-    //       ? [
-    //           {
-    //             field: "assignedOwner",
-    //             operator: "IN",
-    //             value: [...ids], // Ensure it's an array
-    //           } as Filter,
-    //         ]
-    //       : []),
-    //   ],
-    // }));
+ 
     setQuery((prev) => {
   const queryWithoutSearch = { ...prev };
   delete queryWithoutSearch.search;
@@ -113,11 +95,7 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, setQuery,assignee,stat
       ...prev,
       filters: [
         ...prev.filters.filter((filter) => filter.field !== "assignedOwner"),
-        // {
-        //   field: "Assignee",
-        //   operator: "IN",
-        //   value: [...newValues],
-        // } as Filter,
+      
         ...(newValues.length > 0
           ? [
               {
@@ -128,7 +106,8 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, setQuery,assignee,stat
             ]
           : []),
       ],
-    }));   
+    }));
+    setAssigneeIds(newValues);  
   };
 
 
@@ -144,7 +123,18 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, setQuery,assignee,stat
               iconColor="#0D2167"
           /> */}
 
-          <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true })} multiSelect defaultValue="Assignee" onChange={handleAssigneeChange} />
+          <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true })} selectedValues={assigneeIds} categories={[
+    {
+      label: "Active users",
+      key: "active",
+      options: mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true }).filter((user) => user.isDeleted === true),
+    },
+    {
+      label: "Deleted users",
+      key: "deleted",
+      options: mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true }).filter((user) => user.isDeleted === false),
+    }
+  ]} multiSelect defaultValue="Assignee" onChange={handleAssigneeChange} />
           <DateFilter options={[...TIME_RANGE]} setDate={setQuery} />
         
         {/* <MultiSelectDropdown options={statusInfo} selectedOptions={filterState.status} onSelect={(values: string[]) => {

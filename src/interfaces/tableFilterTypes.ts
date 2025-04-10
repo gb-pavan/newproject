@@ -35,6 +35,8 @@ export interface IAssignee {
   _id: string;
   name: string;
   email: string;
+  isDeleted: boolean,
+  role: string,
   depth: number;
 }
 

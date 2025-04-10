@@ -3,10 +3,9 @@ import { FaUser} from 'react-icons/fa';
 import CustomDropdown2 from '@/components/MyDropdown2';
 import { handleError, mapAssigneeToDropdownOptions } from '@/utils/helpers';
 import { AxiosError } from 'axios';
-import { TableInstance } from '@/services/table.service';
 import { DropdownInstance } from '@/services/dropdown.service';
 import { IAssignee } from '@/interfaces/tableFilterTypes';
-import { useStringArray } from '@/providers/StringArrayContext';
+// import { useStringArray } from '@/providers/StringArrayContext';
 
 // interface BulkActionsProps {
 //   selectedCount: number;
@@ -16,7 +15,7 @@ import { useStringArray } from '@/providers/StringArrayContext';
 
 const BulkActions: React.FC = () => {
 
-  const { values } = useStringArray();
+  // const { values } = useStringArray();
 
   const [assignee, setGetAssignee] = useState<IAssignee[]>([]);
   const [assignTo, setAssignedTo] = useState<string[]>([]);

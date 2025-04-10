@@ -5,7 +5,6 @@ import { ThemesProvider } from "@/providers/ThemeProvider";
 import ErrorBoundaryProvider from "@/providers/ErrorBoundaryProvider";
 import "../globals.css";
 import { StringArrayProvider } from "@/providers/StringArrayContext";
-import { Toaster } from 'react-hot-toast';
 
 
 // const geistSans = Geist({
