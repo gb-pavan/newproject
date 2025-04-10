@@ -276,6 +276,20 @@ import { handleError } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import toast from "react-hot-toast";
+import IntelliClickLogo from "@/components/SvgLogo";
+
+const colors = [
+  "text-white",
+  // "text-purple-600",
+  // "text-blue-700",
+  // "text-red-500",
+  // "text-green-500",
+  // "bg-gradient-to-r from-pink-500 via-yellow-500 to-blue-500 text-transparent bg-clip-text",
+  // "bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text",
+  // "bg-gradient-to-l from-green-400 via-cyan-500 to-blue-500 text-transparent bg-clip-text",
+  // "[&>*:nth-child(1)]:text-red-500 [&>*:nth-child(2)]:text-blue-500 [&>*:nth-child(3)]:text-yellow-500",
+  // "[&>*:nth-child(1)]:text-purple-500 [&>*:nth-child(2)]:text-green-500"
+];
 
 export default function LoginPage() {
   const [inputs, setInputs] = useState({ email: "", password: "" });
@@ -436,14 +450,21 @@ const handleOtpSubmit = async (e: React.FormEvent) => {
 
       <div className="relative z-10 w-full max-w-md mx-auto p-6 mx-4 sm:p-8 bg-white/10 backdrop-blur-md rounded-xl shadow-lg">
         <div className="flex justify-center mb-6">
-          <Image
+          {/* <Image
             src="/logox.svg"
             alt="logo"
             priority
             width={200}
             height={50}
             className="h-auto w-auto object-contain"
-          />
+          /> */}
+
+          {colors.map((colorClass, index) => (
+            <div key={index} className="flex flex-col items-center space-y-2">
+              <IntelliClickLogo className={colorClass} />
+            </div>
+          ))}
+          
         </div>
 
         {isOtpStage ? (
