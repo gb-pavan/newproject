@@ -99,7 +99,7 @@ export const ClosedStage: React.FC<StageProps> = ({ className, won, lost,setChan
       >
         <span className="text-sm text-gray-800" style={{ color:item.color }}>{item.label}</span>
         <div className="flex gap-2">
-          <button onClick={() => handleEditClick(item?.statusid?.toLocaleString()!, item.color, item.label, type,item.backgroundColor)}>
+          <button onClick={() => handleEditClick(item.statusid!.toLocaleString(), item.color, item.label, type,item.backgroundColor)}>
             <Edit2 size={16} className="text-gray-500 hover:text-gray-700" />
           </button>
           {/* <button onClick={() => handleDelete(item.statusid.toString(), type)}>

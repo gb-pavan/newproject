@@ -407,13 +407,13 @@ export const ActiveStage: React.FC<StageProps> = ({ className, fullObject, setCh
               <div className="flex items-center space-x-2">
                 <button
                   className="text-gray-500 hover:text-gray-700"
-                  onClick={() => handleEditClick(item?.statusid?.toString()!, item.color, item.label, item.backgroundColor)}
+                  onClick={() => handleEditClick(item.statusid!.toString(), item.color, item.label, item.backgroundColor)}
                 >
                   <Edit2 size={16} />
                 </button>
                 <button
                   className="text-gray-500 hover:text-red-600"
-                  onClick={() => handleDelete(stageId, item?.statusid?.toString()!)}
+                  onClick={() => handleDelete(stageId, item.statusid!.toString())}
                 >
                   <Trash2 size={16} />
                 </button>
@@ -446,7 +446,7 @@ export const ActiveStage: React.FC<StageProps> = ({ className, fullObject, setCh
                   <span className="font-medium">{item.label}</span>
                   <button
                     className="text-gray-500 hover:text-green-600"
-                    onClick={() => handleRestore(stageId, item?.statusid?.toString()!)}
+                    onClick={() => handleRestore(stageId, item.statusid!.toString())}
                     title="Restore"
                   >
                     <RefreshCcw size={16} />

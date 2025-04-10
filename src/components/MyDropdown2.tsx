@@ -195,7 +195,7 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
                         cat.options.map((option) => {
                           console.log("is selected values",selectedValues);
                           console.log("option values",option?.id);
-                          const isSelected = selectedValues?.includes(option?.id!);
+                          const isSelected = selectedValues?.includes(option.id!);
                           console.log("is selected",isSelected);
                           const IconComponent = option.icon ? Icons[option.icon] : null;
 
@@ -234,7 +234,7 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
                 })
               ) : (
                 filteringOptions.map((option) => {
-                  const isSelected = selectedValues?.includes(option?.value?.toString()!);
+                  const isSelected = selectedValues?.includes(option.value.toString()!);
                   const IconComponent = option.icon ? Icons[option.icon] : null;
 
                   return (

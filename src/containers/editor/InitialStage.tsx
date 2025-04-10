@@ -338,7 +338,7 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
                     className="text-gray-600 hover:text-gray-800"
                     onClick={() =>
                       handleEditClick(
-                        item?.statusid?.toString()!,
+                        item.statusid!.toString(),
                         item.color,
                         item.label,
                         item.backgroundColor
