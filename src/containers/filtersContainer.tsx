@@ -27,12 +27,24 @@ interface TableFiltersProps {
 //   color?: string;
 //   addDeco?:boolean;
 //   showCheckbox?: boolean;
-// }
+// } 
 
 const TableFilters:React.FC<TableFiltersProps> = ({query, setQuery,assignee,statusInfo,selectedIds}) => { 
 
+  const categoryList = [
+    {
+      label: "Active users",
+      key: "active",
+      options: mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true }).filter((user) => user.isDeleted === true),
+    },
+    {
+      label: "Deleted users",
+      key: "deleted",
+      options: mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true }).filter((user) => user.isDeleted === false),
+    }
+  ];
+
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [assigneeIds, setAssigneeIds] = useState<string[]>([]);
 
   const handleStatusChange = (newValues: string[]) => {
     setQuery((prev) => ({
@@ -63,31 +75,32 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, setQuery,assignee,stat
 
 
   const handleAssigneeChange = (newValues: string[]) => {
+    console.log("assignee selected",newValues);
     
     if (newValues.every(val => val.trim() === '')) {
       const allAssignee:IAssignee[] = assignee;
       const ids = extractIds(allAssignee); // assuming your array is stored in a variable
  
-    setQuery((prev) => {
-  const queryWithoutSearch = { ...prev };
-  delete queryWithoutSearch.search;
+      setQuery((prev) => {
+        const queryWithoutSearch = { ...prev };
+        delete queryWithoutSearch.search;
 
-  return {
-    ...queryWithoutSearch,
-    filters: [
-      ...prev.filters.filter((filter) => filter.field !== "assignedOwner"),
-      ...(newValues.length > 0
-        ? [
-            {
-              field: "assignedOwner",
-              operator: "IN",
-              value: [...ids],
-            } as Filter,
-          ]
-        : []),
-    ],
-  };
-});
+        return {
+          ...queryWithoutSearch,
+          filters: [
+            ...prev.filters.filter((filter) => filter.field !== "assignedOwner"),
+            ...(newValues.length > 0
+              ? [
+                  {
+                    field: "assignedOwner",
+                    operator: "IN",
+                    value: [...ids],
+                  } as Filter,
+                ]
+              : []),
+          ],
+        };
+      });
  
       return
     }
@@ -107,8 +120,9 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, setQuery,assignee,stat
           : []),
       ],
     }));
-    setAssigneeIds(newValues);  
   };
+
+  console.log("checcking selected assignee now",query.filters.find(each => each.field === "assignedOwner")?.value);
 
 
   return (
@@ -123,27 +137,17 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, setQuery,assignee,stat
               iconColor="#0D2167"
           /> */}
 
-          <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true })} selectedValues={assigneeIds} categories={[
-    {
-      label: "Active users",
-      key: "active",
-      options: mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true }).filter((user) => user.isDeleted === true),
-    },
-    {
-      label: "Deleted users",
-      key: "deleted",
-      options: mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true }).filter((user) => user.isDeleted === false),
-    }
-  ]} multiSelect defaultValue="Assignee" onChange={handleAssigneeChange} />
+          <CustomDropdown2
+            options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true })} 
+            selectedValues={query.filters.find(each => each.field === "assignedOwner")?.value || []} 
+            categories={categoryList} 
+            multiSelect={true} 
+            defaultValue="Assignee" 
+            onChange={handleAssigneeChange} 
+          />
           <DateFilter options={[...TIME_RANGE]} setDate={setQuery} />
         
-        {/* <MultiSelectDropdown options={statusInfo} selectedOptions={filterState.status} onSelect={(values: string[]) => {
-          console.log("filter state",values)
-          setQuery(prev => ({
-            ...prev,
-            status: values,
-          }));
-        }} /> */}
+        
         <CustomDropdown2
           options={mapStatusToDropdownOptions(statusInfo, { showCheckbox: true,addDeco:false })}
           selectedValues={query.filters.find(each => each.field === "status")?.value || []}
