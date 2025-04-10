@@ -58,21 +58,48 @@ const TeamContainer: React.FC = () => {
     return users.filter(user => user.ivrActive);
   }
 
-  const fetchTeam = useCallback(async () => {
+//   const fetchTeam = useCallback(async () => {
+//   try {
+//     const teamResponse = await TeamInstance.getTeamMembers({
+//       search:userMeta.search,
+//       department:userMeta.department,
+//       role: userMeta.role,
+//       page: currentPage,
+//       limit: rowsPerPage,
+//     });
+
+//     setTeam(teamResponse.users);
+//     setTotalRows(teamResponse?.total);
+//   } catch (error) {
+//     handleError(error as AxiosError, false);
+//   }
+// }, [currentPage, rowsPerPage, userMeta]); // <-- Add userMeta here
+
+const fetchTeam = useCallback(async () => {
   try {
-    const teamResponse = await TeamInstance.getTeamMembers({
-      search:userMeta.search,
-      role: userMeta.role,
+    const params: Record<string, any> = {
+      search: userMeta.search,
       page: currentPage,
       limit: rowsPerPage,
-    });
+    };
+
+    if (userMeta.department !== "All") {
+      params.department = userMeta.department;
+    }
+
+    if (userMeta.role !== "All") {
+      params.role = userMeta.role;
+    }
+
+    const teamResponse = await TeamInstance.getTeamMembers(params);
 
     setTeam(teamResponse.users);
     setTotalRows(teamResponse?.total);
   } catch (error) {
     handleError(error as AxiosError, false);
   }
-}, [currentPage, rowsPerPage, userMeta]); // <-- Add userMeta here
+}, [currentPage, rowsPerPage, userMeta]);
+
 
 useEffect(() => {
   fetchTeam();

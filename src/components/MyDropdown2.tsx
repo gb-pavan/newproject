@@ -92,18 +92,6 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
     });
   }, [options, filteredOptions, filterValues]);
 
-  console.log(
-  "role filter check",
-  options,filterValues.map((v) => v.toLowerCase())
-);
-
-// console.log(
-//   "role filter check",
-//   options.some((option) =>
-//     filterValues.map((v) => v.toLowerCase()).includes(option.value?.toString().toLowerCase())
-//   )
-// );
-
 
 
 
@@ -230,10 +218,8 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
 
                       {isExpanded &&
                         cat.options.map((option) => {
-                          console.log("is selected values",selectedValues);
-                          console.log("option values",option?.id);
+                          
                           const isSelected = selectedValues?.includes(option.id!);
-                          console.log("is selected",isSelected);
                           const IconComponent = option.icon ? Icons[option.icon] : null;
 
                           return (

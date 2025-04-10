@@ -74,7 +74,7 @@ const TeamFilters:React.FC<TeamFiltersProps> = ({setUserMeta}) => {
   const handleDeptChange = (value: string) => {
     setSelectedDept(value);
     // setUserMeta({ ...userMeta, role: value });
-    setUserMeta(prev => ({ ...prev, role: value }));
+    setUserMeta(prev => ({ ...prev, department: value }));
   };
 
   const handlePermissionChange = (value: string) => {

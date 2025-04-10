@@ -250,6 +250,14 @@ const TableContainer: React.FC = () => {
           onRowsPerPageChange={(rows) => {
             setRowsPerPage(rows);
             setCurrentPage(1);
+            setQuery(prev => ({
+              ...prev,
+              pagination: {
+                ...prev.pagination,
+                limit: rows
+              }
+            }));
+
           }}
         />
     </div>
