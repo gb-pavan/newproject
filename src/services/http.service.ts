@@ -1,12 +1,21 @@
 import { API } from '@/utils/enum';
-import { getToken, handleError } from '@/utils/helpers';
+import { handleError } from '@/utils/helpers';
 import Axios, { AxiosError } from 'axios';
 
 export const callApi = async (url: string, method: API, data?: object | null, shouldThrowError?: boolean) => {
 
-  const { token } = getToken();
+  // const { token } = getToken();
 
-  Axios.defaults.headers.common.Authorization = token;
+
+  // Axios.defaults.headers.common.Authorization = token;
+  const hasTempToken = data && "tempToken" in data;
+
+  // Only set default Authorization header if no tempToken is in the data
+  if (!hasTempToken) {
+    // Axios.defaults.headers.common.Authorization = token;
+        Axios.defaults.headers.common.Authorization ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2NhZTQ5NmExODA0ZjljMzZlOGYyODQiLCJyb2xlIjoicm9vdCIsImVtYWlsIjoicmVldGVzaEBnbWFpbC5jb20iLCJwaG9uZSI6IjE4NzI0NDA4OTAiLCJuYW1lIjoiUmVldGVzaCBQYW5kZXkiLCJkZXBhcnRtZW50IjoiU2FsZXMiLCJpYXQiOjE3NDEzNTAwNzR9._77xRfwUX83RcOvYsswHGopnLtK5ZEd8P65wbXu4MJU';
+
+  }
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const uri = `${baseUrl?.replace(/\/$/, '')}/${url.replace(/^\//, '')}`;
  

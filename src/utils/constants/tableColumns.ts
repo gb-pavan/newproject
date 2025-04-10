@@ -9,19 +9,5 @@ export const columns = [
   "sourceBy",
 ]
 
-export const TeamColumns = [
-  "name",
-  "intial",
-  "email",
-  "role",
-  "permission",
-  "reporting",
-  "phone",
-  "region",
-  "ivrActive",
-  "createdBy",
-  "department",
-  "createdAt",
-  "updatedAt"
-];
+export const TeamColumns = ['name', 'role', 'department', 'email', 'phone']; 
 
