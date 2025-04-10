@@ -236,27 +236,17 @@ const TableContainer: React.FC = () => {
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          rowsPerPage={rowsPerPage}
-          // onPageChange={(page) => setQuery(prevQuery => ({
-          //   ...prevQuery,
-          //   pagination: {
-          //     ...prevQuery.pagination,
-          //     page: page // Replace `newPage` with the actual page number
-          //   }
-          // })),
-          // setCurrentPage(page),
-          // }
+          rowsPerPage={rowsPerPage}         
           onPageChange={(page) => {
-  setQuery(prevQuery => ({
-    ...prevQuery,
-    pagination: {
-      ...prevQuery.pagination,
-      page: page
-    }
-  }));
-  setCurrentPage(page);
-}}
-
+            setQuery(prevQuery => ({
+              ...prevQuery,
+              pagination: {
+                ...prevQuery.pagination,
+                page: page
+              }
+            }));
+            setCurrentPage(page);
+          }}
           onRowsPerPageChange={(rows) => {
             setRowsPerPage(rows);
             setCurrentPage(1);

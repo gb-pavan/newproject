@@ -183,10 +183,23 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
       return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [dropdownOpen]);
 
+  // useEffect(() => {
+  //   const allSelected = data?.every(row => selectedRowIdsRef?.current.has(String(row._id)));
+  //   setHeaderChecked(allSelected);
+  // }, [data, selectedRowIdsRef]);
+
   useEffect(() => {
-    const allSelected = data?.every(row => selectedRowIdsRef?.current.has(String(row._id)));
+    if (!data || data.length === 0) {
+      setHeaderChecked(false); // explicitly uncheck when no data
+      return;
+    }
+
+    const allSelected = data.every(row =>
+      selectedRowIdsRef?.current.has(String(row._id))
+    );
     setHeaderChecked(allSelected);
   }, [data, selectedRowIdsRef]);
+
 
 
   // const handleHeaderCheckboxChange = () => {
