@@ -120,7 +120,7 @@ useEffect(() => {
           </div>
         </div>
       <TeamFilters setUserMeta={setUserMeta} />
-      <DynamicTable3 data={team} columns={TeamColumns} tableType="team"/>
+      <DynamicTable3 data={team} columns={TeamColumns} tableType="team" setQuery={setQuery}/>
       <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
