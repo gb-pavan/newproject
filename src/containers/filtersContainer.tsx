@@ -39,12 +39,12 @@ const TableFilters:React.FC<TableFiltersProps> = ({query,selectedRowIdsRef, setQ
     {
       label: "Active users",
       key: "active",
-      options: mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true }).filter((user) => user.isDeleted === true),
+      options: mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true }).filter((user) => user.isDeleted === false),
     },
     {
       label: "Deleted users",
       key: "deleted",
-      options: mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true }).filter((user) => user.isDeleted === false),
+      options: mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true }).filter((user) => user.isDeleted === true),
     }
   ];
 
