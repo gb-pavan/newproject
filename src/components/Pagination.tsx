@@ -31,8 +31,8 @@ function Pagination({ currentPage, totalPages, onPageChange, rowsPerPage, onRows
         </select>
         <p className="text-sm font-light">
           {totalPages > 0
-            ? `${(currentPage - 1) * rowsPerPage + 1}-${Math.min(currentPage * rowsPerPage, totalPages * rowsPerPage)}`
-            : "0-1"} of {totalPages > 0 ? totalPages * rowsPerPage : 1}
+            ? `${(currentPage - 1) * rowsPerPage + 1}-${Math.floor(Math.min(currentPage * rowsPerPage, totalPages * rowsPerPage))}`
+            : "0-1"} of {totalPages > 0 ? Math.floor(totalPages * rowsPerPage) : 1}
         </p>
       </div>
 
@@ -60,7 +60,7 @@ function Pagination({ currentPage, totalPages, onPageChange, rowsPerPage, onRows
           size={24}
         />
         <FaChevronRight
-          className={`cursor-pointer text-sm px-2 ${currentPage === Math.max(1, Math.ceil(totalPages)) ? 'text-gray-300 pointer-events-none' : ''}`}
+          className={`cursor-pointer text-sm px-2 ${currentPage === Math.max(1, Math.floor(totalPages)) ? 'text-gray-300 pointer-events-none' : ''}`}
           onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
           size={22}
         />
