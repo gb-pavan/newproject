@@ -77,7 +77,7 @@ const TeamContainer: React.FC = () => {
 
 const fetchTeam = useCallback(async () => {
   try {
-    const params: Record<string, any> = {
+    const params: Record<string, unknown> = {
       search: userMeta.search,
       page: currentPage,
       limit: rowsPerPage,

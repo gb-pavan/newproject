@@ -677,8 +677,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useForm, Controller, useWatch } from "react-hook-form";
 import {
   TextField, Button, MenuItem, Select, InputLabel,
-  FormControl, Box, Container, Switch, FormControlLabel,
-  ListItemText, Checkbox, Grid, Autocomplete,
+  FormControl, Box, Container, Switch, FormControlLabel,Checkbox, Grid, Autocomplete,
 } from "@mui/material";
 import { IEmployee } from "@/interfaces";
 import { handleError } from "@/utils/helpers";
@@ -719,7 +718,7 @@ type DepartmentType = keyof typeof departmentRoles;
 type RoleType = keyof typeof roleLabels;
 
 const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
-  const { control, handleSubmit, watch, reset } = useForm<IEmployee>({
+  const { control, handleSubmit, reset } = useForm<IEmployee>({
     defaultValues: {
       name: "",
       initial: "",
@@ -1067,15 +1066,22 @@ const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
 //     </li>
 //   );
 // }}
-renderOption={(props, option, { selected }) => {
-  const { key: _, ...rest } = props; // discard MUI's internal key
-  return (
-    <li key={option._id} {...rest}>
-      <Checkbox style={{ marginRight: 8 }} checked={selected} />
-      {option.name}
-    </li>
-  );
-}}
+// renderOption={(props, option, { selected }) => {
+//   const { key: _, ...rest } = props; // discard MUI's internal key
+//   return (
+//     <li key={option._id} {...rest}>
+//       <Checkbox style={{ marginRight: 8 }} checked={selected} />
+//       {option.name}
+//     </li>
+//   );
+// }}
+renderOption={(props, option, { selected }) => (
+  <li {...props} key={option._id}>
+    <Checkbox style={{ marginRight: 8 }} checked={selected} />
+    {option.name}
+  </li>
+)}
+
 
 
             renderInput={(params) => <TextField {...params} label="Reportees" placeholder="Select reportees" />}

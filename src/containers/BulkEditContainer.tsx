@@ -9,13 +9,11 @@ import { useStringArray } from '@/providers/StringArrayContext';
 import { TableInstance } from '@/services/table.service';
 import { toast } from "react-hot-toast";
 
-// interface BulkActionsProps {
-//   selectedCount: number;
-//   onEditClick: () => void;
-//   onProceed: () => void;
-// }
+interface BulkActionsProps {
+    onClose: () => void;
+}
 
-const BulkActions: React.FC = () => {
+const BulkActions: React.FC<BulkActionsProps> = ({onClose}) => {
 
   const { values } = useStringArray();
 
@@ -38,12 +36,21 @@ const BulkActions: React.FC = () => {
   console.log("assignee options",mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true }));
 
   const handleAssignTo = async (assignedTo:string[]) => {
+    console.log("assignt to",assignedTo);
     setAssignedTo(assignedTo);
     // const payloadAssign = {
     //   leadIds : values,
     //   managerId :assignedTo[0]
     // }
     // await TableInstance.assignTo(payloadAssign);
+    //  await toast.promise(
+    //   TableInstance.assignTo(payloadAssign),
+    //   {
+    //     loading: "Distributing leads...",
+    //     success: "Leads assigned successfully!",
+    //     error: "Failed to assign leads. Please try again.",
+    //   }
+    // );
   }
 
   // const handleDistribute = async () => {
@@ -57,7 +64,7 @@ const BulkActions: React.FC = () => {
   const handleDistribute = async () => {
     const payloadAssign = {
       leadIds: values,
-      managerId: assignTo,
+      managerId: assignTo[0],
     };
 
     await toast.promise(
@@ -68,6 +75,8 @@ const BulkActions: React.FC = () => {
         error: "Failed to assign leads. Please try again.",
       }
     );
+    onClose();
+    
   };
 
 
@@ -108,7 +117,7 @@ const BulkActions: React.FC = () => {
         <div className="flex items-center space-x-2">
           <span className="text-sm text-gray-600">Re/assign leads to</span>
           <FaUser className="text-gray-500" />
-          <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true }).filter((option) => option.label?.toLowerCase() !== "select all")} multiSelect selectedValues={assignTo} defaultValue='AssignTo' onChange={handleAssignTo} />
+          <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: false,addDeco:true }).filter((option) => option.label?.toLowerCase() !== "select all")} defaultValue='AssignTo' onChange={handleAssignTo} />
         </div>
 
         {/* <div className="flex items-center space-x-2">

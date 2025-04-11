@@ -18,6 +18,8 @@ interface TableFiltersProps {
   statusInfo :IStatus[];
   rowsCount : number;
   selectedIds: string[];
+  setQueryTrigger: (value: number | ((prev: number) => number)) => void;
+  selectedRowIdsRef: React.RefObject<Set<string>>;
 }
 
 // interface DropdownOption {
@@ -29,7 +31,9 @@ interface TableFiltersProps {
 //   showCheckbox?: boolean;
 // } 
 
-const TableFilters:React.FC<TableFiltersProps> = ({query, setQuery,assignee,statusInfo,selectedIds}) => { 
+const TableFilters:React.FC<TableFiltersProps> = ({query,selectedRowIdsRef, setQuery,assignee,statusInfo,selectedIds,setQueryTrigger}) => { 
+
+
 
   const categoryList = [
     {
@@ -168,7 +172,12 @@ const TableFilters:React.FC<TableFiltersProps> = ({query, setQuery,assignee,stat
       
       <SlidingPanel isOpen={isPanelOpen} onClose={() => setIsPanelOpen(false)}>
         {/* You can place anything inside here */}
-        <BulkActions />
+        {/* <BulkActions onClose={setQuery(); () => setIsPanelOpen(false)} /> */}
+        <BulkActions onClose={() => {
+          setQueryTrigger(prev => prev + 1); // forces re-trigger
+          setIsPanelOpen(false);
+          selectedRowIdsRef.current?.clear();
+        }} />
       </SlidingPanel>
 
     </div>

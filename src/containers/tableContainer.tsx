@@ -40,6 +40,7 @@ const TableContainer: React.FC = () => {
   const [filters, setFilters] = useState<string[]>([]);
   const [tabColumns, setColumns] = useState<string[]>([]);
   const [totalRows, setTotalRows] = useState<number>(0);
+  const [queryTrigger, setQueryTrigger] = useState(0);
   const [query, setQuery] = useState<QueryState>({
     selectedId:"SYSTEM_FILTER_ALL_LEAD",
     filters:[],
@@ -47,6 +48,7 @@ const TableContainer: React.FC = () => {
     selectedFields:["name",
       "phone",
       "status",
+      "favorite",
       "assignedOwner",
       "createdBy",
       "createdAt",
@@ -153,7 +155,7 @@ const TableContainer: React.FC = () => {
   };
     filterData();
     getColumns();
-  }, [query, currentPage, rowsPerPage]); // Runs when these dependencies change
+  }, [query, currentPage, rowsPerPage,queryTrigger]); // Runs when these dependencies change
 
 
   const handleCondition = (key:string) => {
@@ -230,7 +232,7 @@ const TableContainer: React.FC = () => {
           <span className="text-sm">Yesterday Leads</span>
         </button>
         </div>
-        <TableFilters rowsCount={tableData?.length} setFilter={setFilterState} selectedIds={selectedIds} query={query} setQuery={setQuery} filterState={filterState} assignee={assignee} statusInfo={statusInfo} />
+        <TableFilters rowsCount={tableData?.length} setQueryTrigger={setQueryTrigger} setFilter={setFilterState} selectedIds={selectedIds} query={query} setQuery={setQuery} selectedRowIdsRef={selectedRowIdsRef} filterState={filterState} assignee={assignee} statusInfo={statusInfo} />
         <DndProvider backend={HTML5Backend}>
         <DynamicTable3 data={tableData} tabColumns={tabColumns} selectedRowIdsRef={selectedRowIdsRef} columns={columns} statusInfo={statusInfo} tableType="lead" onRowClick={handleRowClick} setQuery={setQuery} /></DndProvider>
         <Pagination

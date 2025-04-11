@@ -183,7 +183,7 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
           <div className="m-4 space-y-2">
             {(defaultValue === "Assignee" || defaultValue === "Status" || defaultValue === "AssignTo") && (
               <div className="flex items-center gap-2">
-                {defaultValue === "AssignTo" && <input type="checkbox" className="w-4 h-4" />}
+                {/* {defaultValue === "AssignTo" && <input type="checkbox" className="w-4 h-4" />} */}
                 <SearchBox
                   iconSize={32}
                   placeholder="Search"

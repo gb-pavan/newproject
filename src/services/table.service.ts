@@ -34,7 +34,7 @@ class TableService {
     return await callApi(url, API.GET);
   };
 
-  assignTo = async (payload:{leadIds:string[],managerId:string[]}) => {
+  assignTo = async (payload:{leadIds:string[],managerId:string}) => {
     const payload2 = {
       "leadIds":payload.leadIds,
       "managerId":payload.managerId
