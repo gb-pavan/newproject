@@ -88,6 +88,9 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
       if (tableType === 'lead'){
       const savedColumns = localStorage.getItem(COLUMN_STORAGE_KEY);
       return savedColumns ? JSON.parse(savedColumns) : columns;}
+      else if (tableType === 'team') {
+        return columns 
+      }
     }
     return columns;
   });
