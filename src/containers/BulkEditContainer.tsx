@@ -79,6 +79,14 @@ const BulkActions: React.FC<BulkActionsProps> = ({onClose}) => {
     
   };
 
+   const getLabelFromAssignee = (assignTo: string[], assignee: IAssignee[]): string | undefined => {
+    const label = assignee.find(each => each._id === assignTo[0])?.name;
+    return label === "Select All" ? "" : label;
+  };
+
+  console.log("ceking label select value passedd",getLabelFromAssignee(assignTo,assignee))
+
+
 
   return (
     <div className="bg-white p-4 rounded-md shadow-md border border-gray-200 mt-4 w-[500px]">
@@ -117,7 +125,11 @@ const BulkActions: React.FC<BulkActionsProps> = ({onClose}) => {
         <div className="flex items-center space-x-2">
           <span className="text-sm text-gray-600">Re/assign leads to</span>
           <FaUser className="text-gray-500" />
-          <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: false,addDeco:true }).filter((option) => option.label?.toLowerCase() !== "select all")} defaultValue='AssignTo' onChange={handleAssignTo} />
+          <CustomDropdown2 options={mapAssigneeToDropdownOptions(assignee,{ showCheckbox: false,addDeco:true }).filter((option) => option.label?.toLowerCase() !== "select all")} 
+            defaultValue='AssignTo' 
+            onChange={handleAssignTo}
+            selectedValues={getLabelFromAssignee(assignTo,assignee)}
+          />
         </div>
 
         {/* <div className="flex items-center space-x-2">
