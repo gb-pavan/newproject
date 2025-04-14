@@ -1,7 +1,5 @@
 'use client';
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import DynamicTable3 from "@/components/DragDropTable";
-import { TeamColumns } from "@/utils/constants";
+import React, { useCallback, useEffect, useState } from "react";
 import TeamFilters from "./teamFilters";
 import { TeamInstance } from "@/services/team.service";
 import { handleError } from "@/utils/helpers";
@@ -37,10 +35,10 @@ const TeamContainer: React.FC = () => {
   const [isSliderOpen, setIsSliderOpen] = useState(false);
   // const [authData, setAuthData] = useState<AuthData>({});
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  // const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [totalRows, setTotalRows] = useState<number>(0);
-  const selectedRowIdsRef = useRef<Set<string>>(new Set());
+  // const selectedRowIdsRef = useRef<Set<string>>(new Set());
   const totalPages = (totalRows/rowsPerPage);
   const [staticColumns, setStaticColumns] = useState<ColumnDef<IEmployee>[]>();
   const [query, setQuery] = useState<QueryState>({
@@ -136,15 +134,15 @@ useEffect(() => {
     }
   };
 
-  const handleRowClick = (id: string) => {
-    if (selectedRowIdsRef.current.has(id)) {
-      selectedRowIdsRef.current.delete(id);
-    } else {
-      selectedRowIdsRef.current.add(id);
-    }
-    setSelectedIds(Array.from(selectedRowIdsRef.current)); // causes re-render, but ref is safe
+  // const handleRowClick = (id: string) => {
+  //   if (selectedRowIdsRef.current.has(id)) {
+  //     selectedRowIdsRef.current.delete(id);
+  //   } else {
+  //     selectedRowIdsRef.current.add(id);
+  //   }
+  //   setSelectedIds(Array.from(selectedRowIdsRef.current)); // causes re-render, but ref is safe
 
-  };
+  // };
 
   const handleSelectionChange = (selectedRows: IEmployee[]) => {
     // const currentIds = new Set(
@@ -165,7 +163,7 @@ useEffect(() => {
     // });
 
     // changedIds.forEach(id => handleRowClick(id));
-    console.log("just created");
+    console.log("just created",selectedRows);
   };
 
   return (

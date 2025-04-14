@@ -22,7 +22,7 @@ import { ILeadFields } from "@/interfaces";
 import { CellContext } from "@tanstack/react-table";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { ColumnDef } from '@tanstack/react-table'; // Adjust the import based on your package
-import { capitalizeWords, generateUniqueId } from ".";
+import { capitalizeWords } from ".";
 
 
 // export const renderNameCell = ({

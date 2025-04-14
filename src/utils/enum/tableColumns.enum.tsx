@@ -1,7 +1,7 @@
 import { ILeadFields } from '@/interfaces'
 import { ColumnDef } from '@tanstack/react-table'
 import { getCheckboxColumn, renderNameCell } from '../helpers/renderers'
-import { generateUniqueId } from '../helpers'
+// import { generateUniqueId } from '../helpers'
 
 export type User = {
   name: string

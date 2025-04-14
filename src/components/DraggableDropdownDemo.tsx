@@ -145,7 +145,18 @@ const DraggableDropdownDemo: React.FC<DraggableDropdownDemoProps> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const isFirstRender = useRef(true);
 
-  // Sync columns and visibleColumns only on first render
+  // // Sync columns and visibleColumns only on first render
+  // useEffect(() => {
+  //   if (options && !options.every((col, idx) => col === columns[idx])) {
+  //     setColumns(options);
+  //   }
+
+  //   if (isFirstRender.current && selectedCols) {
+  //     setVisibleColumns(selectedCols);
+  //     isFirstRender.current = false;
+  //   }
+  // }, [options, selectedCols]); // intentionally omitting `columns`
+
   useEffect(() => {
     if (options && !options.every((col, idx) => col === columns[idx])) {
       setColumns(options);
@@ -155,7 +166,8 @@ const DraggableDropdownDemo: React.FC<DraggableDropdownDemoProps> = ({
       setVisibleColumns(selectedCols);
       isFirstRender.current = false;
     }
-  }, [options, selectedCols]);
+  }, [options, selectedCols,columns]); // Warning about missing `columns`
+
 
   // Close the dropdown when clicking outside
   useEffect(() => {

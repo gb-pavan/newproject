@@ -258,11 +258,17 @@ export function DynamicTable<TData>({
     getSortedRowModel: getSortedRowModel(),
   });
 
-  // Optional: send selected rows back to parent
+  // // Optional: send selected rows back to parent
+  // React.useEffect(() => {
+  //   const selectedRows = table.getSelectedRowModel().rows.map((row) => row.original);
+  //   onSelectionChange?.(selectedRows);
+  // }, [rowSelection]);  // intentionally omitting `onSelectionChange table`
+
   React.useEffect(() => {
     const selectedRows = table.getSelectedRowModel().rows.map((row) => row.original);
     onSelectionChange?.(selectedRows);
-  }, [rowSelection]);
+  }, [rowSelection,onSelectionChange,table]);
+
 
   const getStickyStyle = (columnId: string): React.CSSProperties => {
     const index = stickyColumns.indexOf(columnId);

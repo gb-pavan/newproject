@@ -1,5 +1,4 @@
 'use client';
-import DynamicTable3 from "@/components/DragDropTable";
 import FilterComponent from "@/components/FilterCondition";
 import Pagination from "@/components/Pagination";
 import SearchBox from "@/components/SearchBox";
@@ -11,11 +10,8 @@ import { AxiosError } from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import { FilterInstance } from "@/services/tableFilter.service";
 import { DropdownInstance } from "@/services/dropdown.service";
-import { columns } from "@/utils/constants";
 import { TableInstance } from "@/services/table.service";
 import { useStringArray } from "@/providers/StringArrayContext";
 import { DynamicTable } from "@/components/DynamicTable";
@@ -206,7 +202,7 @@ const TableContainer: React.FC = () => {
           setDynamicColumns(dynamicCols);
         }      
     }
-  }, [tableData, handleFavoriteToggle]);
+  }, [tableData, handleFavoriteToggle,statusInfo]);  // intentionally omitting `statusInfo`
 
 
 
