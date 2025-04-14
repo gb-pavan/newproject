@@ -319,7 +319,7 @@ export function DynamicTable<TData>({
 
 
   return (
-    <div className={cn("rounded-xl border border-gray-200 overflow-x-auto mt-4", className)}>
+    <div className={cn("rounded-t-xl border border-gray-200 overflow-x-auto mt-4", className)}>
       <table className="min-w-full text-sm text-left table-fixed">
         <thead className="bg-gray-100">
           {table.getHeaderGroups().map((headerGroup) => (

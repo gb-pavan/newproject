@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import DynamicTable3 from "@/components/DragDropTable";
 import { TeamColumns } from "@/utils/constants";
 import TeamFilters from "./teamFilters";
@@ -13,6 +13,9 @@ import StaticForm from "../staticForm";
 import { IEmployee, IEmployeeDetails } from "@/interfaces";
 import { QueryState } from "@/interfaces/tableFilterTypes";
 import Pagination from "@/components/Pagination";
+import { DynamicTable } from "@/components/DynamicTable";
+import { getEmployeeColumns } from "@/utils/enum/teamColumns.enum";
+import { ColumnDef } from "@tanstack/react-table";
 
 // type AuthData = {
 //   token?: string;
@@ -34,9 +37,12 @@ const TeamContainer: React.FC = () => {
   const [isSliderOpen, setIsSliderOpen] = useState(false);
   // const [authData, setAuthData] = useState<AuthData>({});
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [totalRows, setTotalRows] = useState<number>(0);
+  const selectedRowIdsRef = useRef<Set<string>>(new Set());
   const totalPages = (totalRows/rowsPerPage);
+  const [staticColumns, setStaticColumns] = useState<ColumnDef<IEmployee>[]>();
   const [query, setQuery] = useState<QueryState>({
     filters:[],
     logic: "AND",
@@ -100,6 +106,13 @@ const fetchTeam = useCallback(async () => {
   }
 }, [currentPage, rowsPerPage, userMeta]);
 
+useEffect(() => {
+  if (team?.length > 0) {
+    const statColumns = getEmployeeColumns();
+    setStaticColumns(statColumns);           
+  }
+}, [team]);
+
 
 useEffect(() => {
   fetchTeam();
@@ -121,6 +134,38 @@ useEffect(() => {
     } catch (error) {
       handleError(error as AxiosError, false);
     }
+  };
+
+  const handleRowClick = (id: string) => {
+    if (selectedRowIdsRef.current.has(id)) {
+      selectedRowIdsRef.current.delete(id);
+    } else {
+      selectedRowIdsRef.current.add(id);
+    }
+    setSelectedIds(Array.from(selectedRowIdsRef.current)); // causes re-render, but ref is safe
+
+  };
+
+  const handleSelectionChange = (selectedRows: IEmployee[]) => {
+    // const currentIds = new Set(
+    //   selectedRows
+    //     .map((row) => typeof row._id === "string" ? row._id : null)
+    //     .filter((id): id is string => id !== null)
+    // );
+
+    // const previousIds = selectedRowIdsRef.current;
+    // const changedIds = new Set<string>();
+
+    // currentIds.forEach(id => {
+    //   if (!previousIds.has(id)) changedIds.add(id); // Newly selected
+    // });
+
+    // previousIds.forEach(id => {
+    //   if (!currentIds.has(id)) changedIds.add(id); // Deselected
+    // });
+
+    // changedIds.forEach(id => handleRowClick(id));
+    console.log("just created");
   };
 
   return (
@@ -147,7 +192,13 @@ useEffect(() => {
           </div>
         </div>
       <TeamFilters setUserMeta={setUserMeta} />
-      <DynamicTable3 data={team} columns={TeamColumns} tableType="team" setQuery={setQuery}/>
+      {/* <DynamicTable3 data={team} columns={TeamColumns} tableType="team" setQuery={setQuery}/> */}
+      <DynamicTable<IEmployee> 
+        data={team} 
+        onSelectionChange={handleSelectionChange} 
+        columns={[...(staticColumns ?? [])]} 
+        // stickyColumns={["select","name","phone"]} 
+      />
       <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

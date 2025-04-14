@@ -141,7 +141,7 @@ export const getCheckboxColumn = <TData,>(): ColumnDef<TData, unknown> => ({
   meta: {
     sticky: true,
     style: {
-      backgroundColor: '#ffffff', // equivalent to Tailwind's bg-red-100
+      backgroundColor: 'bg-gray-200', // equivalent to Tailwind's bg-red-100
     },
   },
 });
