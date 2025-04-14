@@ -74,6 +74,15 @@ export function formatToLocalTime(isoDate: string): string {
   return `${day} ${month}, ${year} ${formattedTime}`;
 }
 
+export function capitalizeWords(str: string): string {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+
 export const getAllKeys = <T extends Record<string, unknown>>(data: T[]): string[] => {
   return Array.from(new Set(data.flatMap((row) => Object.keys(row))));
 };
@@ -248,6 +257,16 @@ export function convertToOptions(data: RegionOption[]): DropdownOption[] {
         value: item._id
     }));
 }
+
+// Utility function to generate a unique ID
+export const generateUniqueId = (): string => {
+  // Using timestamp and random number to ensure uniqueness
+  const timestamp = Date.now().toString(36); // Convert the current time in milliseconds to base-36 (a-z, 0-9)
+  const randomValue = Math.random().toString(36).substring(2, 10); // Random string to add variability
+
+  return `${timestamp}-${randomValue}`;
+};
+
 
 
 

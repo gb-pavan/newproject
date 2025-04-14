@@ -20,7 +20,6 @@ interface EditFieldModalProps {
 }
 
 const EditFieldModal: React.FC<EditFieldModalProps> = ({ isOpen, onClose, onEditField, field }) => {
-  console.log("editeing field check props",field);
   const [name, setName] = useState('');
   const [type, setType] = useState('');
   const [options, setOptions] = useState<string[]>([]);
@@ -101,7 +100,6 @@ const EditFieldModal: React.FC<EditFieldModalProps> = ({ isOpen, onClose, onEdit
     setNewOption('');
   }
 
-      console.log("editeeeddd fields child active mandatory isFOrm",active,mandatory,isForm);
 
   onEditField(name, type, finalOptions.length > 0 ? finalOptions : [], field._id,selectedColor,mandatory,isForm,active);
 };

@@ -75,7 +75,7 @@ const COLUMN_STORAGE_KEY = "displayColumns2";
 
 const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns,statusInfo,tableType,onRowClick,selectedRowIdsRef }) => {
   // const [displayColumns, setDisplayColumns] = useState<string[]>([]);
-  console.log("data table",data);
+  console.log("table data prop",data);
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [checkedRows, setCheckedRows] = useState<boolean[]>([]);
@@ -130,7 +130,6 @@ const DynamicTable3: React.FC<TableProps> = ({ data,tabColumns,setQuery, columns
   }, [displayColumns, setQuery]);
 
 
-  console.log("displayCOls",displayColumns);
 
   useEffect(() => {
     if (data?.length) {

@@ -121,7 +121,6 @@ const FieldsSettingsPage = () => {
   // Function to handle drag end event
   const handleDragEnd = (result:DropResult) => {
     const { destination, source } = result;
-    console.log("source destination",source,destination);
 
     // Return if dropped outside the list or dropped in the same position
     if (

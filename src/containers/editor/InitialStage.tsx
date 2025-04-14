@@ -200,7 +200,6 @@ interface StageProps {
 }
 
 export const InitialStage: React.FC<StageProps> = ({ className, initial, setChange }) => {
-  console.log("initial",initial);
   const [isEditing, setIsEditing] = useState(false);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [stageName, setStageName] = useState<string>("");
@@ -259,7 +258,6 @@ export const InitialStage: React.FC<StageProps> = ({ className, initial, setChan
       backgroundColor: bgColor,
     };
 
-    console.log("check edit", payload);
 
     try {
       await toast.promise(

@@ -4,11 +4,11 @@ import FilterComponent from "@/components/FilterCondition";
 import Pagination from "@/components/Pagination";
 import SearchBox from "@/components/SearchBox";
 import TableFilters from "@/containers/filtersContainer";
-import { ITableFields } from "@/interfaces";
+import { ILeadFields, ITableFields } from "@/interfaces";
 import { FilterState,QueryState, IAssignee, IStatus } from "@/interfaces/tableFilterTypes";
 import { handleError } from "@/utils/helpers";
 import { AxiosError } from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { DndProvider } from 'react-dnd';
@@ -18,6 +18,11 @@ import { DropdownInstance } from "@/services/dropdown.service";
 import { columns } from "@/utils/constants";
 import { TableInstance } from "@/services/table.service";
 import { useStringArray } from "@/providers/StringArrayContext";
+import { DynamicTable } from "@/components/DynamicTable";
+import { getUserColumns }  from "@/utils/enum/tableColumns.enum";
+import createDynamicColumns from "@/utils/enum/tableDynamicColumns";
+import { ColumnDef } from "@tanstack/react-table";
+import { toast } from "react-hot-toast";
 
 const TableContainer: React.FC = () => {
 
@@ -39,6 +44,8 @@ const TableContainer: React.FC = () => {
   const [addCondition,setCondition] = useState<boolean>(false);
   const [filters, setFilters] = useState<string[]>([]);
   const [tabColumns, setColumns] = useState<string[]>([]);
+  const [dynamicColumns, setDynamicColumns] = useState<ColumnDef<ILeadFields>[]>([]); // Corrected type to ColumnDef<ILeadFields>[]
+  const [staticColumns, setStaticColumns] = useState<ColumnDef<ILeadFields>[]>();
   const [totalRows, setTotalRows] = useState<number>(0);
   const [queryTrigger, setQueryTrigger] = useState(0);
   const [query, setQuery] = useState<QueryState>({
@@ -49,11 +56,11 @@ const TableContainer: React.FC = () => {
       "phone",
       "status",
       "favorite",
-      "assignedOwner",
-      "createdBy",
-      "createdAt",
-      "updatedAt",
-      "sourceBy"
+      // "assignedOwner",
+      // "createdBy",
+      // "createdAt",
+      // "updatedAt",
+      // "sourceBy"
     ],
     logic: "AND",
     pagination: {
@@ -65,19 +72,6 @@ const TableContainer: React.FC = () => {
   const [statusInfo, setGetStatus] = useState<IStatus[]>([]);
   const totalPages = (totalRows/rowsPerPage);
   const listRef = useRef<HTMLDivElement>(null); // Ref for the dropdown list container
-
-  // const handleRowClick = (id: number) => {
-  //   if (selectedRowIdsRef.current.has(id.toLocaleString())) {
-  //     // selectedRowIdsRef.current.delete(id);
-  //     selectedRowIdsRef.current.add(String(id));
-  //   } else {
-  //     // selectedRowIdsRef.current.add(id);
-  //     selectedRowIdsRef.current.add(String(id));
-  //   }
-
-  //   // For debugging
-  //   console.log('Selected Row IDs:', Array.from(selectedRowIdsRef.current));
-  // };
 
   useEffect(() => {
     setValues(selectedIds);
@@ -134,28 +128,87 @@ const TableContainer: React.FC = () => {
     fetchAssignees();
     fetchStatusInfo();
   }, []); // Empty dependency array ensures this runs only once on mount
+   
 
   useEffect(() => {
-     const filterData = async () => {
+    console.log("visible reflected query",query.selectedFields);
+  const filterData = async () => {
+    const promise = FilterInstance.getFilterResponse(query);
+
+    toast.promise(promise, {
+      loading: 'Loading table data...',
+      success: 'Data loaded!',
+      error: 'Failed to load table data.',
+    });
+
     try {
-      const filterResponse = await FilterInstance.getFilterResponse(query); // Await the response
+      const filterResponse = await promise;
       setTableData(filterResponse?.leads);
       setTotalRows(filterResponse?.total);
     } catch (error) {
-      handleError(error as AxiosError,false);
+      handleError(error as AxiosError, false);
     }
   };
+
   const getColumns = async () => {
+    const promise = TableInstance.getColumns();
+
+    toast.promise(promise, {
+      loading: 'Fetching columns...',
+      success: 'Columns loaded!',
+      error: 'Failed to load columns.',
+    });
+
     try {
-      const tabColResponse = await TableInstance.getColumns(); // Await the response
+      const tabColResponse = await promise;
       setColumns(tabColResponse.columns);
     } catch (error) {
-      handleError(error as AxiosError,false);
+      handleError(error as AxiosError, false);
     }
   };
-    filterData();
-    getColumns();
-  }, [query, currentPage, rowsPerPage,queryTrigger]); // Runs when these dependencies change
+
+  filterData();
+  getColumns();
+}, [query, currentPage, rowsPerPage, queryTrigger]);
+
+  const handleFavoriteToggle = useCallback(
+    async (rowId: string, favState: boolean) => {
+      console.log("checking favorite toggle",rowId,favState);
+      const togglePromise = TableInstance.toggleFavorite(rowId, favState);
+      console.log("toggleResponse",togglePromise);
+
+      toast.promise(togglePromise, {
+        loading: favState ? 'Adding to favorites...' : 'Removing from favorites...',
+        success: favState ? 'Added to favorites!' : 'Removed from favorites!',
+        error: 'Failed to update favorite status.',
+      });
+
+      try {
+        await togglePromise;
+        setQueryTrigger(prev => Number(prev) + 1)
+        // setFavoriteRows((prev) => ({
+        //   ...prev,
+        //   [rowId]: !prev[rowId],
+        // }));
+      } catch (error) {
+        handleError(error as AxiosError, false);
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (tableData?.length > 0) {
+      const statColumns = getUserColumns(handleFavoriteToggle);
+      setStaticColumns(statColumns);
+        if (tableData.length > 0 && statusInfo.length > 0){
+          const dynamicCols = createDynamicColumns(tableData,statusInfo); 
+          setDynamicColumns(dynamicCols);
+        }      
+    }
+  }, [tableData, handleFavoriteToggle]);
+
+
 
 
   const handleCondition = (key:string) => {
@@ -170,6 +223,45 @@ const TableContainer: React.FC = () => {
     filters: prevQuery.filters.filter((filter) => filter.field !== columnLabel),
   }));
   };
+
+  // const handleSelectionChange = (selectedRows: ILeadFields[]) => {
+  //   console.log("selected Rows",selectedRows);
+  //   const ids = selectedRows.map(row => row._id);
+  //   selectedRowIdsRef?.current.has(String(ids));
+  //   // setSelectedIds(ids);
+  //   console.log("Selected IDs:", ids); // <-- You now get the _ids here
+  //   ids.forEach(each => {
+  //     if (typeof each === "string") {
+  //       handleRowClick(each);
+  //     }
+  //   });
+
+  // };
+
+  const handleSelectionChange = (selectedRows: ILeadFields[]) => {
+    const currentIds = new Set(
+      selectedRows
+        .map((row) => typeof row._id === "string" ? row._id : null)
+        .filter((id): id is string => id !== null)
+    );
+
+    const previousIds = selectedRowIdsRef.current;
+    const changedIds = new Set<string>();
+
+    currentIds.forEach(id => {
+      if (!previousIds.has(id)) changedIds.add(id); // Newly selected
+    });
+
+    previousIds.forEach(id => {
+      if (!currentIds.has(id)) changedIds.add(id); // Deselected
+    });
+
+    changedIds.forEach(id => handleRowClick(id));
+  };
+
+
+  console.log("fetched Table Data",tableData);
+
 
   return (
     <div>
@@ -232,9 +324,11 @@ const TableContainer: React.FC = () => {
           <span className="text-sm">Yesterday Leads</span>
         </button>
         </div>
-        <TableFilters rowsCount={tableData?.length} setQueryTrigger={setQueryTrigger} setFilter={setFilterState} selectedIds={selectedIds} query={query} setQuery={setQuery} selectedRowIdsRef={selectedRowIdsRef} filterState={filterState} assignee={assignee} statusInfo={statusInfo} />
-        <DndProvider backend={HTML5Backend}>
-        <DynamicTable3 data={tableData} tabColumns={tabColumns} selectedRowIdsRef={selectedRowIdsRef} columns={columns} statusInfo={statusInfo} tableType="lead" onRowClick={handleRowClick} setQuery={setQuery} /></DndProvider>
+        <TableFilters rowsCount={tableData?.length} tabColumns={tabColumns} setQueryTrigger={setQueryTrigger} setFilter={setFilterState} selectedIds={selectedIds} query={query} setQuery={setQuery} selectedRowIdsRef={selectedRowIdsRef} filterState={filterState} assignee={assignee} statusInfo={statusInfo} />
+        {/* <DndProvider backend={HTML5Backend}>
+        <DynamicTable3 data={tableData} tabColumns={tabColumns} selectedRowIdsRef={selectedRowIdsRef} columns={columns} statusInfo={statusInfo} tableType="lead" onRowClick={handleRowClick} setQuery={setQuery} />
+        </DndProvider> */}
+        <DynamicTable<ILeadFields> data={tableData} onSelectionChange={handleSelectionChange } columns={[...(staticColumns ?? []),...dynamicColumns]} stickyColumns={["select","name","phone"]} />
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

@@ -364,7 +364,6 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
  const [filteredOptions, setFilterOptions] = useState("");
  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
  const [filterValues, setFilterValues] = useState<string[]>([]);
- console.log("selectedValues assignee",selectedValues);
 
 
  const handleSelectionChange = (selected: string[]) => {
@@ -455,7 +454,6 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
 
 
  const handleSelect = (value: string) => {
-   console.log("assigne option selected",value);
    let newValues = Array.isArray(selectedValues) ? [...selectedValues] : selectedValues ? [selectedValues] : [];
 
 
@@ -482,8 +480,7 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
      ? options.find((opt) => opt.value === selectedValues[0])?.label
      : options.find((opt) => opt.value === selectedValues)?.label;
 
-     console.log("displaytext", displayText);
-     console.log("selectedValues",selectedValues);
+    
 
 
  return (
@@ -531,7 +528,7 @@ const CustomDropdown2: React.FC<CustomDropdownProps> = ({
 
      {isOpen && (
        <div
-         className="absolute z-10 right-0 mt-2 border rounded-md shadow-lg bg-white"
+         className="absolute z-50 right-0 mt-2 border rounded-md shadow-lg bg-white"
          style={{
            width: defaultValue === "Status" ? "10.5rem" : defaultValue === "Assignee" ? "16rem" : undefined,
          }}

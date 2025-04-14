@@ -8,9 +8,11 @@ import { mapAssigneeToDropdownOptions, mapStatusToDropdownOptions } from "@/util
 import { useState } from "react";
 import SlidingPanel from "@/components/SlidePanel";
 import BulkActions from "./BulkEditContainer";
+import DraggableDropdownDemo from "@/components/DraggableDropdownDemo";
 
 interface TableFiltersProps {
   filterState:FilterState
+  tabColumns?:string[];
   setFilter: (newState: (prev: FilterState) => FilterState) => void;
   query: QueryState
   setQuery:(query: QueryState | ((prev: QueryState) => QueryState)) => void;
@@ -31,7 +33,7 @@ interface TableFiltersProps {
 //   showCheckbox?: boolean;
 // } 
 
-const TableFilters:React.FC<TableFiltersProps> = ({query,selectedRowIdsRef, setQuery,assignee,statusInfo,selectedIds,setQueryTrigger}) => { 
+const TableFilters:React.FC<TableFiltersProps> = ({query,selectedRowIdsRef,tabColumns, setQuery,assignee,statusInfo,selectedIds,setQueryTrigger}) => { 
 
 
 
@@ -79,7 +81,6 @@ const TableFilters:React.FC<TableFiltersProps> = ({query,selectedRowIdsRef, setQ
 
 
   const handleAssigneeChange = (newValues: string[]) => {
-    console.log("assignee selected",newValues);
     
     if (newValues.every(val => val.trim() === '')) {
       const allAssignee:IAssignee[] = assignee;
@@ -126,7 +127,6 @@ const TableFilters:React.FC<TableFiltersProps> = ({query,selectedRowIdsRef, setQ
     }));
   };
 
-  console.log("checcking selected assignee now",query.filters.find(each => each.field === "assignedOwner")?.value);
 
 
   return (
@@ -165,6 +165,9 @@ const TableFilters:React.FC<TableFiltersProps> = ({query,selectedRowIdsRef, setQ
         >
           Bulk Edit
         </button>
+        <div>
+          <DraggableDropdownDemo options={tabColumns} selectedCols={query.selectedFields} setQuery={setQuery} />
+        </div>
       </div>
       
       </div>

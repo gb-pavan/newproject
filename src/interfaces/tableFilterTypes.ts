@@ -44,6 +44,8 @@ export interface IStatus {
     statusid: number;
     label: string;
     color: string;
+    backgroundColor: string;
+    fontSize: string;
     _id: string;
 }
 

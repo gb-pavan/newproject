@@ -812,7 +812,6 @@ const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
         add: reportees || [],
       },
     };
-    console.log("check form details",teamDetails);
 
     try {
       await toast.promise(
@@ -837,7 +836,6 @@ const StaticForm: React.FC<StaticFormProps> = ({ onFormSubmit }) => {
       handleError(error as AxiosError, true);
     }
   };
-  console.log("reporting",reportingOptions);
 
   return (
     <Container maxWidth="md" sx={{ height: '100vh', overflowY: 'auto', py: 2 }}>

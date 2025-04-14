@@ -33,33 +33,11 @@ const BulkActions: React.FC<BulkActionsProps> = ({onClose}) => {
   
     fetchAssignees();
   }, []); 
-  console.log("assignee options",mapAssigneeToDropdownOptions(assignee,{ showCheckbox: true,addDeco:true }));
 
   const handleAssignTo = async (assignedTo:string[]) => {
-    console.log("assignt to",assignedTo);
     setAssignedTo(assignedTo);
-    // const payloadAssign = {
-    //   leadIds : values,
-    //   managerId :assignedTo[0]
-    // }
-    // await TableInstance.assignTo(payloadAssign);
-    //  await toast.promise(
-    //   TableInstance.assignTo(payloadAssign),
-    //   {
-    //     loading: "Distributing leads...",
-    //     success: "Leads assigned successfully!",
-    //     error: "Failed to assign leads. Please try again.",
-    //   }
-    // );
+    
   }
-
-  // const handleDistribute = async () => {
-  //   const payloadAssign = {
-  //     leadIds : values,
-  //     managerId :assignTo
-  //   }
-  //   await TableInstance.assignTo(payloadAssign);
-  // }
 
   const handleDistribute = async () => {
     const payloadAssign = {
@@ -84,7 +62,6 @@ const BulkActions: React.FC<BulkActionsProps> = ({onClose}) => {
     return label === "Select All" ? "" : label;
   };
 
-  console.log("ceking label select value passedd",getLabelFromAssignee(assignTo,assignee))
 
 
 
@@ -97,29 +74,7 @@ const BulkActions: React.FC<BulkActionsProps> = ({onClose}) => {
       </div> */}
 
       <div className="flex flex-col space-y-2 gap-2">
-        {/* Update Status */}
-        {/* <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-600">Update Lead/s Status:</span>
-          <span className="bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full flex items-center">
-            <BsFilter className="mr-1" /> Stage
-          </span>
-        </div> */}
-        {/* <div className="flex items-center space-x-2 flex-nowrap">
-          <span className="text-sm text-gray-600 whitespace-nowrap">Update Lead/s Status:</span>
-          <span className="bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full inline-flex items-center">
-            <BsFilter className="mr-1 text-sm" />
-            Stage
-          </span>
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-600">Update Lead/s Rating:</span>
-          <div className="flex space-x-1">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <AiFillStar key={i} className="text-gray-300" />
-            ))}
-          </div>
-        </div> */}
+        
 
         {/* Reassign */}
         <div className="flex items-center space-x-2">
@@ -132,21 +87,7 @@ const BulkActions: React.FC<BulkActionsProps> = ({onClose}) => {
           />
         </div>
 
-        {/* <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-600">Add Lead to</span>
-          <FaPlusCircle className="text-gray-500" />
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-600">Remove Lead from</span>
-          <FaMinusCircle className="text-gray-500" />
-        </div>
-
-        <div className="col-span-full">
-          <select className="w-full border border-gray-300 rounded-md p-2 text-sm">
-            <option>Select a field</option>
-          </select>
-        </div> */}
+     
       </div>
 
       <div className="text-center mt-3">

@@ -275,7 +275,6 @@ class RootService{
   }
 
   LeadFieldVisibility = async (id:string,visibility:boolean,isForm:boolean) => {
-    console.log("isForm",isForm);
     const url=`/api/lead_field/write/create-or-update/${id}`;
     const payload2 = {
       'active':!visibility

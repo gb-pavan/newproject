@@ -10,6 +10,7 @@ class TableService {
   };
 
   toggleFavorite = async (leadId: string, currentState: boolean) => {
+    console.log("fav toggle api check",currentState);
     const url = `/api/lead/write/favorite/${leadId}`;
     return await callApi(url, API.PATCH, { favorite: currentState }, true);
   };

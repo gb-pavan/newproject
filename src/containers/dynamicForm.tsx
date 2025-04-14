@@ -143,10 +143,8 @@ const reg = [
 ];
 
 const DynamicForm: React.FC<DynamicFormProps> = ({ fields }) => {
-  console.log("form fields",fields);
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [regionOptions, setRegionOptions] = useState<RegionOption[]>([]);
-  console.log("regions",regionOptions);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>

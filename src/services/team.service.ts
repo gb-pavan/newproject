@@ -42,7 +42,6 @@ class TeamService{
       }
 
       const url = `/api/admin/read/users?${params.toString()}`;
-      console.log("check department all url",url);
       return await callApi(url, API.GET);
     };
 
