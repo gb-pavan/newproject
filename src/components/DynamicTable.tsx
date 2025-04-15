@@ -243,7 +243,6 @@ export function DynamicTable<TData>({
   onSelectionChange,
 }: TableProps<TData>) {
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
-  console.log("static and dynamic columns",columns);
 
   const table = useReactTable({
     data,
@@ -305,8 +304,8 @@ export function DynamicTable<TData>({
 
   const getHeaderClasses = (columnId: string) =>
     cn(
-      "px-4 py-2 font-semibold text-gray-700 whitespace-nowrap border-l-2 border-gray-200",
-      stickyColumns.includes(columnId) && "bg-gray-100"
+      `px-4 py-2 font-semibold text-gray-700 whitespace-nowrap border-l-2 border-gray-200 bg-gray-300`,
+      stickyColumns.includes(columnId) && "bg-gray-300"
     );
 
   const getCellClasses = (columnId: string) =>
@@ -327,7 +326,7 @@ export function DynamicTable<TData>({
   return (
     <div className={cn("rounded-t-xl border border-gray-200 overflow-x-auto mt-4", className)}>
       <table className="min-w-full text-sm text-left table-fixed">
-        <thead className="bg-gray-100">
+        <thead className="bg-gray-300">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
@@ -336,7 +335,7 @@ export function DynamicTable<TData>({
                   style={{
                     width: header.column.getSize() ?? 150,
                     ...getStickyStyle(header.column.id),
-                    ...(header.column.columnDef.meta?.style ?? {}),
+                    ...(header.column.columnDef.meta?.headerClassName ?? {}),
                   }}
                   className={getHeaderClasses(header.column.id)}
                 >
@@ -357,7 +356,7 @@ export function DynamicTable<TData>({
                   style={{
                     width: cell.column.getSize() ?? 150,
                     ...getStickyStyle(cell.column.id),
-                    ...(cell.column.columnDef.meta?.style ?? {}),
+                    ...(cell.column.columnDef.meta?.cellClassName ?? {}),
                   }}
                   className={getCellClasses(cell.column.id)}
                 >

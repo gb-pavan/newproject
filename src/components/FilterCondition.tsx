@@ -330,15 +330,18 @@ import {
   MenuItem,
   IconButton,
   SelectChangeEvent,
+  FormControl,
 } from "@mui/material";
 import { CalendarToday, Close } from "@mui/icons-material";
-import { Filter, QueryState } from "@/interfaces/tableFilterTypes";
+import { Filter, IAssignee, QueryState } from "@/interfaces/tableFilterTypes";
 import { handleError } from "@/utils/helpers";
 import { AxiosError } from "axios";
 import { RootInstance } from "@/services/root.service";
 import { CreatedLeadField } from "@/interfaces/root.interface";
 import TagInput from "./InputTags";
 import MultiSelectForm from "./FilterConditionDropdown";
+import { DropdownInstance } from "@/services/dropdown.service";
+import GroupedMultiSelect from "./AssigneeFilterDropdown";
 
 interface FilterComponentProps {
   label: string;
@@ -355,6 +358,9 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
   const [createdFields, setCreatedFields] = useState<CreatedLeadField[]>([]);
   const [textedInput, setTextedInput] = useState<string[]>([]);
   const [dropdownSelected, setDropdownSelected] = useState<string[]>([]);
+  const [grouped, setGrouped] = useState<{ label: string; options: IAssignee[] }[]>([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
 
   // Fetch all created fields
   useEffect(() => {
@@ -369,6 +375,28 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
 
     fetchCreatedLeadFields();
   }, []);
+
+  const groupUsers = (assignee:IAssignee[]) => [
+    { label: 'Active', options: assignee.filter((u) => !u.isDeleted) },
+    { label: 'Deleted', options: assignee.filter((u) => u.isDeleted) },
+  ];
+
+
+  useEffect(() => {
+    const fetchAssignees = async () => {
+      try {
+        const response = await DropdownInstance.getAssignee(); // Await the API response
+        setGrouped(groupUsers(response?.users));
+      } catch (error) {
+        handleError(error as AxiosError,false);
+      }
+    };
+    fetchAssignees();
+  }, []);
+
+  
+
+  console.log("dropd selectedfiltered",dropdownSelected);
 
   // Memoized fieldData based on label and createdFields
   const fieldData = useMemo(() => {
@@ -396,25 +424,143 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
   }, [label, createdFields]);
 
   // Trigger filtering when text input changes
-  useEffect(() => {
-    if (
-      textedInput.length > 0 &&
-      condition &&
-      fieldData?.type.toLowerCase() === "text"
-    ) {
-      setFiltering((prev) => ({
-        ...prev,
-        filters: [
-          ...prev.filters,
-          {
-            field: label,
-            operator: condition,
-            value: textedInput,
-          } as Filter,
-        ],
-      }));
-    }
-  }, [textedInput]);
+  // useEffect(() => {
+  //   if (
+  //     textedInput.length > 0 &&
+  //     condition &&
+  //     fieldData?.type.toLowerCase() === "text"
+  //   ) {
+  //     setFiltering((prev) => ({
+  //       ...prev,
+  //       filters: [
+  //         ...prev.filters,
+  //         {
+  //           field: label,
+  //           operator: condition,
+  //           value: textedInput,
+  //         } as Filter,
+  //       ],
+  //     }));
+  //   }
+  // }, [textedInput]);
+
+  // useEffect(()=>{
+  //   console.log("query triggered");
+  //   if ((textedInput || dropdownSelected || selectedIds) && condition) {
+  //     // ✅ Both have values, safe to run logic
+  //     console.log("Running query with:", textedInput, dropdownSelected,condition, selectedIds);
+  //     // Do your logic here...
+  //   } else {
+  //     // ⚠️ One of them is missing
+  //     console.log("Waiting for both fields to be filled...");
+  //   }
+  // },[textedInput,dropdownSelected,condition,selectedIds])
+
+//   useEffect(() => {
+//   console.log("query triggered");
+//   if (!condition) return; // Early return if operator is missing
+
+//   if (selectedIds){
+//     console.log("ids chagned",selectedIds);
+//   }
+
+//   // let filter:{field:string,operator:string,value:string[]} = null;
+//   let filter: { field: string; operator: string; value: string[] } | null = null;
+
+
+//   if (textedInput && label) {
+//     filter = {
+//       field: label,
+//       operator: condition,
+//       value: textedInput,
+//     };
+//   } else if (dropdownSelected && label) {
+//     filter = {
+//       field: label,
+//       operator: condition,
+//       value: dropdownSelected,
+//     };
+//   } else if (selectedIds.length && label) {
+//     filter = {
+//       field: label,
+//       operator: condition,
+//       value: selectedIds,
+//     };
+//   }
+
+//   if (filter) {
+//     console.log("Setting query with filter:", filter);
+
+//     // setFiltering((prev) => ({
+//     //   ...prev,
+//     //   filters: [...prev.filters.filter(f => f.field !== label), filter],
+//     // }));
+//     setFiltering((prev) => ({
+//       ...prev,
+//       filters: [
+//         ...prev.filters.filter((f) => f.field !== label),
+//         ...(filter ? [filter] : []), // 👈 Only add if filter is not null
+//       ],
+//     }));
+
+//   } else {
+//     console.log("Waiting for all inputs to be filled...");
+//   }
+// }, [textedInput, dropdownSelected, selectedIds, condition, fieldData]);
+useEffect(() => {
+  console.log("query triggered");
+
+  if (!condition) return; // Operator must be present
+
+  const hasTextInput = textedInput && textedInput.length > 0;
+  const hasDropdown = dropdownSelected && dropdownSelected.length > 0;
+  const hasSelectedIds = selectedIds && selectedIds.length > 0;
+
+  if (!(hasTextInput || hasDropdown || hasSelectedIds)) {
+    console.log("Waiting for at least one value to be filled...");
+    setFiltering((prev) => ({
+      ...prev,
+      filters: prev.filters.filter((f) => f.field !== label),
+    }));
+    return;
+  }
+
+  let filter: { field: string; operator: string; value: string[] } | null = null;
+
+  if (hasTextInput && label) {
+    filter = {
+      field: label,
+      operator: condition,
+      value: textedInput,
+    };
+  } else if (hasDropdown && label) {
+    filter = {
+      field: label,
+      operator: condition,
+      value: dropdownSelected,
+    };
+  } else if (hasSelectedIds && label) {
+    filter = {
+      field: label,
+      operator: condition,
+      value: selectedIds,
+    };
+  }
+
+  if (filter) {
+    console.log("Setting query with filter:", filter);
+ 
+    setFiltering((prev) => ({
+      ...prev,
+      filters: [
+        ...prev.filters.filter((f) => f.field !== label),
+        ...(filter ? [filter] : []), // 👈 Only add if filter is not null
+      ],
+    }));
+  }
+}, [textedInput, dropdownSelected, selectedIds, condition, fieldData]);
+
+
 
   // Trigger filtering when dropdown selection changes
   useEffect(() => {
@@ -438,10 +584,64 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
   }, [dropdownSelected]);
 
   const handleConditionChange = (event: SelectChangeEvent<string>) => {
+    console.log("checkig is or not",event.target.value);
     setCondition(event.target.value);
   };
 
   console.log("fieldData",fieldData);
+  console.log("createdFields",createdFields);
+
+
+  const getOptionsByLabel = (label:string) => {
+    switch (label) {
+      case 'Date':
+        return [
+          { value: 'equal_to', label: 'Equal to' },
+          { value: 'before', label: 'Before' },
+          { value: 'after', label: 'After' },
+          { value: 'is_empty', label: 'Is empty' },
+          { value: 'is_not_empty', label: 'Is not empty' },
+        ];
+      case 'phone':
+        return [
+          { value: 'IS', label: 'IS' },
+          { value: 'IS_NOT', label: 'IS_NOT' },
+        ]
+      case 'name':
+        return [
+          { value: 'is', label: 'IS' },
+          { value: 'is_not', label: 'IS_NOT' },         
+          { value: 'equal_to', label: 'CONTAINS' },
+          { value: 'not_equal_to', label: 'CONTAINS_NOT' },
+          { value: 'begins_with', label: 'BEGINS_WITH' },
+          { value: 'not_begin_with', label: 'NOT_BEGINS_WITH' },
+          { value: 'is_empty', label: 'IS_EMPTY' },
+          { value: 'is_not_empty', label: 'IS_NOT_EMPTY' }         
+        ];
+      case 'class':
+        return [
+          { value: 'equal_to', label: 'Equal to' },
+          { value: 'not_equal_to', label: 'Not equal to' },
+        ];
+      case 'assignedOwner':
+        return [
+          { value: 'IS', label: 'IS' },
+          { value: 'IS_NOT', label: 'IS_NOT' },
+        ];
+      default:
+        return [
+          { value: 'equal_to', label: 'Equal to' },
+          { value: 'not_equal_to', label: 'Not equal to' },
+          { value: 'is_empty', label: 'Is empty' },
+          { value: 'is_not_empty', label: 'Is not empty' },
+        ];
+    }
+  };
+
+  console.log("field and groupted",fieldData,grouped);
+  console.log("selectedIds",selectedIds);
+
+  const options = getOptionsByLabel(label);
 
   return (
     <div className="relative inline-flex items-center gap-2 bg-gray-100 text-gray-800 rounded-lg w-auto p-3">
@@ -465,7 +665,7 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
       </div>
 
       {/* Condition Selector */}
-      <Select
+      {/* <Select
         value={condition}
         onChange={handleConditionChange}
         displayEmpty
@@ -478,10 +678,42 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
         <MenuItem value="before">Before</MenuItem>
         <MenuItem value="after">After</MenuItem>
         <MenuItem value="contains">Contains</MenuItem>
-      </Select>
+      </Select> */}
+      {/* <Select
+        value={condition}
+        onChange={handleConditionChange}
+        displayEmpty
+        className="text-xs h-8 bg-white border border-gray-300 rounded w-auto"
+      >
+        <MenuItem value="" disabled>
+          Choose
+        </MenuItem>
+        {options.map((opt) => (
+          <MenuItem key={opt.value} value={opt.value}>
+            {opt.label}
+          </MenuItem>
+        ))}
+      </Select> */}
+      <FormControl className="text-xs h-8 bg-white border border-gray-300 rounded w-auto" size="small">
+  <Select
+    value={condition}
+    onChange={handleConditionChange}
+    displayEmpty
+  >
+    <MenuItem value="" disabled>
+      Choose
+    </MenuItem>
+    {options.map((opt) => (
+      <MenuItem key={opt.value} value={opt.label}>
+        {opt.label}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
+
 
       {/* Dynamic Input Field */}
-      {fieldData?.type.toLowerCase() === "text" ? (
+      {(fieldData?.type.toLowerCase() === "text" || label === 'name' || label === 'phone') ? (
         <TagInput setTexted={setTextedInput} />
       ) : fieldData?.type.toLowerCase() === "dropdown" ? (
         <MultiSelectForm
@@ -490,6 +722,14 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
           onChange={setDropdownSelected}
         />
       ) : null}
+      {label.toLocaleLowerCase() === "assignedowner" && grouped.length > 0 && 
+      <GroupedMultiSelect
+        groups={grouped}
+        selectedIds={selectedIds}
+        onChange={setSelectedIds}
+      />
+      }
+    
     </div>
   );
 };

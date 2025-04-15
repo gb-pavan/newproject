@@ -127,7 +127,6 @@ const TableContainer: React.FC = () => {
    
 
   useEffect(() => {
-    console.log("visible reflected query",query.selectedFields);
   const filterData = async () => {
     const promise = FilterInstance.getFilterResponse(query);
 
@@ -174,8 +173,8 @@ const TableContainer: React.FC = () => {
       console.log("toggleResponse",togglePromise);
 
       toast.promise(togglePromise, {
-        loading: favState ? 'Adding to favorites...' : 'Removing from favorites...',
-        success: favState ? 'Added to favorites!' : 'Removed from favorites!',
+        loading: !favState ? 'Adding to favorites...' : 'Removing from favorites...',
+        success: !favState ? 'Added to favorites!' : 'Removed from favorites!',
         error: 'Failed to update favorite status.',
       });
 

@@ -80,9 +80,33 @@ const createDynamicColumns = (data: ILeadFields[],statusStyles:IStatus[]): Colum
     },
     size: 180,
   });
+}else if (key === 'board') {
+  // custom style for board
+  dynamicColumns.push({
+    accessorKey: key,
+    header: 'Board',
+    cell: (info) => {
+      const boardValue = info.getValue() as string;
+      return (
+        <span
+          style={{
+            backgroundColor: '#e0e7ff',
+            color: '#1e3a8a',
+            padding: '2px 6px',
+            borderRadius: '6px',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            fontSize: '0.875rem',
+          }}
+        >
+          {boardValue}
+        </span>
+      );
+    },
+    size: 160,
+  });
 }else {
       // For primitive values, create columns for them
-      console.log("is not object", value);
       dynamicColumns.push({
         accessorKey: key,
         header: key.charAt(0).toUpperCase() + key.slice(1),  // Capitalize the first letter

@@ -32,9 +32,16 @@ export const getUserColumns = (
         onFavoriteToggle: handleFavoriteToggle,
       }),
     meta: {
-    style: {
-      backgroundColor: '#ffffff', // equivalent to Tailwind's bg-red-100
+      headerClassName: {
+      backgroundColor: '#d1d5db', // #f3f4f6    #d1d5db
     },
+    cellClassName: {
+      backgroundColor: '#ffffff',
+    },
+    style: {
+      backgroundColor: '#d4d3d2', // equivalent to Tailwind's bg-red-100
+    },
+    
   },
   },
   {
@@ -42,9 +49,16 @@ export const getUserColumns = (
     header: "Phone",
     cell: (info) => info.getValue(),
     meta: {
+      headerClassName: {
+      backgroundColor: '#d1d5db',
+    },
+    cellClassName: {
+      backgroundColor: '#ffffff',
+    },
       style: {
-        backgroundColor: '#ffffff', // equivalent to Tailwind's bg-red-100
+        backgroundColor: '#d4d3d2', // equivalent to Tailwind's bg-red-100
       },
+  
     },
     size: 150,
   },
